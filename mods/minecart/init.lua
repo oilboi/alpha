@@ -108,8 +108,8 @@ minetest.register_craftitem("minecart:minecart", {
   description = "Minecart",
   inventory_image = "minecart.png",
   on_place = function(itemstack, placer, pointed_thing)
-    print(dump(pointed_thing.under))
-    minetest.add_entity(pointed_thing.under, "minecart:minecart")
+    print(dump(pointed_thing.above))
+    minetest.add_entity(pointed_thing.above, "minecart:minecart")
   end,
 
 })
