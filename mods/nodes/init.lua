@@ -85,3 +85,16 @@ minetest.register_node("nodes:leaves", {
 	groups = {wood = 1},
 	sounds = sounds.stone(),
 })
+
+minetest.register_node("nodes:rail", {
+	description = "Rail",
+  drawtype = "raillike",
+	tiles = {
+		"default_rail.png", "default_rail_curved.png",
+		"default_rail_t_junction.png", "default_rail_crossing.png"
+	},
+	inventory_image = "default_rail.png",
+	wield_image = "default_rail.png",
+  groups = {wood = 1},
+  sounds = sounds.stone(),
+})
