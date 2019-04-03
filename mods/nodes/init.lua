@@ -86,13 +86,21 @@ minetest.register_node("nodes:leaves", {
 	sounds = sounds.stone(),
 })
 
-minetest.register_node("nodes:rail", {
+minetest.register_node("nodes:rail_straight", {
 	description = "Rail",
-  drawtype = "raillike",
+  drawtype = "nodebox",
+  paramtype = "light",
 	tiles = {
-		"default_rail.png", "default_rail_curved.png",
-		"default_rail_t_junction.png", "default_rail_crossing.png"
+		"default_stone.png",
 	},
+  node_box = {
+    type = "fixed",
+    fixed = {
+      {0.3, -0.5, -0.5, 0.5, -0.1, 0.5},
+      {-0.5, -0.5, -0.5, -0.3, -0.1, 0.5},
+
+    },
+  },
 	inventory_image = "default_rail.png",
 	wield_image = "default_rail.png",
   groups = {wood = 1},
