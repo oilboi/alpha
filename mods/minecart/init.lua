@@ -55,10 +55,10 @@ function minecart:repel(self)
   temp_pos.y = 0
   --magnet effect
   for _,object in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
-    if object:is_player() then
+    if object:is_player() or (object:get_luaentity() and object:get_luaentity().name == "minecart:minecart") then
       local pos2 = object:getpos()
       local vec = vector.subtract(pos, pos2)
-      vec = vector.divide(vec,3) --divide so the player doesn't fling the cart
+      vec = vector.divide(vec,2) --divide so the player doesn't fling the cart
       self.object:add_velocity({x=vec.x,y=0,z=vec.z})
     end
   end
