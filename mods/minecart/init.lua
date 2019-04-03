@@ -3,7 +3,7 @@ local minecart = {
   initial_properties = {
     physical = true, -- otherwise going uphill breaks
     collide_with_objects = false,
-    collisionbox = {-0.25, -0.7, -0.25, 0.25, 0.5, 0.25},
+    collisionbox = {-0.29, -0.7, -0.29, 0.29, 0.5, 0.29},
     visual = "mesh",
     mesh = "minecart.b3d",
     visual_size = {x=1, y=1},
@@ -70,7 +70,6 @@ function minecart:change_direction(self)
   --stopped on the x axis
 
   if self.old_velocity and math.abs(self.old_velocity.x) > math.abs(self.old_velocity.z) and vel.x == 0 then
-    print("boing")
     --make it turn
     if minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1}).name == ("nodes:rail_straight" or "nodes:rail_turn") then
       self.object:set_velocity({x=0,y=self.old_velocity.y,z=math.abs(self.old_velocity.x)*-1})
@@ -78,7 +77,6 @@ function minecart:change_direction(self)
       self.object:set_velocity({x=0,y=self.old_velocity.y,z=math.abs(self.old_velocity.x)})
     end
   elseif self.old_velocity and math.abs(self.old_velocity.z) > math.abs(self.old_velocity.x) and vel.z == 0 then
-    print(self.old_velocity.z)
     --make it turn
     if minetest.get_node({x=pos.x-1,y=pos.y,z=pos.z}).name == ("nodes:rail_straight" or "nodes:rail_turn") then
       self.object:set_velocity({x=math.abs(self.old_velocity.z)*-1,y=self.old_velocity.y,z=0})
