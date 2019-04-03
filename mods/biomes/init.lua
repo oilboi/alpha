@@ -31,6 +31,7 @@ minetest.register_decoration({
 		name = "biomes:tree_deco",
 		deco_type = "schematic",
 		place_on = {"nodes:grass"},
+		spawn_by = "air",
 		--use the default game params for speed of development
 		sidelen = 16,
 		noise_params = {
@@ -43,8 +44,8 @@ minetest.register_decoration({
 		},
 		biomes = {"grass"},
 		y_max = 31000,
-		y_min = -100,
-		schematic = tree_schem,--minetest.get_modpath("schematics") .. "/schematics/oak_"..tree..".mts",
+		y_min = 1,
+		schematic = tree_schem,
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 })

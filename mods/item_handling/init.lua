@@ -1,3 +1,4 @@
+--this is built off of Wuzzy's Mineclone2 item magnet
 --let's simplify item collection mechanics to the basics
 local collection_age = 2.5
 minetest.register_globalstep(function(dtime)
