@@ -30,7 +30,7 @@ end
 
 function minecart:on_step(dtime)
   minecart:repel(self)
-  minecart:change_direction(self)
+  minecart:change_direction(self,dtime)
   minecart:friction(self)
 
   local vel = self.object:get_velocity()
@@ -67,31 +67,20 @@ function minecart:repel(self)
     if object:is_player() or (object:get_luaentity() and object:get_luaentity().name == "minecart:minecart") then
       local pos2 = object:getpos()
       local vec = vector.subtract(pos, pos2)
-      vec = vector.divide(vec,2) --divide so the player doesn't fling the cart
+      --vec = vector.divide(vec,2) --divide so the player doesn't fling the cart
       self.object:add_velocity({x=vec.x,y=0,z=vec.z})
     end
   end
 end
 --turn corners on rails
-function minecart:change_direction(self)
+function minecart:change_direction(self,dtime)
   local vel = self.object:get_velocity()
   local pos = self.object:getpos()
-  --stopped on the x axis
 
-  if self.old_velocity and math.abs(self.old_velocity.x) > math.abs(self.old_velocity.z) and vel.x == 0 then
-    --make it turn
-    if minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1}).name == ("nodes:rail_straight" or "nodes:rail_turn") then
-      self.object:set_velocity({x=0,y=self.old_velocity.y,z=math.abs(self.old_velocity.x)*-1})
-    elseif minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1}).name == ("nodes:rail_straight" or "nodes:rail_turn") then
-      self.object:set_velocity({x=0,y=self.old_velocity.y,z=math.abs(self.old_velocity.x)})
-    end
-  elseif self.old_velocity and math.abs(self.old_velocity.z) > math.abs(self.old_velocity.x) and vel.z == 0 then
-    --make it turn
-    if minetest.get_node({x=pos.x-1,y=pos.y,z=pos.z}).name == ("nodes:rail_straight" or "nodes:rail_turn") then
-      self.object:set_velocity({x=math.abs(self.old_velocity.z)*-1,y=self.old_velocity.y,z=0})
-    elseif minetest.get_node({x=pos.x+1,y=pos.y,z=pos.z}).name == ("nodes:rail_straight" or "nodes:rail_turn") then
-      self.object:set_velocity({x=math.abs(self.old_velocity.z),y=self.old_velocity.y,z=0})
-    end
+  local old = self.old_velocity
+  --change direction on rail
+  if old and ((math.abs(old.x) > math.abs(old.z) and vel.x == 0) or (math.abs(old.z) > math.abs(old.x) and vel.z == 0))  then
+    self.object:add_velocity({x=old.z,y=old.y,z=old.x})
   end
 end
 
