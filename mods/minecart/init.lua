@@ -8,16 +8,14 @@ local minecart = {
     mesh = "minecart.b3d",
     visual_size = {x=1, y=1},
     textures = {"minecart_ent.png"},
-    --automatic_face_movement_dir = 90.0,
     timer = 0,
     speed = 0,
   },
 
 }
 function minecart:on_activate(staticdata, dtime_s)
-    --in the future make this check for players around and they will "push it"
-    self.object:set_acceleration({x=0,y=-10,z=0})
 
+    self.object:set_acceleration({x=0,y=-10,z=0})
     if staticdata ~= "" and staticdata ~= nil then
         local data = minetest.parse_json(staticdata) or {}
         --restore old data
@@ -25,19 +23,30 @@ function minecart:on_activate(staticdata, dtime_s)
           self.timer = data.timer
           self.speed = data.speed
           self.old_velocity = data.old_velocity
+          self.old_pos = data.old_pos
         end
     end
 end
 
 function minecart:on_step(dtime)
-  --add_velocity(vel)
   minecart:repel(self)
   minecart:change_direction(self)
   minecart:friction(self)
 
   local vel = self.object:get_velocity()
 
+
+  minecart:set_rotation(self)
+
   self.old_velocity = vel
+  self.old_pos = self.object:getpos()
+end
+
+function minecart:set_rotation(self)
+  local pos = self.object:getpos()
+  if self.old_pos then
+    self.object:set_yaw(minetest.dir_to_yaw(vector.direction(pos, self.old_pos)))
+  end
 end
 
 --slow down cart with friction
@@ -97,6 +106,7 @@ function minecart:get_staticdata()
         timer   = self.timer,
         speed   = self.speed,
         old_velocity = self.old_velocity,
+        old_pos = self.old_pos,
     })
 end
 
