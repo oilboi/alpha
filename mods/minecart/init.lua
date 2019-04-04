@@ -10,6 +10,9 @@ local minecart = {
     textures = {"minecart_ent.png"},
     timer = 0,
     speed = 0,
+    yaw = 0,
+    automatic_face_movement_dir = 0.0,
+    automatic_face_movement_max_rotation_per_sec = -1,
   },
 
 }
@@ -79,9 +82,27 @@ function minecart:change_direction(self,dtime)
 
   local old = self.old_velocity
   --change direction on rail
-  if old and ((math.abs(old.x) > math.abs(old.z) and vel.x == 0) or (math.abs(old.z) > math.abs(old.x) and vel.z == 0))  then
-    self.object:add_velocity({x=old.z,y=old.y,z=old.x})
+  if old then
+    --print("what")
+  if (math.abs(old.x) > math.abs(old.z) and vel.x == 0) then
+    if minecart:testrail({x=pos.x,y=pos.y,z=pos.z+1}) ~= 0 then
+      self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)})
+    elseif minecart:testrail({x=pos.x,y=pos.y,z=pos.z-1}) ~= 0 then
+      self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)*-1})
+    end
+  elseif (math.abs(old.z) > math.abs(old.x) and vel.z == 0)  then
+    if minecart:testrail({x=pos.x+1,y=pos.y,z=pos.z}) ~= 0 then
+      self.object:add_velocity({x=math.abs(old.z),y=old.y,z=0})
+    elseif minecart:testrail({x=pos.x-1,y=pos.y,z=pos.z}) ~= 0 then
+      self.object:add_velocity({x=math.abs(old.z)*-1,y=old.y,z=0})
+    end
   end
+  end
+end
+
+--test if a node is rail
+function minecart:testrail(pos)
+  return(minetest.get_item_group(minetest.get_node(pos).name, "rail"))
 end
 
 

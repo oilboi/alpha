@@ -103,7 +103,7 @@ minetest.register_node("nodes:rail_straight", {
   },
 	inventory_image = "default_rail.png",
 	wield_image = "default_rail.png",
-  groups = {wood = 1},
+  groups = {wood = 1,rail=1},
   sounds = sounds.stone(),
 })
 
@@ -126,6 +126,6 @@ minetest.register_node("nodes:rail_turn", {
   },
 	inventory_image = "default_rail.png",
 	wield_image = "default_rail.png",
-  groups = {wood = 1},
+  groups = {wood = 1,rail=1},
   sounds = sounds.stone(),
 })
