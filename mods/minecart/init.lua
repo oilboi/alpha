@@ -1,3 +1,10 @@
+minetest.register_on_joinplayer(function(player)
+  local pos = player:getpos()
+  minetest.add_item(pos, "nodes:rail_straight 99")
+  minetest.add_item(pos, "nodes:rail_turn 99")
+  minetest.add_item(pos, "minecart:minecart 99")
+end)
+
 --potential: minecarts pushing minecarts, minecart trains, furnace minecart
 local minecart = {
   initial_properties = {
@@ -13,6 +20,7 @@ local minecart = {
     yaw = 0,
     automatic_face_movement_dir = 0.0,
     automatic_face_movement_max_rotation_per_sec = -1,
+    furnace = false,
   },
 
 }
@@ -27,6 +35,7 @@ function minecart:on_activate(staticdata, dtime_s)
           self.speed = data.speed
           self.old_velocity = data.old_velocity
           self.old_pos = data.old_pos
+          self.furnace = data.furnace
         end
     end
 end
@@ -34,15 +43,34 @@ end
 function minecart:on_step(dtime)
   minecart:repel(self)
   minecart:change_direction(self,dtime)
+  minecart:furnace_minecart(self)
   minecart:friction(self)
-
   local vel = self.object:get_velocity()
-
-
   minecart:set_rotation(self)
 
   self.old_velocity = vel
   self.old_pos = self.object:getpos()
+end
+
+--test out furnace minecart mechanics
+function minecart:furnace_minecart(self)
+  if self.furnace == true then
+    print("chugga chugga")
+    local vel = self.object:get_velocity()
+    --limit the speed
+    if math.abs(vel.x) < 3 and math.abs(vel.z) < 3 then
+      self.object:add_velocity(vector.divide(vel,3))
+    end
+  end
+end
+--test out furnace minecart
+function minecart:on_rightclick(clicker)
+  print(self.furnace)
+  if self.furnace == false or self.furnace == nil then
+    self.furnace = true
+  else
+    self.furnace = false
+  end
 end
 
 function minecart:set_rotation(self)
@@ -70,6 +98,8 @@ function minecart:repel(self)
     if object:is_player() or (object:get_luaentity() and object:get_luaentity().name == "minecart:minecart") then
       local pos2 = object:getpos()
       local vec = vector.subtract(pos, pos2)
+      --vec = vector.divide(vec,1.5)
+      --vec = vector.normalize(vec)
       --vec = vector.divide(vec,2) --divide so the player doesn't fling the cart
       self.object:add_velocity({x=vec.x,y=0,z=vec.z})
     end
@@ -100,6 +130,7 @@ function minecart:change_direction(self,dtime)
   end
 end
 
+
 --test if a node is rail
 function minecart:testrail(pos)
   return(minetest.get_item_group(minetest.get_node(pos).name, "rail"))
@@ -117,6 +148,7 @@ function minecart:get_staticdata()
         speed   = self.speed,
         old_velocity = self.old_velocity,
         old_pos = self.old_pos,
+        furnace = self.furnace,
     })
 end
 
