@@ -55,11 +55,21 @@ end
 --test out furnace minecart mechanics
 function minecart:furnace_minecart(self)
   if self.furnace == true then
-    print("chugga chugga")
+    local pos = self.object:getpos()
+    minetest.add_particle({
+    	pos = pos,
+    	velocity = {x=0, y=math.random(2,4), z=0},
+    	acceleration = {x=math.random(-1,1), y=math.random(2,4), z=math.random(-1,1)},
+    	expirationtime = math.random(2,5),
+    	size = math.random(1,3),
+    	collisiondetection = false,
+    	vertical = false,
+    	texture = "puff.png",
+    })
     local vel = self.object:get_velocity()
     --limit the speed
     if math.abs(vel.x) < 3 and math.abs(vel.z) < 3 then
-      self.object:add_velocity(vector.divide(vel,3))
+      self.object:add_velocity(vel)
     end
   end
 end
