@@ -1,4 +1,4 @@
-minetest.register_on_joinplayer(function(player)
+minetest.register_on_newplayer(function(player)
   local pos = player:getpos()
   minetest.add_item(pos, "nodes:rail_straight 99")
   minetest.add_item(pos, "nodes:rail_turn 99")
@@ -9,8 +9,8 @@ end)
 local minecart = {
   initial_properties = {
     physical = true, -- otherwise going uphill breaks
-    collide_with_objects = false,
-    collisionbox = {-0.29, -0.7, -0.29, 0.29, 0.5, 0.29},
+    collide_with_objects = true,
+    collisionbox = {-0.295, -0.7, -0.295, 0.295, 0.5, 0.295},
     visual = "mesh",
     mesh = "minecart.b3d",
     visual_size = {x=1, y=1},
@@ -131,8 +131,7 @@ function minecart:repel(self)
         local pos2 = object:getpos()
         local vec = vector.subtract(pos, pos2)
         --the closer in the more it repels
-        local multiplier = 2
-        vec = vector.multiply(vec,multiplier-(vector.distance(pos, pos2)*multiplier))
+        vec = vector.multiply(vec,(vector.distance(pos, pos2)))
         --follow the current rail
         local x = 0
         local z = 0
@@ -149,7 +148,7 @@ function minecart:repel(self)
         local vec = vector.subtract(pos, pos2)
         --the closer in the more it repels
         local multiplier = 2
-        vec = vector.multiply(vec,multiplier-(vector.distance(pos, pos2)*multiplier))
+        vec = vector.multiply(vec,(vector.distance(pos, pos2)))
         --follow the current rail
         local x = 0
         local z = 0
@@ -165,7 +164,8 @@ function minecart:repel(self)
 end
 --turn corners on rails
 function minecart:change_direction(self,dtime)
-  if self.timer < 0.1 then
+  --a cooldown for turn spamming
+  if self.timer < 0 then
     --print("test "..self.timer)
     return
   end
@@ -179,19 +179,21 @@ function minecart:change_direction(self,dtime)
     --print("what")
   if self.axis == "x" and math.floor(math.abs(vel.x)) == 0 then
     --print("axis X repeat test")
-    if minecart:testrail({x=pos.x,y=pos.y,z=pos.z+1}) ~= 0 then
-      self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)})
-      self.timer = 0
-    elseif minecart:testrail({x=pos.x,y=pos.y,z=pos.z-1}) ~= 0 then
-      self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)*-1})
-      self.timer = 0
+    if (old.x > 0 and minetest.get_node({x=pos+0.52,y=pos.y,z=pos.z}).name == "air") or (old.x < 0 and minetest.get_node({x=pos-0.52,y=pos.y,z=pos.z}).name == "air") then
+      if minecart:testrail({x=pos.x,y=pos.y,z=pos.z+0.52}) ~= 0 then
+        self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)})
+        self.timer = 0
+      elseif minecart:testrail({x=pos.x,y=pos.y,z=pos.z-0.52}) ~= 0 then
+        self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)*-1})
+        self.timer = 0
+      end
     end
   elseif self.axis == "z" and math.floor(math.abs(vel.z)) == 0  then
     --print("axis Z repeat test")
-    if minecart:testrail({x=pos.x+1,y=pos.y,z=pos.z}) ~= 0 then
+    if minecart:testrail({x=pos.x+0.52,y=pos.y,z=pos.z}) ~= 0 then
       self.object:add_velocity({x=math.abs(old.z),y=old.y,z=0})
       self.timer = 0
-    elseif minecart:testrail({x=pos.x-1,y=pos.y,z=pos.z}) ~= 0 then
+    elseif minecart:testrail({x=pos.x-0.52,y=pos.y,z=pos.z}) ~= 0 then
       self.object:add_velocity({x=math.abs(old.z)*-1,y=old.y,z=0})
       self.timer = 0
     end
