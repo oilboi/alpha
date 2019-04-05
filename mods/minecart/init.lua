@@ -21,10 +21,17 @@ local minecart = {
     automatic_face_movement_dir = 0.0,
     automatic_face_movement_max_rotation_per_sec = -1,
     furnace = false,
+    axis = "z",
   },
 
 }
 function minecart:on_activate(staticdata, dtime_s)
+    if self.axis == nil then
+      self.timer = "z"
+    end
+    if self.timer == nil then
+      self.timer = 0
+    end
 
     self.object:set_acceleration({x=0,y=-10,z=0})
     if staticdata ~= "" and staticdata ~= nil then
@@ -41,15 +48,25 @@ function minecart:on_activate(staticdata, dtime_s)
 end
 
 function minecart:on_step(dtime)
+
   minecart:repel(self)
   minecart:change_direction(self,dtime)
   minecart:furnace_minecart(self)
   minecart:friction(self)
   local vel = self.object:get_velocity()
   minecart:set_rotation(self)
-
+  minecart:set_axis(self) -- make sure this is last
   self.old_velocity = vel
   self.old_pos = self.object:getpos()
+end
+
+function minecart:set_axis(self)
+  local vel = self.object:get_velocity()
+  if math.abs(vel.x) > math.abs(vel.z) then
+    self.axis = "x"
+  else
+    self.axis = "z"
+  end
 end
 
 --test out furnace minecart mechanics
@@ -68,8 +85,9 @@ function minecart:furnace_minecart(self)
     })
     local vel = self.object:get_velocity()
     --limit the speed
-    if math.abs(vel.x) < 3 and math.abs(vel.z) < 3 then
-      self.object:add_velocity(vel)
+    local speed_limit = 2
+    if math.abs(vel.x) < speed_limit and math.abs(vel.z) < speed_limit then
+      self.object:add_velocity(vector.divide(vel,5))
     end
   end
 end
@@ -105,13 +123,39 @@ function minecart:repel(self)
   temp_pos.y = 0
   --magnet effect
   for _,object in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
-    if object:is_player() or (object:get_luaentity() and object:get_luaentity().name == "minecart:minecart") then
-      local pos2 = object:getpos()
-      local vec = vector.subtract(pos, pos2)
-      --vec = vector.divide(vec,1.5)
-      --vec = vector.normalize(vec)
-      --vec = vector.divide(vec,2) --divide so the player doesn't fling the cart
-      self.object:add_velocity({x=vec.x,y=0,z=vec.z})
+    --change wether powered or not
+    if self.furnace == false or self.furnace == nil then
+      if object:is_player() or (object:get_luaentity() and object:get_luaentity().name == "minecart:minecart" and object ~= self.object) then
+        local pos2 = object:getpos()
+        local vec = vector.subtract(pos, pos2)
+        --the closer in the more it repels
+        local multiplier = 2
+        vec = vector.multiply(vec,multiplier-(vector.distance(pos, pos2)*multiplier))
+        local x = 0
+        local z = 0
+        if self.axis == "x" then
+          x = vec.x
+        elseif self.axis == "z" then
+          z = vec.z
+        end
+        self.object:add_velocity({x=x,y=0,z=z})
+      end
+    elseif self.furnace == true then
+      if object:is_player() then
+        local pos2 = object:getpos()
+        local vec = vector.subtract(pos, pos2)
+        --the closer in the more it repels
+        local multiplier = 2
+        vec = vector.multiply(vec,multiplier-(vector.distance(pos, pos2)*multiplier))
+        local x = 0
+        local z = 0
+        if self.axis == "x" then
+          x = vec.x
+        elseif self.axis == "z" then
+          z = vec.z
+        end
+        self.object:add_velocity({x=x,y=0,z=z})
+      end
     end
   end
 end
@@ -124,20 +168,27 @@ function minecart:change_direction(self,dtime)
   --change direction on rail
   if old then
     --print("what")
-  if (math.abs(old.x) > math.abs(old.z) and vel.x == 0) then
+  if self.axis == "x" and math.floor(math.abs(vel.x)) == 0 then
+    print("axis X repeat test")
     if minecart:testrail({x=pos.x,y=pos.y,z=pos.z+1}) ~= 0 then
       self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)})
+      self.timer = 0
     elseif minecart:testrail({x=pos.x,y=pos.y,z=pos.z-1}) ~= 0 then
       self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)*-1})
+      self.timer = 0
     end
-  elseif (math.abs(old.z) > math.abs(old.x) and vel.z == 0)  then
+  elseif self.axis == "z" and math.floor(math.abs(vel.z)) == 0  then
+    print("axis Z repeat test")
     if minecart:testrail({x=pos.x+1,y=pos.y,z=pos.z}) ~= 0 then
       self.object:add_velocity({x=math.abs(old.z),y=old.y,z=0})
+      self.timer = 0
     elseif minecart:testrail({x=pos.x-1,y=pos.y,z=pos.z}) ~= 0 then
       self.object:add_velocity({x=math.abs(old.z)*-1,y=old.y,z=0})
+      self.timer = 0
     end
   end
   end
+  self.old_axis = self.axis
 end
 
 
@@ -170,7 +221,6 @@ minetest.register_craftitem("minecart:minecart", {
   description = "Minecart",
   inventory_image = "minecart.png",
   on_place = function(itemstack, placer, pointed_thing)
-    print(dump(pointed_thing.above))
     minetest.add_entity(pointed_thing.above, "minecart:minecart")
   end,
 
