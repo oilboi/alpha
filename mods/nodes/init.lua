@@ -124,7 +124,28 @@ minetest.register_node("nodes:rail_turn", {
       {-0.5,-0.5,-0.5,0.5,-0.1,-0.3},--corner
     },
   },
-	inventory_image = "default_rail.png",
+	inventory_image = "default_stone.png",
+	wield_image = "default_rail.png",
+  groups = {wood = 1,rail=1},
+  sounds = sounds.stone(),
+})
+
+minetest.register_node("nodes:rail_uphill", {
+	description = "Rail",
+  drawtype = "nodebox",
+  paramtype = "light",
+  paramtype2 = "facedir",
+	tiles = {
+		"default_stone.png",
+	},
+  node_box = {
+    type = "fixed",
+    fixed = {
+      {0.3, -0.5, -0.5, 0.5, -0.1, 0.5},--left
+      {-0.5, -0.5, -0.5, -0.3, -0.1, 0.5},--right
+    },
+  },
+	inventory_image = "default_dirt.png",
 	wield_image = "default_rail.png",
   groups = {wood = 1,rail=1},
   sounds = sounds.stone(),
