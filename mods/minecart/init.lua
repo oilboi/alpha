@@ -10,7 +10,7 @@ local minecart = {
   initial_properties = {
     physical = true, -- otherwise going uphill breaks
     collide_with_objects = true,
-    collisionbox = {-0.295, -0.7, -0.295, 0.295, 0.5, 0.295},
+    collisionbox = {-0.295, -1, -0.295, 0.295, 0.5, 0.295},
     visual = "mesh",
     mesh = "minecart.b3d",
     visual_size = {x=1, y=1},
@@ -22,6 +22,7 @@ local minecart = {
     automatic_face_movement_max_rotation_per_sec = -1,
     furnace = false,
     axis = "z",
+    stepheight = 8/16, --1 pixel height to go up hill
   },
 
 }
@@ -172,6 +173,7 @@ function minecart:change_direction(self,dtime)
 
   local vel = self.object:get_velocity()
   local pos = self.object:getpos()
+  pos.y = pos.y - 0.5
 
   local old = self.old_velocity
   --change direction on rail
@@ -233,7 +235,9 @@ minetest.register_craftitem("minecart:minecart", {
   description = "Minecart",
   inventory_image = "minecart.png",
   on_place = function(itemstack, placer, pointed_thing)
-    local test = minetest.add_entity(pointed_thing.above, "minecart:minecart")
+    local pos = pointed_thing.above
+    pos.y = pos.y + 1
+    local test = minetest.add_entity(pos, "minecart:minecart")
     if test then
       itemstack:take_item(1)
     end

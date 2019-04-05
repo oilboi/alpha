@@ -97,8 +97,8 @@ minetest.register_node("nodes:rail_straight", {
   node_box = {
     type = "fixed",
     fixed = {
-      {0.3, -0.5, -0.5, 0.5, -0.1, 0.5},--left
-      {-0.5, -0.5, -0.5, -0.3, -0.1, 0.5},--right
+      {0.3, -0.5, -0.5, 0.5, 0.1, 0.5},--left
+      {-0.5, -0.5, -0.5, -0.3, 0.1, 0.5},--right
     },
   },
 	inventory_image = "default_rail.png",
@@ -119,9 +119,9 @@ minetest.register_node("nodes:rail_turn", {
     type = "fixed",
     fixed = {
       --left,down,right,forward,up,backward
-      {-0.5, -0.5, -0.5, -0.3, -0.1, 0.5},--left
-      {0.3, -0.5, 0.3, 0.5, -0.1, 0.5},--corner
-      {-0.5,-0.5,-0.5,0.5,-0.1,-0.3},--corner
+      {-0.5, -0.5, -0.5, -0.3, 0.1, 0.5},--left
+      {0.3, -0.5, 0.3, 0.5, 0.1, 0.5},--corner
+      {-0.5,-0.5,-0.5,0.5,0.1,-0.3},--corner
     },
   },
 	inventory_image = "default_stone.png",
@@ -129,6 +129,45 @@ minetest.register_node("nodes:rail_turn", {
   groups = {wood = 1,rail=1},
   sounds = sounds.stone(),
 })
+
+local uphill_nodebox = {}
+--a few passes to construct uphill rails
+for i = 1,16 do --right rail
+  local pixel = (1/16)
+                      --left down right front up back
+  uphill_nodebox[i] = {
+  0.3,  --left
+  -0.5+(pixel*i)-pixel,  --bottom
+  -0.5+(pixel*i)-pixel,  --back
+  0.5,  --right
+  -0.5+(pixel*10)+(pixel*i)-pixel, --top
+  -0.5+(pixel*i)  --front
+  }
+end
+for i = 1,16 do --left rail
+  local pixel = (1/16)
+                      --left down right front up back
+  uphill_nodebox[i+16] = {
+  -0.5,  --left
+  -0.5+(pixel*i)-pixel,  --bottom
+  -0.5+(pixel*i)-pixel,  --back
+  -0.3,  --right
+  -0.5+(pixel*10)+(pixel*i)-pixel, --top
+  -0.5+(pixel*i)  --front
+  }
+end
+for i = 1,16 do --base
+  local pixel = (1/16)
+                      --left down right front up back
+  uphill_nodebox[i+32] = {
+  -0.3,  --left
+  -0.5+(pixel*i)-(pixel*2),  --bottom
+  -0.5+(pixel*i)-pixel,  --back
+  0.3,  --right
+  -0.5+(pixel*1)+(pixel*i)-(pixel*2), --top
+  -0.5+(pixel*i)  --front
+  }
+end
 
 minetest.register_node("nodes:rail_uphill", {
 	description = "Rail",
@@ -140,10 +179,7 @@ minetest.register_node("nodes:rail_uphill", {
 	},
   node_box = {
     type = "fixed",
-    fixed = {
-      {0.3, -0.5, -0.5, 0.5, -0.1, 0.5},--left
-      {-0.5, -0.5, -0.5, -0.3, -0.1, 0.5},--right
-    },
+    fixed = uphill_nodebox,
   },
 	inventory_image = "default_dirt.png",
 	wield_image = "default_rail.png",
