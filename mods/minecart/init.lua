@@ -179,7 +179,7 @@ function minecart:change_direction(self,dtime)
     --print("what")
   if self.axis == "x" and math.floor(math.abs(vel.x)) == 0 then
     --print("axis X repeat test")
-    if (old.x > 0 and minetest.get_node({x=pos+0.52,y=pos.y,z=pos.z}).name == "air") or (old.x < 0 and minetest.get_node({x=pos-0.52,y=pos.y,z=pos.z}).name == "air") then
+    --if (old.x > 0 and minetest.get_node({x=pos.x+0.52,y=pos.y,z=pos.z}).name == "air") or (old.x < 0 and minetest.get_node({x=pos.x-0.52,y=pos.y,z=pos.z}).name == "air") then
       if minecart:testrail({x=pos.x,y=pos.y,z=pos.z+0.52}) ~= 0 then
         self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)})
         self.timer = 0
@@ -187,7 +187,7 @@ function minecart:change_direction(self,dtime)
         self.object:add_velocity({x=0,y=old.y,z=math.abs(old.x)*-1})
         self.timer = 0
       end
-    end
+    --end
   elseif self.axis == "z" and math.floor(math.abs(vel.z)) == 0  then
     --print("axis Z repeat test")
     if minecart:testrail({x=pos.x+0.52,y=pos.y,z=pos.z}) ~= 0 then
