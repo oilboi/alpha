@@ -11,9 +11,9 @@ minetest.register_alias("mapgen_leaves", "nodes:leaves")
 minetest.register_biome({
 		name = "grass",
 		node_top = "nodes:grass",
-		depth_top = 4,
+		depth_top = 1,
 		node_filler = "nodes:dirt",
-		depth_filler = 3,
+		depth_filler = 4,
 		node_stone = "nodes:stone",
 		node_riverbed = "nodes:sand",
 		depth_riverbed = 2,
