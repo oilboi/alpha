@@ -16,7 +16,7 @@ minetest.register_node("nodes:dirt",
   description = "Dirt",
   tiles = {"default_dirt.png"},
   groups = {dirt = 1},
-  sounds = sounds.stone(),
+  sounds = sounds.dirt(),
 }
 )
 
@@ -25,7 +25,7 @@ minetest.register_node("nodes:grass",
   description = "Grass",
   tiles = {"default_grass.png","default_dirt.png","default_grass.png"},
   groups = {dirt = 1},
-  sounds = sounds.stone(),
+  sounds = sounds.dirt(),
 }
 )
 

@@ -1,9 +1,13 @@
  (This might be outdated)
-
+ (These sounds are edited in audacity)
  I only use freesound.org cc0 licenses so here's where to find everything:
  
  stone
 https://freesound.org/people/BarnarnarBunny/sounds/419488/
  
- stone break
- https://freesound.org/people/anational/sounds/443958/
+ grass break
+ https://freesound.org/people/burbujafilms/sounds/392008/
+ https://freesound.org/people/anational/sounds/443958/ (unused but good)
+ 
+ dirt
+ https://freesound.org/people/FocusBay/sounds/210865/
