@@ -52,9 +52,11 @@ function boat:move(self)
       self.rider = ""
       return
     end
-    local dir = player:get_look_dir()
-    local dir = vector.divide(dir,5)
-    self.object:add_velocity({x=dir.x,y=0,z=dir.z})
+    if player:get_player_control().up == true then
+      local dir = player:get_look_dir()
+      local dir = vector.divide(dir,5)
+      self.object:add_velocity({x=dir.x,y=0,z=dir.z})
+    end
   end
 end
 
