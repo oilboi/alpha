@@ -67,7 +67,7 @@ minetest.register_node("nodes:wood", {
 	description = "Wood",
 	tiles = {"default_wood.png"},
 	groups = {wood = 1},
-	sounds = sounds.stone(),
+	sounds = sounds.wood(),
 })
 
 minetest.register_node("nodes:tree", {
@@ -75,7 +75,7 @@ minetest.register_node("nodes:tree", {
 	tiles = {"default_tree_top.png", "default_tree_top.png","default_tree.png"},
 	is_ground_content = false,
 	groups = {wood = 1},
-	sounds = sounds.stone(),
+	sounds = sounds.wood(),
 })
 
 minetest.register_node("nodes:leaves", {
@@ -83,7 +83,7 @@ minetest.register_node("nodes:leaves", {
 	tiles = {"default_leaves.png"},
   drawtype = "allfaces_optional",
 	groups = {wood = 1},
-	sounds = sounds.stone(),
+	sounds = sounds.wood(),
 })
 
 minetest.register_node("nodes:rail_straight", {
