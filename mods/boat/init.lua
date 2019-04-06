@@ -14,8 +14,8 @@ local boat = {
 	  visual_size = {x=3,y=3},
     timer = 0,
     speed = 0,
-    --automatic_face_movement_dir = 0.0,
-    --automatic_face_movement_max_rotation_per_sec = -1,
+    automatic_face_movement_dir = 90.0,
+    automatic_face_movement_max_rotation_per_sec = 180,
     rider = "",
   },
 }
@@ -37,7 +37,7 @@ function boat:on_step(dtime)
   boat:friction(self)
   boat:float(self)
   boat:move(self)
-  boat:set_rotation(self)
+  --boat:set_rotation(self)
   self.old_pos = self.object:getpos()
 
 end
