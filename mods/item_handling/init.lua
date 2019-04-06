@@ -11,7 +11,8 @@ minetest.register_globalstep(function(dtime)
 			--Check for collection
 			for _,object in ipairs(minetest.get_objects_inside_radius(eyepos, 3)) do
 				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
-					if object:get_luaentity().age > collection_age and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
+					local objpos = object:getpos()
+					if objpos.y >= pos.y - 0.5 and object:get_luaentity().age > collection_age and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
             if object:get_luaentity().collected ~= true then
 
 						-- Collection
