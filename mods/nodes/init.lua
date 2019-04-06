@@ -59,7 +59,7 @@ minetest.register_node("nodes:water",
   liquidtype = "source",
   liquid_alternative_flowing = "nodes:water",
   liquid_alternative_source = "nodes:water",
-  sounds = sounds.stone(),
+  sounds = sounds.water(),
 }
 )
 

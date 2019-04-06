@@ -45,3 +45,13 @@ function sounds.wood(table)
 	--default.node_sound_defaults(table)
 	return table
 end
+
+--the water table
+function sounds.water(table)
+	table = table or {}
+	table.footstep = table.footstep or
+			{name = "water", gain = 0.2}
+	table.place = table.place or
+			{name = "wood", gain = 1.0}
+	return table
+end
