@@ -4,7 +4,7 @@
    local node = oldnode.name
    local tile = minetest.registered_nodes[node].tiles
 
-   mining_particle_explosion(tile,pos,25,90,140,1,2)
+   mining_particle_explosion(tile,pos,25,50,70,1,2)
 end)
 
 --tile is the tile table,pos,amount minimum, math.random(amount_max,amount_max2)
@@ -84,3 +84,14 @@ function tool_break_explosion(tile,pos,amount_min,amount_max,amount_max2,time_mi
     })
   end
 end
+
+minetest.register_on_player_hpchange(function(player, hp_change, reason)
+  if hp_change < 0 then
+    minetest.sound_play("hurt", {
+      pos = player:getpos(),
+      max_hear_distance = 100,
+      gain = 1.0,
+      pitch = math.random(80,100)/100,
+    })
+  end
+end)
