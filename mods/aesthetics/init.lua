@@ -4,7 +4,7 @@
    local node = oldnode.name
    local tile = minetest.registered_nodes[node].tiles
 
-   mining_particle_explosion(tile,pos,25,90,140,10,20)
+   mining_particle_explosion(tile,pos,25,90,140,1,2)
 end)
 
 --tile is the tile table,pos,amount minimum, math.random(amount_max,amount_max2)
@@ -24,7 +24,7 @@ function mining_particle_explosion(tile,pos,amount_min,amount_max,amount_max2,ti
       y=math.random(2,4),
       z=math.random()*math.random(-3,3)},
       acceleration = {x=0, y=-10, z=0},
-      expirationtime = math.random(time_min,time_max)/2,
+      expirationtime = (math.random(time_min,time_max)+math.random())/2,
       size = size,
       collisiondetection = true,
       collision_removal = false,
