@@ -66,7 +66,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 				if math.random(1,2) == 1 then
 					z = -z
 				end
-        obj:get_luaentity().age = collection_age --make sure collected on dig
+        obj:get_luaentity().age = collection_age - 0.35 --make sure collected on dig - 0.5 for aesthetics
 				obj:set_velocity({x=1/x, y=obj:get_velocity().y, z=1/z})
 			end
 		end

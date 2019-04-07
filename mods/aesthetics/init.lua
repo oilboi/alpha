@@ -1,15 +1,14 @@
- print("make particles go crazy on mine node")
 --make crazy particles
  minetest.register_on_dignode(function(pos, oldnode, digger)
    --find node texture information
    local node = oldnode.name
    local tile = minetest.registered_nodes[node].tiles
 
-   particle_explosion(tile,pos,25,90,140,1,2)
+   mining_explosion(tile,pos,25,90,140,1,2)
 end)
 
 --tile is the tile table,pos,amount minimum, math.random(amount_max,amount_max2)
-function particle_explosion(tile,pos,amount_min,amount_max,amount_max2,time_min,time_max)
+function mining_explosion(tile,pos,amount_min,amount_max,amount_max2,time_min,time_max)
   for i = amount_min,math.random(amount_max,amount_max2) do
     --select random part of the texture
     local texsizer = math.random(1,3)
@@ -19,7 +18,7 @@ function particle_explosion(tile,pos,amount_min,amount_max,amount_max2,time_min,
     --filename1
     local texture = "[combine:"..texsize.x.."x"..texsize.y..":"..texpos.x..","..texpos.y.."="..tile[math.random(1,table.getn(tile))]
     minetest.add_particle({
-      pos = pos,
+      pos = {x=pos.x+(math.random()*math.random(-1,1)/2),y=pos.y+(math.random()*math.random(-1,1)/2),z=pos.z+(math.random()*math.random(-1,1)/2)},
       velocity = {
       x=math.random()*math.random(-3,3),
       y=math.random(2,4),
