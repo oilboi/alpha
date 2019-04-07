@@ -40,6 +40,7 @@ end
 function tool_break(itemstack, user, node, digparams)
   local oldstack = itemstack:get_name()
   itemstack:add_wear(digparams.wear)
+  --if itemstack:get_wear() == 0 then --testing
   if itemstack:get_wear() == 0 and digparams.wear > 0 then
     minetest.sound_play("tool_break", {
       pos = user:getpos(),
@@ -51,7 +52,35 @@ function tool_break(itemstack, user, node, digparams)
     local pos1 = user:getpos()
     pos1.y = pos1.y + 1.5
     local tile = {minetest.registered_items[oldstack].wield_image}
-    mining_particle_explosion(tile,pos1,25,90,140,1,2)
+    tool_break_explosion(tile,pos1,90,150,170,1,2,user:get_look_dir())
   end
   return(itemstack)
+end
+
+--tile is the tile table,pos,amount minimum, math.random(amount_max,amount_max2)
+function tool_break_explosion(tile,pos,amount_min,amount_max,amount_max2,time_min,time_max,dir)
+  for i = amount_min,math.random(amount_max,amount_max2) do
+    --select random part of the texture
+    local texsizer = math.random(1,3)
+    local size = texsizer/3 --the texture size affects the particle size for consistancy
+    local texsize = {x=texsizer,y=texsizer}
+    local texpos = {x=math.random(-16,-1-texsizer),y=math.random(-16,-1-texsizer)}
+    --filename1
+    local texture = "[combine:"..texsize.x.."x"..texsize.y..":"..texpos.x..","..texpos.y.."="..tile[math.random(1,table.getn(tile))]
+    minetest.add_particle({
+      pos = {x=pos.x+(math.random()*math.random(-1,1)/2),y=pos.y+(math.random()*math.random(-1,1)/2),z=pos.z+(math.random()*math.random(-1,1)/2)},
+      velocity = {
+      x=dir.x*2,
+      y=dir.y*4,
+      z=dir.z*2},
+      acceleration = {x=0, y=-10, z=0},
+      expirationtime = (math.random(time_min,time_max)+math.random())/6,
+      size = size,
+      collisiondetection = true,
+      collision_removal = false,
+      object_collision = true,
+      vertical = false,
+      texture = texture,
+    })
+  end
 end
