@@ -63,16 +63,8 @@ function minetest.handle_node_drops(pos, drops, digger)
 		for i=1,count do
 			local obj = core.add_item(pos, drop_item)
 			if obj ~= nil then
-				local x = math.random(1, 5)
-				if math.random(1,2) == 1 then
-					x = -x
-				end
-				local z = math.random(1, 5)
-				if math.random(1,2) == 1 then
-					z = -z
-				end
         obj:get_luaentity().age = collection_age - 0.35 --make sure collected on dig - 0.5 for aesthetics
-				obj:set_velocity({x=1/x, y=obj:get_velocity().y, z=1/z})
+				obj:set_velocity({x=math.random(-2,2)*math.random(), y=obj:get_velocity().y, z=math.random(-2,2)*math.random()})
 			end
 		end
 	end
