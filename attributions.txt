@@ -1,0 +1,3 @@
+Some textures are from
+
+https://github.com/minetest-texture-packs/Good-Morning-Craft

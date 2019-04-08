@@ -85,6 +85,7 @@ function tool_break_explosion(tile,pos,amount_min,amount_max,amount_max2,time_mi
   end
 end
 
+--player hurt sound
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
   if hp_change < 0 then
     minetest.sound_play("hurt", {

@@ -1,26 +1,29 @@
- (This might be outdated)
- (These sounds are edited in audacity)
- I only use freesound.org cc0 licenses so here's where to find everything:
- 
- stone
+(This might be outdated)
+(These sounds are edited in audacity)
+I only use freesound.org cc0 licenses so here's where to find everything:
+
+stone
 https://freesound.org/people/BarnarnarBunny/sounds/419488/
- 
- grass break
- https://freesound.org/people/burbujafilms/sounds/392008/
- https://freesound.org/people/anational/sounds/443958/ (unused but good)
- 
- dirt
- https://freesound.org/people/FocusBay/sounds/210865/
- 
- wood
- https://freesound.org/people/florianreichelt/sounds/459970/
 
- water
- https://freesound.org/people/nilbul/sounds/404829/
- https://freesound.org/people/swordofkings128/sounds/398032/
+grass break
+https://freesound.org/people/burbujafilms/sounds/392008/
+https://freesound.org/people/anational/sounds/443958/ (unused but good)
 
- tool break
- https://freesound.org/people/iamadam19/sounds/362633/
- 
- Hurt
- https://freesound.org/people/thecheeseman/sounds/44429/
+dirt
+https://freesound.org/people/FocusBay/sounds/210865/
+
+wood
+https://freesound.org/people/florianreichelt/sounds/459970/
+
+water
+https://freesound.org/people/nilbul/sounds/404829/
+https://freesound.org/people/swordofkings128/sounds/398032/
+
+tool break
+https://freesound.org/people/iamadam19/sounds/362633/
+
+hurt
+https://freesound.org/people/thecheeseman/sounds/44429/
+
+poof
+https://freesound.org/people/Planman/sounds/208111/
