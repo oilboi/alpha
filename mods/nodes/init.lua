@@ -20,6 +20,21 @@ minetest.register_node("nodes:cobble",
 }
 )
 
+local groups = {"coal","iron","gold","diamond"}
+local drops = {"items:coal","nodes:iron","nodes:gold","items:diamond"}
+local levels = {1,1,2,3}
+
+for i = 1,table.getn(groups) do
+  minetest.register_node("nodes:"..groups[i],
+  {
+    description = groups,
+    tiles = {groups[i].."_ore.png"},
+    groups = {stone = levels[i]},
+    sounds = sounds.stone(),
+  }
+  )
+end
+
 minetest.register_node("nodes:dirt",
 {
   description = "Dirt",

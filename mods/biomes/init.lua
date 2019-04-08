@@ -25,8 +25,6 @@ minetest.register_biome({
 )
 
 --trees to decorate the land
---for tree = 0,6 do
-
 minetest.register_decoration({
 		name = "biomes:tree_deco",
 		deco_type = "schematic",
@@ -49,5 +47,3 @@ minetest.register_decoration({
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 })
-
---end

@@ -29,6 +29,17 @@ for i = 1,table.getn(groups) do
 
       }
   )
+  --make it so wood and stone can't mine hard ores
+  --{"wood","stone","iron","gold","diamond"}
+  local times = {1,1,3,3,4}
+  local looper = i
+  local counter = 0
+  timey = {}
+  for j = 1,times[i] do
+    counter = counter + 1
+    timey[counter] = (1.5*counter)/i
+  end
+    print("break")
   minetest.register_tool("tools:"..groups[i].."_pickaxe",
       {
           description = groups[i].." Pickaxe",
@@ -42,7 +53,7 @@ for i = 1,table.getn(groups) do
               max_drop_level = 0,
               groupcaps = {
                   -- For example:
-                  stone = {times = {[1] = 1.8/i, [2] = 1/i, [3] = 0.5/i},
+                  stone = {times = timey,
                            uses = i*5, maxlevel = i},
               },
               damage_groups = {groupname = damage},
@@ -97,7 +108,7 @@ for i = 1,table.getn(groups) do
                            uses = i*15, maxlevel = i},
                   wood = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
                           uses = i*15, maxlevel = i},
-                  stone = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
+                  stone = {times = timey,
                          uses = i*15, maxlevel = i},
               },
               damage_groups = {groupname = damage},
