@@ -1,3 +1,13 @@
+--set the default stacks
+minetest.register_on_mods_loaded(function()
+	for item,def in pairs(minetest.registered_items) do
+		minetest.override_item(item, {stack_max = 64})
+	end
+	for node,def in pairs(minetest.registered_nodes) do
+		minetest.override_item(node, {stack_max = 64})
+	end
+end)
+
 --this is built off of Wuzzy's Mineclone2 item magnet
 --let's simplify item collection mechanics to the basics
 collection_age = 2.5
@@ -36,7 +46,7 @@ minetest.register_globalstep(function(dtime)
     									gain = 1.0,
 											pitch = math.random(60,120)/100,
     								})
-										
+
     								-- Destroy entity
     								object:remove()
                   end

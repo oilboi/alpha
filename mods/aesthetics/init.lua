@@ -53,6 +53,7 @@ function tool_break(itemstack, user, node, digparams)
       pos = user:getpos(),
       max_hear_distance = 100,
       gain = 1.0,
+      pitch = math.random(70,100)/100,
     })
 
     --itemstack:replace("items:stick")

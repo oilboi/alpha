@@ -51,6 +51,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         --remove the item from inventory
         inv:set_stack("craft", i, "")
       end
+      minetest.sound_play("poof", {
+        pos = player:getpos(),
+        max_hear_distance = 100,
+        gain = 1.0,
+        pitch = math.random(70,100)/100,
+      })
     end
   end
 end)
