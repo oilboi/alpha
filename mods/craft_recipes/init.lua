@@ -37,6 +37,15 @@ for i = 1,table.getn(outputs) do
       {"", "items:stick", ""}
     }
   })
+	--axes inverse
+  minetest.register_craft({
+    output = "tools:"..outputs[i].."_axe",
+    recipe = {
+      {"", inputs[i], inputs[i]},
+      {"", "items:stick", inputs[i]},
+      {"", "items:stick", ""}
+    }
+  })
   --shovels
   minetest.register_craft({
     output = "tools:"..outputs[i].."_shovel",
