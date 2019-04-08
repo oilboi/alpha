@@ -11,7 +11,7 @@ minetest.register_on_dieplayer(function(player)
         --remove from inventory and drop the item
         local item = inv:get_stack(list_name, i):get_name()
         local pos = player:getpos()
-        pos.y = pos.y + 1
+        pos.y = pos.y + 1.5
         --add as many items as in the stack
         for i = 1,inv:get_stack(list_name, i):get_count() do
           local object = minetest.add_item(pos,item)
@@ -19,6 +19,35 @@ minetest.register_on_dieplayer(function(player)
         end
         --remove the item from inventory
         inv:set_stack(list_name, i, "")
+      end
+    end
+  end
+end)
+
+
+--drop items from the craft inventory when they close it
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+  if fields.quit == "true" then
+    local inv = player:get_inventory()
+    local list = inv:get_list("craft")
+    --check if empty
+    if inv:is_empty("craft") == false then
+      --get list table
+      local list = inv:get_list("craft")
+      --go through table within lists
+      for i,g in pairs(list) do
+        --remove from inventory and drop the item
+        local item = inv:get_stack("craft", i):get_name()
+        local pos = player:getpos()
+        pos.y = pos.y + 1.5
+        local look = player:get_look_dir()
+        --add as many items as in the stack
+        for i = 1,inv:get_stack("craft", i):get_count() do
+          local object = minetest.add_item(pos,item)
+          object:set_velocity({x=(look.x*math.random(1,2))+(math.random()*math.random(-1,1)), y=((look.y*math.random(3,5))*math.random())+math.random(1,2), z=(look.z*math.random(1,2))+(math.random()*math.random(-1,1))})
+        end
+        --remove the item from inventory
+        inv:set_stack("craft", i, "")
       end
     end
   end
