@@ -39,7 +39,7 @@ for i = 1,table.getn(groups) do
     counter = counter + 1
     timey[counter] = (1.5*counter)/i
   end
-    print("break")
+  
   minetest.register_tool("tools:"..groups[i].."_pickaxe",
       {
           description = groups[i].." Pickaxe",

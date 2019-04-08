@@ -16,7 +16,7 @@ minetest.register_craft({
 
 --register recipes for tools
 local outputs = {"wood","stone","iron","gold","diamond"}
-local inputs = {"nodes:wood","nodes:cobble","items:iron","items:iron","items:diamond"}
+local inputs = {"nodes:wood","nodes:cobble","items:iron","items:gold","items:diamond"}
 
 for i = 1,table.getn(outputs) do
   --pickaxes

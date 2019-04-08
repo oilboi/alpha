@@ -1,3 +1,6 @@
+local output,_ = minetest.get_craft_result({ method = "cooking", width = 1, items = {ItemStack("nodes:coal")}})
+print(dump(output.item:get_name()))
+
 minetest.register_node("furnace:furnace", {
 	description = "Furnace",
   drawtype = "nodebox",
@@ -124,13 +127,27 @@ minetest.register_abm({
 
         elseif math.abs(vec.x) <= 0.5 and math.abs(vec.z) <= 0.5 and  minetest.get_craft_result({ method = "cooking", width = 1, items = {ItemStack(stack)}}) ~= nil then
           local output,_ = minetest.get_craft_result({ method = "cooking", width = 1, items = {ItemStack(stack)}})
-          
+          if output.item:get_name() ~= "" then
+            object:remove()
+            local p = table.copy(pos)
+            p.y = p.y + 0.5
+            local newobj = minetest.add_item(p,output.item:get_name())
+            newobj:get_luaentity().age = collection_age - 0.25
+            newobj:set_velocity({x=math.random(-3,3),y=math.random(3,6),z=math.random(-3,3)})
+            minetest.sound_play("hiss", {
+              pos = p,
+              max_hear_distance = 16,
+              gain = 1.0,
+              pitch = math.random(60,120)/100,
+            })
+          end
+
         else
           local meta = minetest.get_meta(pos)
           local time = meta:get_int("timer", level)
           time = time - 1
           --count down furnace timer
-          print(time)
+          --print(time)
           if time > 0 then
             meta:set_int("timer",time)
           else --when done make back to regular furnace
