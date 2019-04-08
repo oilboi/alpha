@@ -132,7 +132,7 @@ minetest.register_abm({
             object:remove()
             local p = table.copy(pos)
             p.y = p.y + 0.5
-            local newobj = minetest.add_item(p,output.item:get_name())
+            local newobj = minetest.add_item(p,output.item:get_name().." "..ItemStack(stack):get_count())
             newobj:get_luaentity().age = collection_age - 0.25
             newobj:set_velocity({x=math.random(-3,3),y=math.random(3,6),z=math.random(-3,3)})
             minetest.sound_play("hiss", {
@@ -142,7 +142,6 @@ minetest.register_abm({
               pitch = math.random(60,120)/100,
             })
           end
-
         else
           local meta = minetest.get_meta(pos)
           local time = meta:get_int("timer", level)
@@ -154,6 +153,7 @@ minetest.register_abm({
           else --when done make back to regular furnace
             minetest.set_node(pos,{name="furnace:furnace"})
           end
+          return(true)
         end
       end
     end
