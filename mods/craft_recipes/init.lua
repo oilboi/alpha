@@ -46,4 +46,10 @@ for i = 1,table.getn(outputs) do
       {"", "items:stick", ""}
     }
   })
+  --paxels
+  minetest.register_craft({
+    output = "tools:"..outputs[i].."_paxel",
+    type = "shapeless",
+    recipe =  {"tools:"..outputs[i].."_shovel", "tools:"..outputs[i].."_pickaxe", "tools:"..outputs[i].."_axe"},
+  })
 end

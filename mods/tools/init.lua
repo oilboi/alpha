@@ -79,4 +79,34 @@ for i = 1,table.getn(groups) do
 
       }
   )
+
+  minetest.register_tool("tools:"..groups[i].."_paxel",
+      {
+          description = groups[i].." Paxel",
+          groups = {wood = 1},
+          inventory_image = "default_tool_"..groups[i].."shovel.png^default_tool_"..groups[i].."pick.png^default_tool_"..groups[i].."axe.png",
+          wield_image = "default_tool_"..groups[i].."shovel.png^default_tool_"..groups[i].."pick.png^default_tool_"..groups[i].."axe.png",
+          liquids_pointable = false,
+          -- See "Tools" section
+          tool_capabilities = {
+              full_punch_interval = 1.0,
+              max_drop_level = 0,
+              groupcaps = {
+                  -- For example:
+                  dirt = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
+                           uses = i*15, maxlevel = i},
+                  wood = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
+                          uses = i*15, maxlevel = i},
+                  stone = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
+                         uses = i*15, maxlevel = i},
+              },
+              damage_groups = {groupname = damage},
+          },
+
+          after_use = function(itemstack, user, node, digparams)
+              tool_break(itemstack, user, node, digparams)
+          end,
+
+      }
+  )
 end
