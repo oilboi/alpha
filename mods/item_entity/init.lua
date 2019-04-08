@@ -94,44 +94,6 @@ core.register_entity(":__builtin:item", {
 		self:set_item()
 	end,
 
-	try_merge_with = function(self, own_stack, object, entity)
-		if self.age == entity.age then
-			-- Can not merge with itself
-			return false
-		end
-
-		local stack = ItemStack(entity.itemstring)
-		local name = stack:get_name()
-		if own_stack:get_name() ~= name or
-				own_stack:get_meta() ~= stack:get_meta() or
-				own_stack:get_wear() ~= stack:get_wear() or
-				own_stack:get_free_space() == 0 then
-			-- Can not merge different or full stack
-			return false
-		end
-
-		local count = own_stack:get_count()
-		local total_count = stack:get_count() + count
-		local max_count = stack:get_stack_max()
-
-		if total_count > max_count then
-			return false
-		end
-		-- Merge the remote stack into this one
-
-		local pos = object:get_pos()
-		pos.y = pos.y + ((total_count - count) / max_count) * 0.15
-		self.object:move_to(pos)
-
-		self.age = 0 -- Handle as new entity
-		own_stack:set_count(total_count)
-		self:set_item(own_stack)
-
-		entity.itemstring = ""
-		object:remove()
-		return true
-	end,
-
 	on_step = function(self, dtime)
 		self.age = self.age + dtime
 		if time_to_live > 0 and self.age > time_to_live then
@@ -189,28 +151,6 @@ core.register_entity(":__builtin:item", {
 		else
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
 			self.object:set_velocity({x = 0, y = 0, z = 0})
-		end
-
-		--Only collect items if not moving
-		if is_moving then
-			return
-		end
-		-- Collect the items around to merge with
-		local own_stack = ItemStack(self.itemstring)
-		if own_stack:get_free_space() == 0 then
-			return
-		end
-		local objects = core.get_objects_inside_radius(pos, 1.0)
-		for k, obj in pairs(objects) do
-			local entity = obj:get_luaentity()
-			if entity and entity.name == "__builtin:item" then
-				if self:try_merge_with(own_stack, obj, entity) then
-					own_stack = ItemStack(self.itemstring)
-					if own_stack:get_free_space() == 0 then
-						return
-					end
-				end
-			end
 		end
 	end,
 
