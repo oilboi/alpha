@@ -112,7 +112,8 @@ end
 
 
 function boat:on_punch(hitter)
-  minetest.add_item(self.object:getpos(), "boat:boat")
+  local item = minetest.add_item(self.object:getpos(), "boat:boat")
+  item:get_luaentity().age = collection_age - 0.35
   self.object:remove()
 end
 
@@ -134,5 +135,7 @@ minetest.register_craftitem("boat:boat", {
     local pos = pointed_thing.above
     pos.y = pos.y + 1
     local test = minetest.add_entity(pos, "boat:boat")
+    itemstack:take_item(1)
+    return(itemstack)
   end,
 })

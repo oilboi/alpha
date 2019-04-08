@@ -212,7 +212,8 @@ end
 
 
 function minecart:on_punch(hitter)
-  minetest.add_item(self.object:getpos(), "minecart:minecart")
+  local item = minetest.add_item(self.object:getpos(), "minecart:minecart")
+  item:get_luaentity().age = collection_age - 0.35
   self.object:remove()
 end
 
@@ -238,8 +239,7 @@ minetest.register_craftitem("minecart:minecart", {
     local pos = pointed_thing.above
     pos.y = pos.y + 1
     local test = minetest.add_entity(pos, "minecart:minecart")
-    if test then
-      itemstack:take_item(1)
-    end
+    itemstack:take_item(1)
+    return(itemstack)
   end,
 })

@@ -1,6 +1,6 @@
 --this is built off of Wuzzy's Mineclone2 item magnet
 --let's simplify item collection mechanics to the basics
-local collection_age = 2.5
+collection_age = 2.5
 minetest.register_globalstep(function(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
