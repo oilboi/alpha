@@ -13,6 +13,16 @@ minetest.register_craftitem("items:coal", {
 
 minetest.register_craftitem("items:iron", {
 	description = "Iron Ingot",
-	inventory_image = "iron_ingot.png",
+	inventory_image = "iron.png",
 	groups = {iron = 1},
+})
+minetest.register_craftitem("items:gold", {
+	description = "Gold Ingot",
+	inventory_image = "gold.png",
+	groups = {gold = 1},
+})
+minetest.register_craftitem("items:diamond", {
+	description = "Diamond",
+	inventory_image = "diamond.png",
+	groups = {gold = 1},
 })

@@ -30,6 +30,7 @@ for i = 1,table.getn(groups) do
     description = groups[i],
     tiles = {groups[i].."_ore.png"},
     groups = {stone = levels[i]},
+    drop = drops[i],
     sounds = sounds.stone(),
   }
   )
