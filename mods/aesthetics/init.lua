@@ -1,38 +1,45 @@
 --make crazy particles
  minetest.register_on_dignode(function(pos, oldnode, digger)
-   --find node texture information
-   local node = oldnode.name
-   local tile = minetest.registered_nodes[node].tiles
-
-   mining_particle_explosion(tile,pos,25,50,70,1,2)
+   local tile = minetest.registered_nodes[oldnode.name].tiles
+   mining_particle_explosion(tile,pos,15,0.5,1,10)
 end)
 
---tile is the tile table,pos,amount minimum, math.random(amount_max,amount_max2)
-function mining_particle_explosion(tile,pos,amount_min,amount_max,amount_max2,time_min,time_max)
-  for i = amount_min,math.random(amount_max,amount_max2) do
-    --select random part of the texture
-    local texsizer = math.random(1,3)
-    local size = texsizer/3 --the texture size affects the particle size for consistancy
-    local texsize = {x=texsizer,y=texsizer}
-    local texpos = {x=math.random(-16,-1-texsizer),y=math.random(-16,-1-texsizer)}
-    --filename1
-    local texture = "[combine:"..texsize.x.."x"..texsize.y..":"..texpos.x..","..texpos.y.."="..tile[math.random(1,table.getn(tile))]
-    minetest.add_particle({
-      pos = {x=pos.x+(math.random()*math.random(-1,1)/2),y=pos.y+(math.random()*math.random(-1,1)/2),z=pos.z+(math.random()*math.random(-1,1)/2)},
-      velocity = {
-      x=math.random()*math.random(-3,3),
-      y=math.random(2,4),
-      z=math.random()*math.random(-3,3)},
-      acceleration = {x=0, y=-10, z=0},
-      expirationtime = (math.random(time_min,time_max)+math.random())/2,
-      size = size,
-      collisiondetection = true,
-      collision_removal = false,
-      object_collision = true,
-      vertical = false,
-      texture = texture,
-    })
-  end
+--loops is how different the particles are
+--amount is how many particles the particle spawner spawns
+function mining_particle_explosion(tile,pos,amount,time_min,time_max,loops)
+    local tablesize = table.getn(tile)
+    for i = 1,loops do
+      --select random part of the texture
+      local texsizer = math.random(1,3)
+      local size = texsizer/3 --the texture size affects the particle size for consistancy
+      local texsize = {x=texsizer,y=texsizer}
+      local texpos = {x=math.random(-16,-1-texsizer),y=math.random(-16,-1-texsizer)}
+
+      local texture = "[combine:"..texsize.x.."x"..texsize.y..":"..texpos.x..","..texpos.y.."="..tile[math.random(1,tablesize)]
+      minetest.add_particlespawner({
+          amount = amount,
+          time = 0.01,
+          minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
+          maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+          minvel = {x=-3, y=2, z=-3},
+          maxvel = {x=3, y=4, z=3},
+          minacc = {x=0, y=-10, z=0},
+          maxacc = {x=0, y=-10, z=0},
+          minexptime = time_min,
+          maxexptime = time_max,
+          minsize = size,
+          maxsize = size+0.5,
+
+          collisiondetection = true,
+          collision_removal = true,
+
+          object_collision = true,
+
+          vertical = false,
+          -- If true face player using y axis only
+          texture = texture,
+      })
+    end
 end
 
 
@@ -52,14 +59,15 @@ function tool_break(itemstack, user, node, digparams)
     local pos1 = user:getpos()
     pos1.y = pos1.y + 1.5
     local tile = {minetest.registered_items[oldstack].wield_image}
-    tool_break_explosion(tile,pos1,25,50,70,1,2,user:get_look_dir())
+    tool_break_explosion(tile,pos1,25,1,2,10)
   end
   return(itemstack)
 end
 
---tile is the tile table,pos,amount minimum, math.random(amount_max,amount_max2)
-function tool_break_explosion(tile,pos,amount_min,amount_max,amount_max2,time_min,time_max,dir)
-  for i = amount_min,math.random(amount_max,amount_max2) do
+--loops is how different the particles are
+--amount is how many particles the particle spawner spawns
+function tool_break_explosion(tile,pos,amount,time_min,time_max,loops)
+  for i = 1,loops do
     --select random part of the texture
     local texsizer = math.random(1,3)
     local size = texsizer/3 --the texture size affects the particle size for consistancy
@@ -67,20 +75,28 @@ function tool_break_explosion(tile,pos,amount_min,amount_max,amount_max2,time_mi
     local texpos = {x=math.random(-16,-1-texsizer),y=math.random(-16,-1-texsizer)}
     --filename1
     local texture = "[combine:"..texsize.x.."x"..texsize.y..":"..texpos.x..","..texpos.y.."="..tile[math.random(1,table.getn(tile))]
-    minetest.add_particle({
-      pos = {x=pos.x+(math.random()*math.random(-1,1)/2),y=pos.y+(math.random()*math.random(-1,1)/2),z=pos.z+(math.random()*math.random(-1,1)/2)},
-      velocity = {
-      x=dir.x*2,
-      y=dir.y*4,
-      z=dir.z*2},
-      acceleration = {x=0, y=-10, z=0},
-      expirationtime = (math.random(time_min,time_max)+math.random())/6,
-      size = size,
-      collisiondetection = true,
-      collision_removal = false,
-      object_collision = true,
-      vertical = false,
-      texture = texture,
+    minetest.add_particlespawner({
+        amount = amount,
+        time = 0.01,
+        minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
+        maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+        minvel = {x=-3, y=2, z=-3},
+        maxvel = {x=3, y=4, z=3},
+        minacc = {x=0, y=-10, z=0},
+        maxacc = {x=0, y=-10, z=0},
+        minexptime = time_min,
+        maxexptime = time_max,
+        minsize = size,
+        maxsize = size+0.5,
+
+        collisiondetection = true,
+        collision_removal = true,
+
+        object_collision = true,
+
+        vertical = false,
+        -- If true face player using y axis only
+        texture = texture,
     })
   end
 end
