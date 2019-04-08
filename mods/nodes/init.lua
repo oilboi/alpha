@@ -6,7 +6,7 @@ minetest.register_node("nodes:stone",
 {
   description = "Stone",
   tiles = {"default_stone.png"},
-  groups = {stone = 1},
+  groups = {stone = 0},
   sounds = sounds.stone(),
 }
 )

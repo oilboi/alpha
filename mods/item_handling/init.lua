@@ -20,7 +20,12 @@ minetest.register_globalstep(function(dtime)
 							-- Ignore if itemstring is not set yet
 							if object:get_luaentity().itemstring ~= "" then
                 object:move_to(eyepos,true)
+								--stop item from moving down
+								object:get_luaentity().is_moving = false
+								object:get_luaentity().physical = false
                 object:get_luaentity().collected = true
+								object:set_acceleration({x=0,y=0,z=0})
+								object:set_velocity({x=0,y=0,z=0})
                 --run this in .after so the player sees the animation
                 minetest.after(0.1,function(object)
                   if object:get_luaentity() then
