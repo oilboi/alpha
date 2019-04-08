@@ -36,6 +36,7 @@ minetest.register_globalstep(function(dtime)
     									gain = 1.0,
 											pitch = math.random(60,120)/100,
     								})
+										
     								-- Destroy entity
     								object:remove()
                   end

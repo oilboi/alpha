@@ -10,11 +10,12 @@ minetest.register_on_dieplayer(function(player)
       for i,g in pairs(list) do
         --remove from inventory and drop the item
         local item = inv:get_stack(list_name, i):get_name()
+        local wear = inv:get_stack(list_name, i):get_wear()
         local pos = player:getpos()
         pos.y = pos.y + 1.5
         --add as many items as in the stack
         for i = 1,inv:get_stack(list_name, i):get_count() do
-          local object = minetest.add_item(pos,item)
+          local object = minetest.add_item(pos,item.." 1 "..wear)
   				object:set_velocity({x=math.random(-7,7)*math.random(), y=math.random(5,7)*math.random(), z=math.random(-7,7)*math.random()})
         end
         --remove the item from inventory
@@ -38,12 +39,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
       for i,g in pairs(list) do
         --remove from inventory and drop the item
         local item = inv:get_stack("craft", i):get_name()
+        local wear = inv:get_stack("craft", i):get_wear()
         local pos = player:getpos()
         pos.y = pos.y + 1.5
         local look = player:get_look_dir()
         --add as many items as in the stack
         for i = 1,inv:get_stack("craft", i):get_count() do
-          local object = minetest.add_item(pos,item)
+          local object = minetest.add_item(pos,item.." 1 "..wear)
           object:set_velocity({x=(look.x*math.random(1,2))+(math.random()*math.random(-1,1)), y=((look.y*math.random(3,5))*math.random())+math.random(1,2), z=(look.z*math.random(1,2))+(math.random()*math.random(-1,1))})
         end
         --remove the item from inventory
