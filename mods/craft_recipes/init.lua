@@ -66,6 +66,14 @@ end
 
 
 --cooking
+minetest.register_craft({
+	output = "furnace:furnace",
+	recipe = {
+		{"nodes:cobble", "nodes:cobble", "nodes:cobble"},
+		{"nodes:cobble", "", "nodes:cobble"},
+		{"nodes:cobble", "nodes:cobble", "nodes:cobble"}
+	}
+})
 
 minetest.register_craft({
 	type = "cooking",

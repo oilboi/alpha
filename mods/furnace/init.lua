@@ -33,6 +33,7 @@ minetest.register_node("furnace:furnace_lit", {
   drawtype = "nodebox",
   paramtype = "light",
   paramtype2 = "facedir",
+  drop = "furnace:furnace",
 	tiles = {
 		"furnace.png",
 	},
