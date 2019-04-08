@@ -52,7 +52,7 @@ function tool_break(itemstack, user, node, digparams)
     local pos1 = user:getpos()
     pos1.y = pos1.y + 1.5
     local tile = {minetest.registered_items[oldstack].wield_image}
-    tool_break_explosion(tile,pos1,90,150,170,1,2,user:get_look_dir())
+    tool_break_explosion(tile,pos1,25,50,70,1,2,user:get_look_dir())
   end
   return(itemstack)
 end

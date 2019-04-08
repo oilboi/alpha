@@ -11,9 +11,9 @@ minetest.register_item(":", {
 		full_punch_interval = 1.0,
 		max_drop_level = 0,
 		groupcaps = {
-			stone = {times={[0]=2}, uses=0, maxlevel=0},
+			stone = {times={[1]=5}, uses=0, maxlevel=1},
       dirt = {times={[1]=1}, uses=0, maxlevel=1},
-			wood = {times={[1]=1}, uses=0, maxlevel=1},
+			wood = {times={[1]=3}, uses=0, maxlevel=1},
 		},
 		damage_groups = {fleshy=1},
 	}

@@ -3,10 +3,10 @@
 local groups = {"wood","stone","iron","gold","diamond"}
 
 for i = 1,table.getn(groups) do
-  print(groups[i])
+  --axe
   minetest.register_tool("tools:"..groups[i].."_axe",
       {
-          description = groups[i].."Axe",
+          description = groups[i].." Axe",
           groups = {wood = 1},
           inventory_image = "default_tool_"..groups[i].."axe.png",
           wield_image = "default_tool_"..groups[i].."axe.png",
@@ -17,8 +17,58 @@ for i = 1,table.getn(groups) do
               max_drop_level = 0,
               groupcaps = {
                   -- For example:
-                  wood = {times = {[1] = 10/i, [2] = 5/i, [3] = 2/i},
-                           uses = i*20, maxlevel = i},
+                  wood = {times = {[1] = 1.8/i, [2] = 1/i, [3] = 0.5/i},
+                           uses = i*5, maxlevel = i},
+              },
+              damage_groups = {groupname = damage},
+          },
+
+          after_use = function(itemstack, user, node, digparams)
+              tool_break(itemstack, user, node, digparams)
+          end,
+
+      }
+  )
+  minetest.register_tool("tools:"..groups[i].."_pickaxe",
+      {
+          description = groups[i].." Pickaxe",
+          groups = {wood = 1},
+          inventory_image = "default_tool_"..groups[i].."pick.png",
+          wield_image = "default_tool_"..groups[i].."pick.png",
+          liquids_pointable = false,
+          -- See "Tools" section
+          tool_capabilities = {
+              full_punch_interval = 1.0,
+              max_drop_level = 0,
+              groupcaps = {
+                  -- For example:
+                  stone = {times = {[1] = 1.8/i, [2] = 1/i, [3] = 0.5/i},
+                           uses = i*5, maxlevel = i},
+              },
+              damage_groups = {groupname = damage},
+          },
+
+          after_use = function(itemstack, user, node, digparams)
+              tool_break(itemstack, user, node, digparams)
+          end,
+
+      }
+  )
+  minetest.register_tool("tools:"..groups[i].."_shovel",
+      {
+          description = groups[i].." Pickaxe",
+          groups = {wood = 1},
+          inventory_image = "default_tool_"..groups[i].."shovel.png",
+          wield_image = "default_tool_"..groups[i].."shovel.png",
+          liquids_pointable = false,
+          -- See "Tools" section
+          tool_capabilities = {
+              full_punch_interval = 1.0,
+              max_drop_level = 0,
+              groupcaps = {
+                  -- For example:
+                  dirt = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
+                           uses = i*5, maxlevel = i},
               },
               damage_groups = {groupname = damage},
           },
