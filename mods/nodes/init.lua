@@ -159,8 +159,8 @@ minetest.register_node("nodes:leaves", {
 	description = "Wood",
 	tiles = {"default_leaves.png"},
   drawtype = "allfaces_optional",
-	groups = {wood = 1},
-	sounds = sounds.wood(),
+	groups = {leaves = 1},
+	sounds = sounds.leaves(),
 })
 
 minetest.register_node("nodes:rail_straight", {

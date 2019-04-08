@@ -46,6 +46,21 @@ function sounds.wood(table)
 	return table
 end
 
+--the leaves table
+function sounds.leaves(table)
+	table = table or {}
+	table.footstep = table.footstep or
+			{name = "leaves", gain = 0.2}
+	table.dug = table.dug or
+			{name = "leaves", gain = 1.0}
+	table.place = table.place or
+			{name = "leaves", gain = 1.0}
+  table.dig = table.dig or
+    	{name = "leaves", gain = 0.35}
+	--default.node_sound_defaults(table)
+	return table
+end
+
 --the water table
 function sounds.water(table)
 	table = table or {}
