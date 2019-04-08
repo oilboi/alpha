@@ -158,7 +158,7 @@ minetest.register_node("nodes:water_flowing",
 minetest.register_node("nodes:wood", {
 	description = "Wood",
 	tiles = {"default_wood.png"},
-	groups = {wood = 1},
+	groups = {wood = 1,flammable=1},
 	sounds = sounds.wood(),
 })
 
@@ -166,7 +166,7 @@ minetest.register_node("nodes:tree", {
 	description = "Tree",
 	tiles = {"default_tree_top.png", "default_tree_top.png","default_tree.png"},
 	is_ground_content = false,
-	groups = {wood = 1},
+	groups = {wood = 1,flammable=2},
 	sounds = sounds.wood(),
 })
 
@@ -174,7 +174,7 @@ minetest.register_node("nodes:leaves", {
 	description = "Wood",
 	tiles = {"default_leaves.png"},
   drawtype = "allfaces_optional",
-	groups = {leaves = 1},
+	groups = {leaves = 1,flammable=1},
 	sounds = sounds.leaves(),
 })
 

@@ -47,3 +47,64 @@ minetest.register_decoration({
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 })
+
+
+--ores
+
+--coal
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "nodes:coal",
+	wherein        = "nodes:stone",
+	clust_scarcity = 8 * 8 * 4,
+	clust_num_ores = 8,
+	clust_size     = 3,
+	y_max          = 64,
+	y_min          = -31000,
+})
+
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "default:stone_with_coal",
+	wherein        = "default:stone",
+	clust_scarcity = 24 * 24 * 4,
+	clust_num_ores = 27,
+	clust_size     = 6,
+	y_max          = 0,
+	y_min          = -31000,
+})
+
+-- Iron
+
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "nodes:iron",
+	wherein        = "nodes:stone",
+	clust_scarcity = 9 * 9 * 3,
+	clust_num_ores = 12,
+	clust_size     = 3,
+	y_max          = 31000,
+	y_min          = -3100,
+})
+
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "nodes:iron",
+	wherein        = "nodes:stone",
+	clust_scarcity = 7 * 7 * 2,
+	clust_num_ores = 5,
+	clust_size     = 3,
+	y_max          = 0,
+	y_min          = -31000,
+})
+
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "nodes:iron",
+	wherein        = "nodes:stone",
+	clust_scarcity = 24 * 24 * 4,
+	clust_num_ores = 27,
+	clust_size     = 6,
+	y_max          = -64,
+	y_min          = -31000,
+})

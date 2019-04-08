@@ -62,3 +62,19 @@ for i = 1,table.getn(outputs) do
     recipe =  {"tools:"..outputs[i].."_shovel", "tools:"..outputs[i].."_pickaxe", "tools:"..outputs[i].."_axe"},
   })
 end
+
+
+
+--cooking
+
+minetest.register_craft({
+	type = "cooking",
+	output = "items:coal",
+	recipe = "nodes:coal",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "items:iron",
+	recipe = "nodes:iron",
+})
