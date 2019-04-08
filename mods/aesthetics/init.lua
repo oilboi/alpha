@@ -102,7 +102,7 @@ function tool_break_explosion(tile,pos,amount,time_min,time_max,loops)
   end
 end
 
---player hurt sound
+--player hurt sound and particles
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
   if hp_change < 0 then
     minetest.sound_play("hurt", {
@@ -110,6 +110,31 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
       max_hear_distance = 100,
       gain = 1.0,
       pitch = math.random(80,100)/100,
+    })
+    local pos = player:getpos()
+    pos.y = pos.y + 1.5
+    minetest.add_particlespawner({
+        amount = 100,
+        time = 0.01,
+        minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
+        maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+        minvel = {x=-3, y=2, z=-3},
+        maxvel = {x=3, y=4, z=3},
+        minacc = {x=0, y=-10, z=0},
+        maxacc = {x=0, y=-10, z=0},
+        minexptime = time_min,
+        maxexptime = time_max,
+        minsize = 1,
+        maxsize = 3,
+
+        collisiondetection = true,
+        collision_removal = true,
+
+        object_collision = true,
+
+        vertical = false,
+        -- If true face player using y axis only
+        texture = "heart.png",
     })
   end
 end)
