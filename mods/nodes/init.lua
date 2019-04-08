@@ -27,7 +27,7 @@ local levels = {1,1,2,3}
 for i = 1,table.getn(groups) do
   minetest.register_node("nodes:"..groups[i],
   {
-    description = groups,
+    description = groups[i],
     tiles = {groups[i].."_ore.png"},
     groups = {stone = levels[i]},
     sounds = sounds.stone(),
