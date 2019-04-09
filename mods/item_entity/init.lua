@@ -21,6 +21,7 @@ local gravity = tonumber(core.settings:get("movement_gravity")) or 9.81
 
 core.register_entity(":__builtin:item", {
 	initial_properties = {
+		pointable = false,
 		hp_max = 1,
 		physical = true,
 		collide_with_objects = false,
