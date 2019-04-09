@@ -15,7 +15,14 @@ function mining_particle_explosion(tile,pos,amount,time_min,time_max,loops)
       local texsize = {x=texsizer,y=texsizer}
       local texpos = {x=math.random(-16,-1-texsizer),y=math.random(-16,-1-texsizer)}
 
-      local texture = "[combine:"..texsize.x.."x"..texsize.y..":"..texpos.x..","..texpos.y.."="..tile[math.random(1,tablesize)]
+      --fix for animated textures
+      local toop = tile[math.random(1,tablesize)]
+      if tile[1].name then
+        toop = tile[1].name
+        tablesize = 1
+      end
+
+      local texture = "[combine:"..texsize.x.."x"..texsize.y..":"..texpos.x..","..texpos.y.."="..toop
       minetest.add_particlespawner({
           amount = amount,
           time = 0.01,

@@ -86,3 +86,12 @@ minetest.register_craft({
 	output = "items:iron",
 	recipe = "nodes:iron",
 })
+
+---
+minetest.register_craft({
+	output = "torch:torch 4",
+	recipe = {
+		{ "items:coal" },
+		{ "items:stick" },
+	}
+})
