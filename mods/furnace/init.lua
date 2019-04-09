@@ -74,6 +74,7 @@ minetest.register_abm({
             minetest.set_node(pos,{name="furnace:furnace_lit"})
             local meta = minetest.get_meta(pos)
             local level = minetest.get_item_group(object:get_luaentity().itemstring, "flammable") * 40 -- set the timer
+						ItemStack(object:get_luaentity().itemstring):take_item()
             meta:set_int("timer", level)
             object:remove()
           end
