@@ -87,6 +87,12 @@ minetest.register_craft({
 	recipe = "nodes:iron",
 })
 
+minetest.register_craft({
+	type = "cooking",
+	output = "items:gold",
+	recipe = "nodes:gold",
+})
+
 ---
 minetest.register_craft({
 	output = "torch:torch 4",
