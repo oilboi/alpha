@@ -39,7 +39,7 @@ for i = 1,table.getn(groups) do
     counter = counter + 1
     timey[counter] = (1.5*counter)/i
   end
-  
+
   minetest.register_tool("tools:"..groups[i].."_pickaxe",
       {
           description = groups[i].." Pickaxe",
@@ -70,7 +70,7 @@ for i = 1,table.getn(groups) do
           description = groups[i].." Pickaxe",
           groups = {wood = 1},
           inventory_image = "default_tool_"..groups[i].."shovel.png",
-          wield_image = "default_tool_"..groups[i].."shovel.png",
+          wield_image = "default_tool_"..groups[i].."shovel.png^[transform4",
           liquids_pointable = false,
           -- See "Tools" section
           tool_capabilities = {
