@@ -145,3 +145,124 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
     })
   end
 end)
+-------------------------------------------------------------------
+local function torch_flame_and_smoke_floor(pos)
+  pos.y = pos.y + 0.2
+  minetest.add_particlespawner({
+      amount = 1,
+      time = 0.001,
+      minpos = pos,
+      maxpos = pos,
+      minvel = {x=0, y=0, z=0},
+      maxvel = {x=0, y=0, z=0},
+      minacc = {x=0, y=0, z=0},
+      maxacc = {x=0, y=0, z=0},
+      minexptime = 1,
+      maxexptime = 1,
+      minsize = 3,
+      maxsize = 5,
+      collisiondetection = false,
+      collision_removal = false,
+      object_collision = false,
+
+      vertical = false,
+      -- If true face player using y axis only
+      texture = "flame.png",
+  })
+  minetest.add_particlespawner({
+      amount = 10,
+      time = 1,
+      minpos = pos,
+      maxpos = pos,
+      minvel = {x=-0.3, y=0.3, z=-0.3},
+      maxvel = {x=0.3, y=1, z=0.3},
+      minacc = {x=-1, y=1, z=-1},
+      maxacc = {x=1, y=3, z=1},
+      minexptime = 2,
+      maxexptime = 4,
+      minsize = 1,
+      maxsize = 2.5,
+
+      collisiondetection = true,
+      collision_removal = false,
+
+      object_collision = true,
+
+      vertical = false,
+      -- If true face player using y axis only
+      texture = "puff.png",
+  })
+end
+
+minetest.register_abm({
+  label = "torch flame floor",
+	nodenames = {"torch:torch"},
+	interval = 1,
+	chance = 1,
+	action = function(pos)
+    torch_flame_and_smoke_floor(pos)
+	end,
+})
+
+------
+
+local function torch_flame_and_smoke_wall(pos,node)
+  local modifier = vector.divide(minetest.wallmounted_to_dir(node.param2),5)
+  pos.y = pos.y + 0.2
+  pos = vector.add(pos,modifier)
+
+  minetest.add_particlespawner({
+      amount = 1,
+      time = 0.001,
+      minpos = pos,
+      maxpos = pos,
+      minvel = {x=0, y=0, z=0},
+      maxvel = {x=0, y=0, z=0},
+      minacc = {x=0, y=0, z=0},
+      maxacc = {x=0, y=0, z=0},
+      minexptime = 1,
+      maxexptime = 1,
+      minsize = 3,
+      maxsize = 5,
+      collisiondetection = false,
+      collision_removal = false,
+      object_collision = false,
+
+      vertical = false,
+      -- If true face player using y axis only
+      texture = "flame.png",
+  })
+  minetest.add_particlespawner({
+      amount = 10,
+      time = 1,
+      minpos = pos,
+      maxpos = pos,
+      minvel = {x=-0.3, y=0.3, z=-0.3},
+      maxvel = {x=0.3, y=1, z=0.3},
+      minacc = {x=-1, y=1, z=-1},
+      maxacc = {x=1, y=3, z=1},
+      minexptime = 2,
+      maxexptime = 4,
+      minsize = 1,
+      maxsize = 2.5,
+
+      collisiondetection = true,
+      collision_removal = false,
+
+      object_collision = true,
+
+      vertical = false,
+      -- If true face player using y axis only
+      texture = "puff.png",
+  })
+end
+
+minetest.register_abm({
+  label = "torch flame floor",
+	nodenames = {"torch:torch_wall"},
+	interval = 1,
+	chance = 1,
+	action = function(pos,node)
+    torch_flame_and_smoke_wall(pos,node)
+	end,
+})
