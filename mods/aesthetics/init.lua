@@ -142,6 +142,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
         vertical = false,
         -- If true face player using y axis only
         texture = "heart.png",
+        --attached = player,
     })
   end
 end)

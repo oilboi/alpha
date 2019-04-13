@@ -13,6 +13,20 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "tools:shears",
+	recipe = {
+		{"","items:iron"},
+		{"items:iron",""},
+	}
+})
+minetest.register_craft({
+	output = "tools:shears",
+	recipe = {
+		{"items:iron",""},
+		{"","items:iron"},
+	}
+})
 
 --register recipes for tools
 local outputs = {"wood","stone","iron","gold","diamond"}

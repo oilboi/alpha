@@ -121,3 +121,29 @@ for i = 1,table.getn(groups) do
       }
   )
 end
+
+minetest.register_tool("tools:shears",
+    {
+        description = "Shears",
+        groups = {shears = 1},
+        inventory_image = "shears.png",
+        wield_image = "shears.png^[transform4",
+        liquids_pointable = false,
+        -- See "Tools" section
+        tool_capabilities = {
+            full_punch_interval = 1.0,
+            max_drop_level = 0,
+            groupcaps = {
+                -- For example:
+                leaves = {times = {[1] = 0.1, [2] = 0.05},
+                         uses = 40, maxlevel = 2},
+            },
+            damage_groups = {groupname = damage},
+        },
+
+        after_use = function(itemstack, user, node, digparams)
+            tool_break(itemstack, user, node, digparams)
+        end,
+
+    }
+)
