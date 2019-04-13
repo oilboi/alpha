@@ -11,7 +11,7 @@ minetest.register_on_dieplayer(function(player)
         --remove from inventory and drop the item
         local item = inv:get_stack(list_name, i):get_name()
         local wear = inv:get_stack(list_name, i):get_wear()
-        local pos = player:getpos()
+        local pos = player:get_pos()
         pos.y = pos.y + 1.5
         --add as many items as in the stack
         for i = 1,inv:get_stack(list_name, i):get_count() do
@@ -40,7 +40,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         --remove from inventory and drop the item
         local item = inv:get_stack("craft", i):get_name()
         local wear = inv:get_stack("craft", i):get_wear()
-        local pos = player:getpos()
+        local pos = player:get_pos()
         pos.y = pos.y + 1.5
         local look = player:get_look_dir()
         --add as many items as in the stack
@@ -52,7 +52,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         inv:set_stack("craft", i, "")
       end
       minetest.sound_play("poof", {
-        pos = player:getpos(),
+        pos = player:get_pos(),
         max_hear_distance = 100,
         gain = 1.0,
         pitch = math.random(70,100)/100,
@@ -71,12 +71,12 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
   		local inv = placer:get_inventory()
       --set wield item to item if in inventory
   		if inv:contains_item("main", old_item, false) == true then
-        print("contains")
+        --print("contains")
         --try to take a full stack
         local newstack = inv:remove_item("main", ItemStack(old_item.." 64"))
         placer:set_wielded_item(newstack)
         minetest.sound_play("collection", {
-          pos = placer:getpos(),
+          pos = placer:get_pos(),
           max_hear_distance = 100,
           gain = 1.0,
           pitch = math.random(50,70)/100,

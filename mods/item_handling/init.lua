@@ -17,6 +17,7 @@ collection_age = 2.5
 minetest.register_globalstep(function(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
+
 			local pos = player:get_pos()
 			local inv = player:get_inventory()
 			local eyepos = {x=pos.x,y=pos.y + 1.5 --[[The player's eyesight]],z=pos.z}
@@ -24,7 +25,7 @@ minetest.register_globalstep(function(dtime)
 			--Check for collection
 			for _,object in ipairs(minetest.get_objects_inside_radius(eyepos, 3)) do
 				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
-					local objpos = object:getpos()
+					local objpos = object:get_pos()
 					if objpos.y >= pos.y - 0.5 and object:get_luaentity().age > collection_age and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
             if object:get_luaentity().collected ~= true then
 
@@ -63,6 +64,7 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
+
 --drop nodes when mined
 function minetest.handle_node_drops(pos, drops, digger)
 	for _,item in ipairs(drops) do
@@ -88,38 +90,17 @@ end
 --throw a single item at player's speed
 --sneak throw, throws whole stack
 function minetest.item_drop(itemstack, dropper, pos)
-
 	local dropper_is_player = dropper and dropper:is_player()
-
 	local p = table.copy(pos)
-
-	local vel = dropper:get_player_velocity()
+	local vel = vector.new(0,0,0)
 
 	if dropper_is_player then
 		p.y = p.y + 1.5
+		vel = dropper:get_player_velocity()
 	end
 
-	local sneak = dropper:get_player_control().sneak
-	--sneaking throws whole stack
-
-	--do this to override the builting shift drop
-	local inv = dropper:get_inventory()
-	local index = dropper:get_wield_index()
-	local wield_list = dropper:get_wield_list()
-
-
-	local count = 1
-	if sneak == true then
-		count = inv:get_stack(wield_list, index):get_count()
-	end
-
-	--brute force past default sneak throw
-	local itemstack2 = inv:get_stack(wield_list, index)
-	local old_item = itemstack2:take_item(count)
-	inv:set_stack(wield_list, index, itemstack2)
-
-	local obj = minetest.add_item(p, old_item)
-
+	local item = itemstack:take_item(1)
+	local obj = core.add_item(p, item)
 	if obj then
 		if dropper_is_player then
 			local dir = dropper:get_look_dir()
@@ -128,7 +109,94 @@ function minetest.item_drop(itemstack, dropper, pos)
 			dir.z = vel.z + (dir.z * 2.9)
 			obj:set_velocity(dir)
 			obj:get_luaentity().dropped_by = dropper:get_player_name()
-			obj:get_luaentity().timer = 4 --debug
 		end
+		return itemstack
 	end
 end
+
+
+--sound for craft success
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	minetest.sound_play("clack", {
+		pos = player:get_pos(),
+		max_hear_distance = 16,
+		gain = 1.0,
+		pitch = math.random(30,60)/100,
+	})
+end)
+
+--eating items animation and success eat
+eating_animation = {} -- do this to hold player animation timer
+minetest.register_globalstep(function(dtime)
+	for _,player in ipairs(minetest.get_connected_players()) do
+		if player:get_player_control().RMB == true then
+			if player:get_wielded_item():get_definition().food then
+				local name = player:get_player_name() --get the players name
+
+				--set up tables
+				if not eating_animation[name] then
+					eating_animation[name] = {}
+					eating_animation[name].timer = 0
+					eating_animation[name].cycles = 0
+				end
+
+				eating_animation[name].timer = eating_animation[name].timer + dtime
+
+				--when at cycle do particles and repeat
+				if eating_animation[name].timer >= 0.15 and eating_animation[name].cycles < 10 then
+
+					eating_animation[name].timer = 0
+
+					eating_animation[name].cycles = eating_animation[name].cycles + 1 --add a cycle
+
+					local pos = player:get_pos()
+					pos.y = pos.y + 1.5
+
+
+					minetest.sound_play("eat", {
+						pos = player:get_pos(),
+						max_hear_distance = 16,
+						gain = 0.1,
+						pitch = math.random(70,100)/100,
+					})
+					local tile = {player:get_wielded_item():get_definition().inventory_image}
+			    tool_break_explosion(tile,pos,10,1,2,5)
+
+				elseif eating_animation[name].cycles >= 10 then-- eat item
+					--replace the item
+					local inv = player:get_inventory()
+					local item = player:get_wielded_item()
+					local index = player:get_wield_index()
+					local count = item:get_count()
+					local stack = inv:get_stack("main", index)
+					player:set_wielded_item(stack:take_item(count-1))
+					eating_animation[name] = nil
+					--hp add
+					player:set_hp(player:get_hp()+player:get_wielded_item():get_definition().food, "set_hp")
+
+					--sounds and particles
+					minetest.sound_play("eat_complete", {
+						pos = player:get_pos(),
+						max_hear_distance = 16,
+						gain = 1,
+						pitch = math.random(60,110)/100,
+					})
+					local pos = player:get_pos()
+					pos.y = pos.y + 1.5
+					local tile = {player:get_wielded_item():get_definition().inventory_image}
+			    tool_break_explosion(tile,pos,150,1,2,5)
+				end
+			else
+				--reset the tables
+				local name = player:get_player_name() --get the players name
+				eating_animation[name] = nil
+			end
+			--print(player)
+			--print(player:get_player_name())
+		else
+			--reset the variables if not right click
+			local name = player:get_player_name() --get the players name
+			eating_animation[name] = nil
+		end
+	end
+end)

@@ -33,3 +33,12 @@ https://freesound.org/people/aarom/sounds/129792/
 
 hiss
 https://freesound.org/people/brunoboselli/sounds/457294/
+
+clack
+https://freesound.org/people/effectator/sounds/443328/
+
+eat
+https://freesound.org/people/josepharaoh99/sounds/353067/
+
+eat_complete
+https://freesound.org/people/Reitanna/sounds/232453/

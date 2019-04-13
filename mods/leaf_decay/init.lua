@@ -19,7 +19,8 @@ function leafdecay_on_timer(pos)
 	end
 
 	minetest.remove_node(pos)
-	--minetest.check_for_falling(pos)
+	local tile = minetest.registered_nodes["nodes:leaves"].tiles
+	mining_particle_explosion(tile,pos,20,0.5,1.5,1)
 end
 
 

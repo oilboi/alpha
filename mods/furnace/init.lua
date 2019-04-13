@@ -66,7 +66,7 @@ minetest.register_abm({
 	action = function(pos)
     for _,object in ipairs(minetest.get_objects_inside_radius(pos, 3)) do
       if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
-        local pos2 = object:getpos()
+        local pos2 = object:get_pos()
         local vec = vector.subtract(pos,pos2)
         if math.abs(vec.x) <= 0.5 and math.abs(vec.z) <= 0.5 then --this would allow players to throw items up at the furnace - fix later
           if minetest.get_item_group(object:get_luaentity().itemstring, "flammable") > 0 then
@@ -116,7 +116,7 @@ minetest.register_abm({
     })
     for _,object in ipairs(minetest.get_objects_inside_radius(pos, 3)) do
       if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
-        local pos2 = object:getpos()
+        local pos2 = object:get_pos()
         local vec = vector.subtract(pos,pos2)
         local flammable = minetest.get_item_group(object:get_luaentity().itemstring, "flammable")
         local stack = object:get_luaentity().itemstring

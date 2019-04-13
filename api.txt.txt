@@ -1,0 +1,1 @@
+food = hp change --add this to items that are food

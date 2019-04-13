@@ -57,14 +57,14 @@ function tool_break(itemstack, user, node, digparams)
   --if itemstack:get_wear() == 0 then --testing
   if itemstack:get_wear() == 0 and digparams.wear > 0 then
     minetest.sound_play("tool_break", {
-      pos = user:getpos(),
+      pos = user:get_pos(),
       max_hear_distance = 100,
       gain = 1.0,
       pitch = math.random(70,100)/100,
     })
 
     --itemstack:replace("items:stick")
-    local pos1 = user:getpos()
+    local pos1 = user:get_pos()
     pos1.y = pos1.y + 1.5
     local tile = {minetest.registered_items[oldstack].wield_image}
     tool_break_explosion(tile,pos1,25,1,2,10)
@@ -113,12 +113,12 @@ end
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
   if hp_change < 0 then
     minetest.sound_play("hurt", {
-      pos = player:getpos(),
+      pos = player:get_pos(),
       max_hear_distance = 100,
       gain = 1.0,
       pitch = math.random(80,100)/100,
     })
-    local pos = player:getpos()
+    local pos = player:get_pos()
     pos.y = pos.y + 1.5
     minetest.add_particlespawner({
         amount = 100,
@@ -154,6 +154,7 @@ local function torch_flame_and_smoke(pos,node)
   --do fixes for flame and smoke position
   if node.param2 > 1 then
     local modifier = vector.divide(minetest.wallmounted_to_dir(node.param2),5)
+    --print(dump(modifier))
     pos = vector.add(pos,modifier)
   elseif node.param2 == 0 then
     pos.y = pos.y - 0.3
