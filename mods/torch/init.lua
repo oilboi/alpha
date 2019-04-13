@@ -27,7 +27,11 @@ minetest.register_node("torch:torch", {
 		wall_bottom = {-1/16, -0.5, -1/16, 1/16, 2/16, 1/16},
 	},
 	sounds = sounds.wood(),
+	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
+
+		local counter = itemstack:get_count()
+
 		if pointed_thing.type ~= "node" then
 			-- no interaction possible with entities, for now.
 			return itemstack
@@ -56,6 +60,14 @@ minetest.register_node("torch:torch", {
 
 		itemstack = minetest.item_place(fakestack, placer, pointed_thing, wdir)
 		itemstack:set_name("torch:torch")
+
+		--play place sound
+		if counter ~= itemstack:get_count() then
+			minetest.sound_play(sounds.wood().place.name, {
+				pos = pointed_thing.above,
+				gain = sounds.wood().place.gain,
+			})
+		end
 
 		return itemstack
 	end
