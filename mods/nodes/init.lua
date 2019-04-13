@@ -167,6 +167,9 @@ minetest.register_node("nodes:tree", {
 	description = "Tree",
 	tiles = {"default_tree_top.png", "default_tree_top.png","default_tree.png"},
 	is_ground_content = false,
+  after_destruct = function(pos, oldnode)
+		leafdecay_after_destruct(pos, oldnode)
+	end,
 	groups = {wood = 1,flammable=2},
 	sounds = sounds.wood(),
 })
@@ -175,7 +178,11 @@ minetest.register_node("nodes:leaves", {
 	description = "Wood",
 	tiles = {"default_leaves.png"},
   drawtype = "allfaces_optional",
-	groups = {leaves = 1,flammable=1},
+	groups = {leaves = 1,flammable=1,leafdecay_drop = 1},
+  on_timer = function(pos, elapsed)
+    leafdecay_on_timer(pos)
+  end,
+  drop = "items:apple",
 	sounds = sounds.leaves(),
 })
 

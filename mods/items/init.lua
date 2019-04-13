@@ -26,3 +26,8 @@ minetest.register_craftitem("items:diamond", {
 	inventory_image = "diamond.png",
 	groups = {gold = 1},
 })
+minetest.register_craftitem("items:apple", {
+	description = "Apple",
+	inventory_image = "default_apple.png",
+	groups = {food = 1,leafdecay_drop=1},
+})
