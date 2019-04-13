@@ -60,3 +60,28 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
     end
   end
 end)
+
+
+--automatically replace item in hand when building
+minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+  local old_item = itemstack:get_name()
+  minetest.after(0,function(placer,itemstack,old_item,oldnode,newnode)
+ 	if itemstack:get_count() <= 0 and (oldnode == newnode) == false then
+
+  		local inv = placer:get_inventory()
+      --set wield item to item if in inventory
+  		if inv:contains_item("main", old_item, false) == true then
+        print("contains")
+        --try to take a full stack
+        local newstack = inv:remove_item("main", ItemStack(old_item.." 64"))
+        placer:set_wielded_item(newstack)
+        minetest.sound_play("collection", {
+          pos = placer:getpos(),
+          max_hear_distance = 100,
+          gain = 1.0,
+          pitch = math.random(50,70)/100,
+        })
+      end
+	end
+end,placer,itemstack,old_item,oldnode,newnode)
+end)
