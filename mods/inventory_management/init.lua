@@ -64,6 +64,9 @@ end)
 
 --automatically replace item in hand when building
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+
+  if not placer then return end
+
   local old_item = itemstack:get_name()
   minetest.after(0,function(placer,itemstack,old_item,oldnode,newnode)
  	if itemstack:get_count() <= 0 and (oldnode == newnode) == false then

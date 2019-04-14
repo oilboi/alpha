@@ -290,13 +290,13 @@ minetest.register_node("nodes:rail_uphill", {
 
 
 
---this is a hack of the default stairs mod
+--this is a hack of the default nodes mod
 
 -- Register stair
--- Node will be called stairs:stair_<subname>
+-- Node will be called nodes:stair_<subname>
 
 
---function stairs.register_stair(subname, recipeitem, groups, images, description,sounds, worldaligntex)
+--function nodes.register_stair(subname, recipeitem, groups, images, description,sounds, worldaligntex)
 for name,def in pairs(minetest.registered_nodes) do
   if string.gsub(name, "nodes:", "") ~= name then --simple check for if a nodes node
 
@@ -335,7 +335,7 @@ for name,def in pairs(minetest.registered_nodes) do
 	end
 	local new_groups = table.copy(groups)
 	new_groups.stair = 1
-	minetest.register_node(":stairs:stair_" .. subname, {
+	minetest.register_node(":nodes:stair_" .. subname, {
 		description = description,
 		drawtype = "nodebox",
 		tiles = stair_images,
@@ -357,7 +357,7 @@ for name,def in pairs(minetest.registered_nodes) do
 	if recipeitem then
 		-- Recipe matches appearence in inventory
 		minetest.register_craft({
-			output = 'stairs:stair_' .. subname .. ' 8',
+			output = 'nodes:stair_' .. subname .. ' 8',
 			recipe = {
 				{"", "", recipeitem},
 				{"", recipeitem, recipeitem},
@@ -365,7 +365,7 @@ for name,def in pairs(minetest.registered_nodes) do
 			},
 		})
     minetest.register_craft({
-			output = 'stairs:stair_' .. subname .. ' 8',
+			output = 'nodes:stair_' .. subname .. ' 8',
 			recipe = {
 				{recipeitem, "", ""},
 				{recipeitem, recipeitem, ""},
@@ -373,12 +373,12 @@ for name,def in pairs(minetest.registered_nodes) do
 			},
 		})
 
-		-- Use stairs to craft full blocks again (1:1)
+		-- Use nodes to craft full blocks again (1:1)
 		minetest.register_craft({
 			output = recipeitem .. ' 3',
 			recipe = {
-				{'stairs:stair_' .. subname, 'stairs:stair_' .. subname},
-				{'stairs:stair_' .. subname, 'stairs:stair_' .. subname},
+				{'nodes:stair_' .. subname, 'nodes:stair_' .. subname},
+				{'nodes:stair_' .. subname, 'nodes:stair_' .. subname},
 			},
 		})
 
@@ -391,7 +391,7 @@ for name,def in pairs(minetest.registered_nodes) do
 		if baseburntime > 0 then
 			minetest.register_craft({
 				type = "fuel",
-				recipe = 'stairs:stair_' .. subname,
+				recipe = 'nodes:stair_' .. subname,
 				burntime = math.floor(baseburntime * 0.75),
 			})
 		end
@@ -400,11 +400,21 @@ for name,def in pairs(minetest.registered_nodes) do
 end
 
 
--- Register slab
--- Node will be called stairs:slab_<subname>
---[[
-function stairs.register_slab(subname, recipeitem, groups, images, description,
-		sounds, worldaligntex)
+
+
+
+
+for name,def in pairs(minetest.registered_nodes) do
+  if string.gsub(name, "nodes:", "") ~= name then --simple check for if a nodes node
+
+  local subname = string.gsub(name, "nodes:", "") --make it the name of the node
+  local recipeitem = name
+  local groups = def.groups
+  local images = def.tiles
+  local description = string.gsub(name, "nodes:", ""):gsub("^%l", string.upper).." Slab"
+  local sounds = def.sounds
+  local worldaligntex = false
+
 	-- Set world-aligned textures
 	local slab_images = {}
 	for i, image in ipairs(images) do
@@ -424,7 +434,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description,
 	end
 	local new_groups = table.copy(groups)
 	new_groups.slab = 1
-	minetest.register_node(":stairs:slab_" .. subname, {
+	minetest.register_node("nodes:slab_" .. subname, {
 		description = description,
 		drawtype = "nodebox",
 		tiles = slab_images,
@@ -437,51 +447,19 @@ function stairs.register_slab(subname, recipeitem, groups, images, description,
 			type = "fixed",
 			fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 		},
-		on_place = function(itemstack, placer, pointed_thing)
-			local under = minetest.get_node(pointed_thing.under)
-			local wield_item = itemstack:get_name()
-			local player_name = placer and placer:get_player_name() or ""
-			local creative_enabled = (creative and creative.is_enabled_for
-					and creative.is_enabled_for(player_name))
-
-			if under and under.name:find("^stairs:slab_") then
-				-- place slab using under node orientation
-				local dir = minetest.dir_to_facedir(vector.subtract(
-					pointed_thing.above, pointed_thing.under), true)
-
-				local p2 = under.param2
-
-				-- Placing a slab on an upside down slab should make it right-side up.
-				if p2 >= 20 and dir == 8 then
-					p2 = p2 - 20
-				-- same for the opposite case: slab below normal slab
-				elseif p2 <= 3 and dir == 4 then
-					p2 = p2 + 20
-				end
-
-				-- else attempt to place node with proper param2
-				minetest.item_place_node(ItemStack(wield_item), placer, pointed_thing, p2)
-				if not creative_enabled then
-					itemstack:take_item()
-				end
-				return itemstack
-			else
-				return rotate_and_place(itemstack, placer, pointed_thing)
-			end
-		end,
+    --turn into full node - doesn't let you when node above :(
+    on_construct = function(pos)
+      local pos_under = {x=pos.x,y=pos.y-1,z=pos.z}
+      if minetest.get_node(pos_under).name == "nodes:slab_" .. subname then
+        minetest.remove_node(pos)
+        minetest.set_node(pos_under,{name=name})
+      end
+    end,
 	})
-
-	-- for replace ABM
-	if replace then
-		minetest.register_node(":stairs:slab_" .. subname .. "upside_down", {
-			replace_name = "stairs:slab_".. subname,
-			groups = {slabs_replace = 1},
-		})
-	end
 
 	if recipeitem then
 		minetest.register_craft({
-			output = 'stairs:slab_' .. subname .. ' 6',
+			output = 'nodes:slab_' .. subname .. ' 6',
 			recipe = {
 				{recipeitem, recipeitem, recipeitem},
 			},
@@ -491,8 +469,8 @@ function stairs.register_slab(subname, recipeitem, groups, images, description,
 		minetest.register_craft({
 			output = recipeitem,
 			recipe = {
-				{'stairs:slab_' .. subname},
-				{'stairs:slab_' .. subname},
+				{'nodes:slab_' .. subname},
+				{'nodes:slab_' .. subname},
 			},
 		})
 
@@ -505,10 +483,10 @@ function stairs.register_slab(subname, recipeitem, groups, images, description,
 		if baseburntime > 0 then
 			minetest.register_craft({
 				type = "fuel",
-				recipe = 'stairs:slab_' .. subname,
+				recipe = 'nodes:slab_' .. subname,
 				burntime = math.floor(baseburntime * 0.5),
 			})
 		end
 	end
+  end
 end
-]]--

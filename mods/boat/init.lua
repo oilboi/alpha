@@ -1,5 +1,5 @@
 minetest.register_on_newplayer(function(player)
-  local pos = player:getpos()
+  local pos = player:get_pos()
   minetest.add_item(pos, "boat:boat")
 end)
 
@@ -38,7 +38,7 @@ function boat:on_step(dtime)
   boat:float(self)
   boat:move(self)
   --boat:set_rotation(self)
-  self.old_pos = self.object:getpos()
+  self.old_pos = self.object:get_pos()
 
 end
 
@@ -62,7 +62,7 @@ end
 
 --makes the boat float
 function boat:float(self)
-  local pos = self.object:getpos()
+  local pos = self.object:get_pos()
   if boat:testwater(pos) > 0 then
     self.object:add_velocity({x=0,y=0.1,z=0})
     self.object:set_acceleration({x=0,y=0,z=0})
@@ -86,7 +86,7 @@ function boat:on_rightclick(clicker)
 end
 
 function boat:set_rotation(self)
-  local pos = self.object:getpos()
+  local pos = self.object:get_pos()
   if self.old_pos then
     self.object:set_yaw(minetest.dir_to_yaw(vector.direction(pos, self.old_pos)))
   end
@@ -112,7 +112,7 @@ end
 
 
 function boat:on_punch(hitter)
-  local item = minetest.add_item(self.object:getpos(), "boat:boat")
+  local item = minetest.add_item(self.object:get_pos(), "boat:boat")
   item:get_luaentity().age = collection_age - 0.35
   self.object:remove()
 end

@@ -1,5 +1,5 @@
 minetest.register_on_newplayer(function(player)
-  local pos = player:getpos()
+  local pos = player:get_pos()
   minetest.add_item(pos, "nodes:rail_straight 99")
   minetest.add_item(pos, "nodes:rail_turn 99")
   minetest.add_item(pos, "minecart:minecart 99")
@@ -59,7 +59,7 @@ function minecart:on_step(dtime)
   minecart:set_rotation(self)
   minecart:set_axis(self) -- make sure this is last
   self.old_velocity = vel
-  self.old_pos = self.object:getpos()
+  self.old_pos = self.object:get_pos()
 end
 
 function minecart:set_axis(self)
@@ -74,7 +74,7 @@ end
 --test out furnace minecart mechanics
 function minecart:furnace_minecart(self)
   if self.furnace == true then
-    local pos = self.object:getpos()
+    local pos = self.object:get_pos()
     minetest.add_particle({
     	pos = pos,
     	velocity = {x=0, y=math.random(2,4), z=0},
@@ -104,7 +104,7 @@ function minecart:on_rightclick(clicker)
 end
 
 function minecart:set_rotation(self)
-  local pos = self.object:getpos()
+  local pos = self.object:get_pos()
   if self.old_pos then
     self.object:set_yaw(minetest.dir_to_yaw(vector.direction(pos, self.old_pos)))
   end
@@ -120,8 +120,8 @@ end
 
 --push away from players
 function minecart:repel(self)
-  local pos = self.object:getpos()
-  local temp_pos = self.object:getpos()
+  local pos = self.object:get_pos()
+  local temp_pos = self.object:get_pos()
   temp_pos.y = 0
   --magnet effect
   for _,object in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
@@ -129,7 +129,7 @@ function minecart:repel(self)
     --basically if true, the minecart will only repel to players
     if self.furnace == false or self.furnace == nil then
       if object:is_player() or (object:get_luaentity() and object:get_luaentity().name == "minecart:minecart" and object ~= self.object) then
-        local pos2 = object:getpos()
+        local pos2 = object:get_pos()
         local vec = vector.subtract(pos, pos2)
         --the closer in the more it repels
         vec = vector.multiply(vec,(vector.distance(pos, pos2)))
@@ -145,7 +145,7 @@ function minecart:repel(self)
       end
     elseif self.furnace == true then
       if object:is_player() then
-        local pos2 = object:getpos()
+        local pos2 = object:get_pos()
         local vec = vector.subtract(pos, pos2)
         --the closer in the more it repels
         local multiplier = 2
@@ -172,7 +172,7 @@ function minecart:change_direction(self,dtime)
   end
 
   local vel = self.object:get_velocity()
-  local pos = self.object:getpos()
+  local pos = self.object:get_pos()
   pos.y = pos.y - 0.75
 
   local old = self.old_velocity
@@ -212,7 +212,7 @@ end
 
 
 function minecart:on_punch(hitter)
-  local item = minetest.add_item(self.object:getpos(), "minecart:minecart")
+  local item = minetest.add_item(self.object:get_pos(), "minecart:minecart")
   item:get_luaentity().age = collection_age - 0.35
   self.object:remove()
 end
