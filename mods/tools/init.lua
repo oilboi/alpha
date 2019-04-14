@@ -6,7 +6,7 @@ for i = 1,table.getn(groups) do
   --axe
   minetest.register_tool("tools:"..groups[i].."_axe",
       {
-          description = groups[i].." Axe",
+          description = groups[i]:gsub("^%l", string.upper).." Axe",
           groups = {wood = 1},
           inventory_image = "default_tool_"..groups[i].."axe.png",
           wield_image = "default_tool_"..groups[i].."axe.png",
@@ -42,7 +42,7 @@ for i = 1,table.getn(groups) do
 
   minetest.register_tool("tools:"..groups[i].."_pickaxe",
       {
-          description = groups[i].." Pickaxe",
+          description = groups[i]:gsub("^%l", string.upper).." Pickaxe",
           groups = {wood = 1},
           inventory_image = "default_tool_"..groups[i].."pick.png",
           wield_image = "default_tool_"..groups[i].."pick.png",
@@ -67,7 +67,7 @@ for i = 1,table.getn(groups) do
   )
   minetest.register_tool("tools:"..groups[i].."_shovel",
       {
-          description = groups[i].." Pickaxe",
+          description = groups[i]:gsub("^%l", string.upper).." Pickaxe",
           groups = {wood = 1},
           inventory_image = "default_tool_"..groups[i].."shovel.png",
           wield_image = "default_tool_"..groups[i].."shovel.png^[transform4",
@@ -93,7 +93,7 @@ for i = 1,table.getn(groups) do
 
   minetest.register_tool("tools:"..groups[i].."_paxel",
       {
-          description = groups[i].." Paxel",
+          description = groups[i]:gsub("^%l", string.upper).." Paxel",
           groups = {wood = 1},
           inventory_image = "default_tool_"..groups[i].."shovel.png^default_tool_"..groups[i].."pick.png^default_tool_"..groups[i].."axe.png",
           wield_image = "default_tool_"..groups[i].."shovel.png^default_tool_"..groups[i].."pick.png^default_tool_"..groups[i].."axe.png",
