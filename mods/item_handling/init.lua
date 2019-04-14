@@ -156,7 +156,7 @@ minetest.register_globalstep(function(dtime)
 					minetest.sound_play("eat", {
 						pos = player:get_pos(),
 						max_hear_distance = 16,
-						gain = 0.1,
+						gain = 0.03,
 						pitch = math.random(70,100)/100,
 					})
 					local tile = {player:get_wielded_item():get_definition().inventory_image}
@@ -169,10 +169,13 @@ minetest.register_globalstep(function(dtime)
 					local index = player:get_wield_index()
 					local count = item:get_count()
 					local stack = inv:get_stack("main", index)
-					player:set_wielded_item(stack:take_item(count-1))
+
 					eating_animation[name] = nil
 					--hp add
 					player:set_hp(player:get_hp()+player:get_wielded_item():get_definition().food, "set_hp")
+
+					--remove the item after
+					player:set_wielded_item(stack:take_item(count-1))
 
 					--sounds and particles
 					minetest.sound_play("eat_complete", {

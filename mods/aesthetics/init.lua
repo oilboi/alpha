@@ -215,3 +215,10 @@ minetest.register_abm({
     torch_flame_and_smoke(pos,node)
 	end,
 })
+
+------
+
+--stuff to do when a player joins the game
+minetest.register_on_joinplayer(function(player)
+	minetest.chat_send_all("Welcome "..player:get_player_name()..", please note this is heavily in development. Might be unstable. Thanks for Downloading it. :D")
+end)
