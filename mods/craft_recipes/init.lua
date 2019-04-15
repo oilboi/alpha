@@ -121,3 +121,12 @@ minetest.register_craft({
 		{ "items:stick" },
 	}
 })
+
+
+minetest.register_craft({
+	output = "craft_table:craft_table",
+	recipe = {
+		{"nodes:wood", "nodes:wood"},
+		{"nodes:wood", "nodes:wood"}
+	}
+})
