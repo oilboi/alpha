@@ -109,6 +109,10 @@ core.register_entity(":__builtin:item", {
 			y = pos.y + self.object:get_properties().collisionbox[2] - 0.05,
 			z = pos.z
 		})
+
+		--splash effect
+		splash(self.object,pos)
+
 		-- Delete in 'ignore' nodes
 		if node and node.name == "ignore" then
 			self.itemstring = ""
@@ -139,7 +143,8 @@ core.register_entity(":__builtin:item", {
 		end
 
 		-- make items flow
-		set_flow(pos,self.object,20,0)
+		set_flow(pos,self.object,20)
+
 
 
 		if self.moving_state == is_moving and

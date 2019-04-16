@@ -156,9 +156,61 @@ flowlib.move_centre = move_centre
 
 
 --the main flow function
-function set_flow(pos,object,divider,y_modifier)
-
-    pos.y = pos.y + y_modifier
+function set_flow(pos,object,divider)
+    pos.y = pos.y + object:get_properties().collisionbox[2]+0.05
     local direction = quick_flow(pos,minetest.get_node(pos))
     object:add_velocity(vector.divide(direction,divider))
+end
+
+--test if a node is water
+local function testwater(pos)
+  return(minetest.get_item_group(minetest.get_node(pos).name, "water"))
+end
+
+local function splashy(object,pos)
+	local collisionbox = object:get_properties().collisionbox
+
+	--base amount off top and bottom of collision box distance
+	local amount = math.abs(math.floor((collisionbox[2]-collisionbox[5])*10))*2
+
+	minetest.add_particlespawner({
+			amount = amount,
+			time = 0.01,
+			minpos = {x=pos.x+collisionbox[1], y=pos.y+collisionbox[2], z=pos.z+collisionbox[3]},
+			maxpos = {x=pos.x+collisionbox[4], y=pos.y+collisionbox[5], z=pos.z+collisionbox[6]},
+			minvel = {x=0, y=0, z=0},
+			maxvel = {x=0, y=0, z=0},
+			minacc = {x=0, y=0.5, z=0},
+			maxacc = {x=0, y=1, z=0},
+			minexptime = 2,
+			maxexptime = 3,
+			minsize = 1,
+			maxsize = 2,
+
+			collisiondetection = true,
+			collision_removal = true,
+
+			object_collision = false,
+
+			vertical = false,
+			-- If true face player using y axis only
+			texture = "bubble_2.png",
+	})
+	minetest.sound_play("sploosh", {
+		pos = pos,
+		max_hear_distance = 100,
+		gain = 0.5,
+		pitch = math.random(70,110)/100,
+	})
+end
+
+--make splash noise and particles
+function splash(object,pos)
+	object:get_luaentity().in_water = testwater(pos)
+	--create splashes
+	if object:get_luaentity().old_in_water == 0 and object:get_luaentity().in_water > 0 then
+		splashy(object,pos)
+	end
+
+	object:get_luaentity().old_in_water = object:get_luaentity().in_water
 end

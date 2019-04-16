@@ -38,7 +38,12 @@ function boat:on_step(dtime)
   boat:float(self)
   boat:move(self)
 
-  set_flow(self.object:get_pos(),self.object,7,-0.49)
+  --make the object flow in water
+  set_flow(self.object:get_pos(),self.object,7)
+
+  --make boat splash effects
+  splash(self.object,self.object:get_pos())
+
   --boat:set_rotation(self)
   self.old_pos = self.object:get_pos()
 
@@ -81,6 +86,7 @@ function boat:float(self)
   else
     self.object:set_acceleration({x=0,y=0,z=0})
   end
+
 end
 
 
