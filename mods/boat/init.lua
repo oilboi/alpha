@@ -15,7 +15,7 @@ local boat = {
     timer = 0,
     speed = 0,
     automatic_face_movement_dir = 90.0,
-    automatic_face_movement_max_rotation_per_sec = 180,
+    automatic_face_movement_max_rotation_per_sec = 65536, --65536
     rider = "",
   },
 }
