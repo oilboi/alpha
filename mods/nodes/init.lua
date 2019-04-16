@@ -63,6 +63,7 @@ minetest.register_node("nodes:sand",
 }
 )
 
+local water_viscocity = 1
 minetest.register_node("nodes:water",
 {
   description = "Water",
@@ -77,7 +78,7 @@ minetest.register_node("nodes:water",
 	is_ground_content = false,
 	drop = "",
 	drowning = 1,
-  liquid_viscosity = 1,
+  liquid_viscosity = water_viscocity,
 	post_effect_color = {a = 103, r = 30, g = 60, b = 90},
   tiles = {
 		{
@@ -122,7 +123,7 @@ minetest.register_node("nodes:water_flowing",
 	is_ground_content = false,
 	drop = "",
 	drowning = 1,
-  liquid_viscosity = 1,
+  liquid_viscosity = water_viscocity,
   paramtype2 = "flowingliquid",
 	post_effect_color = {a = 103, r = 30, g = 60, b = 90},
   tiles = {"water.png"},
