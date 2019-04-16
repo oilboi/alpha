@@ -38,7 +38,7 @@ function boat:on_step(dtime)
   boat:float(self)
   boat:move(self)
 
-  set_flow(self.object:get_pos(),self.object,7,-0.3)
+  set_flow(self.object:get_pos(),self.object,7,-0.49)
   --boat:set_rotation(self)
   self.old_pos = self.object:get_pos()
 
@@ -107,7 +107,7 @@ end
 function boat:friction(self)
   local vel = self.object:get_velocity()
   vel = vector.multiply(vel,-1)
-  vel = vector.divide(vel,30)
+  vel = vector.divide(vel,100)
   if vel.y > 0 then
     self.object:add_velocity({x=vel.x,y=vel.y,z=vel.z})
   else
