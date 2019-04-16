@@ -1,4 +1,4 @@
-
+--gets called when leaf decay timer ends
 function leafdecay_on_timer(pos)
 	if minetest.find_node_near(pos, 2, "nodes:tree") then
 		return false
@@ -23,14 +23,13 @@ function leafdecay_on_timer(pos)
 	mining_particle_explosion(tile,pos,20,0.5,1.5,1)
 end
 
-
+--starts leaf decay timer when you mine tree
 function leafdecay_after_destruct(pos, oldnode)
-	for _, v in pairs(minetest.find_nodes_in_area(vector.subtract(pos, 2),
-			vector.add(pos, 2), "nodes:leaves")) do
+	for _, v in pairs(minetest.find_nodes_in_area(vector.subtract(pos, 3),vector.add(pos, 3), "nodes:leaves")) do
 		local node = minetest.get_node(v)
 		local timer = minetest.get_node_timer(v)
 		if node.param2 == 0 and not timer:is_started() then
-			timer:start(0)--(math.random(20, 120) / 10)
+			timer:start(math.random())--(math.random(20, 120) / 10)
 		end
 	end
 end

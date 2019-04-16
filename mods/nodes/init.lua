@@ -308,10 +308,6 @@ for name,def in pairs(minetest.registered_nodes) do
   local sounds = def.sounds
   local worldaligntex = false
 
-
-
-  print(dump(name))
-  print(dump(def))
 	-- Set backface culling and world-aligned textures
 	local stair_images = {}
 	for i, image in ipairs(images) do
