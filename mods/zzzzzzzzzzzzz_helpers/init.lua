@@ -4,3 +4,9 @@
 math.randomseed(os.time())
 
 print("initialized math.random() seed")
+
+--set the server tick to 0 for max performance
+minetest.settings:set("dedicated_server_step", 0)
+
+
+print(minetest.settings:get("dedicated_server_step"))
