@@ -130,3 +130,11 @@ minetest.register_craft({
 		{"nodes:wood", "nodes:wood"}
 	}
 })
+
+minetest.register_craft({
+	output = "boat:boat",
+	recipe = {
+		{"group:wood", "", "group:wood"},
+		{"group:wood","group:wood", "group:wood"}
+	}
+})

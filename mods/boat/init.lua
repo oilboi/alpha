@@ -21,7 +21,7 @@ local boat = {
 }
 function boat:on_activate(staticdata, dtime_s)
 
-    self.object:set_acceleration({x=0,y=-10,z=0})
+    --self.object:set_acceleration({x=0,y=-10,z=0})
 
     if staticdata ~= "" and staticdata ~= nil then
         local data = minetest.parse_json(staticdata) or {}
@@ -53,8 +53,9 @@ function boat:move(self)
       return
     end
     if player:get_player_control().up == true then
-      local dir = player:get_look_dir()
-      local dir = vector.divide(dir,5)
+      local playeryaw = player:get_look_horizontal()
+      local direction = minetest.yaw_to_dir(playeryaw)
+      local dir = vector.divide(direction,5)
       self.object:add_velocity({x=dir.x,y=0,z=dir.z})
     end
   end
@@ -63,12 +64,20 @@ end
 --makes the boat float
 function boat:float(self)
   local pos = self.object:get_pos()
-  if boat:testwater(pos) > 0 then
-    self.object:add_velocity({x=0,y=0.1,z=0})
-    self.object:set_acceleration({x=0,y=0,z=0})
+  local in_water =  boat:testwater(pos)
+
+  if in_water > 0 then
+    self.object:add_velocity({x=0,y=0.15,z=0})
   else
-    --self.object:add_velocity({x=0,y=0,z=0})
+    self.object:add_velocity({x=0,y=-0.15,z=0})
+  end
+
+  pos.y = pos.y - 0.5
+  --try to apply gravity
+  if minetest.get_item_group(minetest.get_node(pos).name, "water") == 0 and in_water == 0 then
     self.object:set_acceleration({x=0,y=-10,z=0})
+  else
+    self.object:set_acceleration({x=0,y=0,z=0})
   end
 end
 
@@ -132,8 +141,11 @@ minetest.register_craftitem("boat:boat", {
   inventory_image = "boat_inv.png",
   liquids_pointable = true,
   on_place = function(itemstack, placer, pointed_thing)
-    local pos = pointed_thing.above
-    pos.y = pos.y + 1
+    --don't add boat if not water
+    if minetest.get_item_group(minetest.get_node(pointed_thing.under).name, "water") == 0 then return end
+
+    local pos = pointed_thing.under
+    pos.y = pos.y + 0.5
     local test = minetest.add_entity(pos, "boat:boat")
     itemstack:take_item(1)
     return(itemstack)
