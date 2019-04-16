@@ -102,7 +102,7 @@ minetest.register_node("nodes:water",
 			},
 		},
 	},
-  groups = {water = 1},
+  groups = {water = 1,liquid=1,source = 1},
   liquidtype = "source",
   liquid_alternative_flowing = "nodes:water_flowing",
   liquid_alternative_source = "nodes:water",
@@ -149,7 +149,7 @@ minetest.register_node("nodes:water_flowing",
 			},
 		},
 	},
-  groups = {water = 1},
+  groups = {water = 1,liquid=1,flowing=1},
   liquidtype = "flowing",
   liquid_alternative_flowing = "nodes:water_flowing",
   liquid_alternative_source = "nodes:water",
@@ -198,7 +198,7 @@ minetest.register_node("nodes:lava", {
 	liquid_renewable = false,
 	damage_per_second = 4 * 2,
 	post_effect_color = {a = 191, r = 255, g = 64, b = 0},
-	groups = {lava = 3, liquid = 2, igniter = 1},
+	groups = {lava = 1, liquid = 1,source = 1},
 })
 
 minetest.register_node("nodes:lava_flowing", {
@@ -244,8 +244,7 @@ minetest.register_node("nodes:lava_flowing", {
 	liquid_renewable = false,
 	damage_per_second = 4 * 2,
 	post_effect_color = {a = 191, r = 255, g = 64, b = 0},
-	groups = {lava = 3, liquid = 2, igniter = 1,
-		not_in_creative_inventory = 1},
+	groups = {lava = 3, liquid = 1, flowing=1},
 })
 
 minetest.register_node("nodes:wood", {

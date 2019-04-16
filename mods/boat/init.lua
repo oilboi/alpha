@@ -103,7 +103,7 @@ end
 
 --slow down boat with friction
 function boat:friction(self)
-  local vel = self.object:getvelocity()
+  local vel = self.object:get_velocity()
   vel = vector.multiply(vel,-1)
   vel = vector.divide(vel,30)
   if vel.y > 0 then

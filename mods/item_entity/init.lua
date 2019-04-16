@@ -138,6 +138,10 @@ core.register_entity(":__builtin:item", {
 			end
 		end
 
+		-- make items flow
+		set_flow(pos,self.object,20)
+
+
 		if self.moving_state == is_moving and
 				self.slippery_state == is_slippery then
 			-- Do not update anything until the moving state changes
@@ -153,6 +157,9 @@ core.register_entity(":__builtin:item", {
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
 			self.object:set_velocity({x = 0, y = 0, z = 0})
 		end
+
+
+
 	end,
 
 	on_punch = function(self, hitter)
