@@ -37,6 +37,8 @@ function boat:on_step(dtime)
   boat:friction(self)
   boat:float(self)
   boat:move(self)
+
+  set_flow(self.object:get_pos(),self.object,7,-0.3)
   --boat:set_rotation(self)
   self.old_pos = self.object:get_pos()
 

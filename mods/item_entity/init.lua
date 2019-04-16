@@ -139,7 +139,7 @@ core.register_entity(":__builtin:item", {
 		end
 
 		-- make items flow
-		set_flow(pos,self.object,20)
+		set_flow(pos,self.object,20,0)
 
 
 		if self.moving_state == is_moving and
