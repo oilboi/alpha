@@ -1,5 +1,8 @@
 --make crazy particles
  minetest.register_on_dignode(function(pos, oldnode, digger)
+   if minetest.registered_nodes[oldnode.name] == nil then
+     return
+   end
    local tile = minetest.registered_nodes[oldnode.name].tiles
    mining_particle_explosion(tile,pos,15,0.5,1,10)
 end)
