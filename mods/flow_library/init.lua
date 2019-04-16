@@ -214,3 +214,66 @@ function splash(object,pos)
 
 	object:get_luaentity().old_in_water = object:get_luaentity().in_water
 end
+
+
+local function player_splashy(player,pos)
+	local collisionbox = player:get_properties().collisionbox
+
+	--base amount off top and bottom of collision box distance
+	local amount = math.abs(math.floor((collisionbox[2]-collisionbox[5])*10))*2
+
+	minetest.add_particlespawner({
+			amount = amount,
+			time = 0.01,
+			minpos = {x=pos.x+collisionbox[1], y=pos.y+collisionbox[2], z=pos.z+collisionbox[3]},
+			maxpos = {x=pos.x+collisionbox[4], y=pos.y+collisionbox[5], z=pos.z+collisionbox[6]},
+			minvel = {x=0, y=0, z=0},
+			maxvel = {x=0, y=0, z=0},
+			minacc = {x=0, y=0.5, z=0},
+			maxacc = {x=0, y=1, z=0},
+			minexptime = 2,
+			maxexptime = 3,
+			minsize = 1,
+			maxsize = 2,
+
+			collisiondetection = true,
+			collision_removal = true,
+
+			object_collision = false,
+
+			vertical = false,
+			-- If true face player using y axis only
+			texture = "bubble_2.png",
+	})
+	minetest.sound_play("sploosh", {
+		pos = pos,
+		max_hear_distance = 100,
+		gain = 0.5,
+		pitch = math.random(70,110)/100,
+	})
+end
+
+--make player's splash noise and particles
+minetest.register_globalstep(function(dtime)
+	for _,player in ipairs(minetest.get_connected_players()) do
+		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
+			local meta = player:get_meta()
+			local pos = player:get_pos()
+			--local collisionbox = player:get_properties().collisionbox
+
+			local in_water = testwater(pos)
+
+
+			meta:set_int("in_water",in_water)
+
+
+			if meta:get_int("old_in_water") == 0 and meta:get_int("in_water") > 0 then
+				player_splashy(player,pos)
+			end
+
+
+			--then set for old value
+			meta:set_int("old_in_water",in_water)
+		end
+	end
+end)
