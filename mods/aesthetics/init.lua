@@ -223,5 +223,13 @@ minetest.register_abm({
 
 --stuff to do when a player joins the game
 minetest.register_on_joinplayer(function(player)
-	  
+  local version_info = player:hud_add({
+       hud_elem_type = "text",
+       position      = {x = 0.5, y = 0.5},
+       offset        = {x = 0,   y = 0},
+       text          = "Hello world!",
+       alignment     = {x = 0, y = 0},  -- center aligned
+       scale         = {x = 1000, y = 1000}, -- covered later
+        number    = 0xFFFFFF,
+  })
 end)
