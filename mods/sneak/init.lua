@@ -1,4 +1,4 @@
----eye_height = 1.625,
+-- you can change collsion box height using player:set_properties({collsionbox[5]}) or 2
 
 minetest.register_globalstep(function(dtime)
  for _,player in ipairs(minetest.get_connected_players()) do

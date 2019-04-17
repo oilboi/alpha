@@ -1,6 +1,8 @@
 # To do: (in order)
 for version 0.02
 
+change collision box height on sneak
+
 bows and arrows
 
 animated chests
