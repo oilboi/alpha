@@ -3,6 +3,17 @@
 local groups = {"wood","stone","iron","gold","diamond"}
 
 for i = 1,table.getn(groups) do
+  --make it so wood and stone can't mine hard ores
+  --{"wood","stone","iron","gold","diamond"}
+  local times = {1,2,3,4,4}
+  local looper = i
+  local counter = 0
+  timey = {}
+  for j = 1,times[i] do
+    counter = counter + 1
+    timey[counter] = (1*counter)/(i/(i*2))
+  end
+
   --axe
   minetest.register_tool("tools:"..groups[i].."_axe",
       {
@@ -17,11 +28,10 @@ for i = 1,table.getn(groups) do
               max_drop_level = 0,
               groupcaps = {
                   -- For example:
-                  wood = {times = {[1] = 1.8/i, [2] = 1/i, [3] = 0.5/i},
-                           uses = i*5, maxlevel = i},
+                  wood = { times = timey,uses = i*5, maxlevel = i},
               },
               damage_groups = {groupname = damage},
-          },
+            },
 
           after_use = function(itemstack, user, node, digparams)
               tool_break(itemstack, user, node, digparams)
@@ -29,16 +39,7 @@ for i = 1,table.getn(groups) do
 
       }
   )
-  --make it so wood and stone can't mine hard ores
-  --{"wood","stone","iron","gold","diamond"}
-  local times = {1,1,3,3,4}
-  local looper = i
-  local counter = 0
-  timey = {}
-  for j = 1,times[i] do
-    counter = counter + 1
-    timey[counter] = (1.5*counter)/i
-  end
+
 
   minetest.register_tool("tools:"..groups[i].."_pickaxe",
       {
@@ -78,7 +79,7 @@ for i = 1,table.getn(groups) do
               max_drop_level = 0,
               groupcaps = {
                   -- For example:
-                  dirt = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
+                  dirt = {times = timey,
                            uses = i*5, maxlevel = i},
               },
               damage_groups = {groupname = damage},
@@ -104,9 +105,9 @@ for i = 1,table.getn(groups) do
               max_drop_level = 0,
               groupcaps = {
                   -- For example:
-                  dirt = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
+                  dirt = {times = timey,
                            uses = i*15, maxlevel = i},
-                  wood = {times = {[1] = 1.8/(i*4), [2] = 1/(i*4), [3] = 0.5/(i*4)},
+                  wood = {times = timey,
                           uses = i*15, maxlevel = i},
                   stone = {times = timey,
                          uses = i*15, maxlevel = i},
