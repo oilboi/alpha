@@ -143,7 +143,7 @@ minetest.register_globalstep(function(dtime)
 				eating_animation[name].timer = eating_animation[name].timer + dtime
 
 				--when at cycle do particles and repeat
-				if eating_animation[name].timer >= 0.15 and eating_animation[name].cycles < 10 then
+				if eating_animation[name].timer >= 0.15 and eating_animation[name].cycles < 5 then
 
 					eating_animation[name].timer = 0
 
@@ -162,7 +162,7 @@ minetest.register_globalstep(function(dtime)
 					local tile = {player:get_wielded_item():get_definition().inventory_image}
 			    tool_break_explosion(tile,pos,10,1,2,5)
 
-				elseif eating_animation[name].cycles >= 10 then-- eat item
+				elseif eating_animation[name].cycles >= 5 then-- eat item
 					--replace the item
 					local inv = player:get_inventory()
 					local item = player:get_wielded_item()
