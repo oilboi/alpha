@@ -259,6 +259,7 @@ minetest.register_globalstep(function(dtime)
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
 			local meta = player:get_meta()
 			local pos = player:get_pos()
+			local vel = player:get_player_velocity()
 			--local collisionbox = player:get_properties().collisionbox
 
 			local in_water = testwater(pos)
@@ -267,7 +268,7 @@ minetest.register_globalstep(function(dtime)
 			meta:set_int("in_water",in_water)
 
 
-			if meta:get_int("old_in_water") == 0 and meta:get_int("in_water") > 0 then
+			if meta:get_int("old_in_water") == 0 and meta:get_int("in_water") > 0 and vel.y < -1 then
 				player_splashy(player,pos)
 			end
 
