@@ -1,5 +1,5 @@
 # To do: (in order)
-for version 0.02
+for version 0.03
 
 change collision box height on sneak
 
@@ -20,8 +20,3 @@ mobs
 farming
 
 doors and trap doors
-
-
-for version 0.01
-
-increase bobbing
