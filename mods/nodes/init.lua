@@ -62,6 +62,15 @@ minetest.register_node("nodes:sand",
   sounds = sounds.stone(),
 }
 )
+minetest.register_node("nodes:sugarcane", {
+	description = "Sugar Cane",
+	tiles = {"sugarcane.png"},
+  drawtype = "plantlike",
+  paramtype = "light",
+  sunlight_propagates = true,
+	groups = {flammable=1,attached_node=1,instant=1},
+	sounds = sounds.leaves(),
+})
 
 local water_viscocity = 1
 minetest.register_node("nodes:water",
@@ -269,6 +278,8 @@ minetest.register_node("nodes:leaves", {
 	description = "Wood",
 	tiles = {"default_leaves.png"},
   drawtype = "allfaces_optional",
+  paramtype = "light",
+  sunlight_propagates = true,
 	groups = {leaves = 1,flammable=1,leafdecay_drop = 1},
   on_timer = function(pos, elapsed)
     leafdecay_on_timer(pos)

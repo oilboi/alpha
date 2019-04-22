@@ -37,7 +37,7 @@ core.register_entity(":__builtin:item", {
 	itemstring = "",
 	moving_state = true,
 	slippery_state = false,
-	age = 0,
+	age = collection_age,
 
 	set_item = function(self, item)
 		local stack = ItemStack(item or self.itemstring)

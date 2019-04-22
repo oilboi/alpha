@@ -26,6 +26,11 @@ minetest.register_craftitem("items:diamond", {
 	inventory_image = "diamond.png",
 	groups = {gold = 1},
 })
+minetest.register_craftitem("items:paper", {
+	description = "Paper",
+	inventory_image = "default_paper.png",
+	groups = {paper = 1},
+})
 
 minetest.register_craftitem("items:apple", {
 	description = "Apple",

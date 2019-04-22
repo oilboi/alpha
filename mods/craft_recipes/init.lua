@@ -27,6 +27,21 @@ minetest.register_craft({
 		{"","items:iron"},
 	}
 })
+minetest.register_craft({
+	output = "items:paper",
+	recipe = {
+		{"nodes:sugarcane","nodes:sugarcane","nodes:sugarcane"},
+	}
+})
+
+minetest.register_craft({
+	output = "painting:painting_inv",
+	recipe = {
+		{"items:stick","items:stick","items:stick"},
+		{"items:stick","items:paper","items:stick"},
+		{"items:stick","items:stick","items:stick"},
+	}
+})
 
 --register recipes for tools
 local outputs = {"wood","stone","iron","gold","diamond"}

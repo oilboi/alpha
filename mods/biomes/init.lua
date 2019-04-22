@@ -48,6 +48,21 @@ minetest.register_decoration({
 		rotation = "random",
 })
 
+-- sugar cane that spawns next to water
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = "nodes:grass",
+	sidelen = 16,
+	fill_ratio = 0.1,
+	biomes = {"grass"},
+	decoration = "nodes:sugarcane",
+	height = 3,
+	height_max = 6,
+	y_min = 1,
+	y_max = 1,
+	spawn_by = "nodes:water",
+	num_spawn_by = 1,
+})
 
 --ores
 

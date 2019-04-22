@@ -109,6 +109,7 @@ function minetest.item_drop(itemstack, dropper, pos)
 			dir.z = vel.z + (dir.z * 2.9)
 			obj:set_velocity(dir)
 			obj:get_luaentity().dropped_by = dropper:get_player_name()
+			obj:get_luaentity().age = 0 --reset the age if thrown
 		end
 		return itemstack
 	end
