@@ -42,3 +42,6 @@ https://freesound.org/people/josepharaoh99/sounds/353067/
 
 eat_complete
 https://freesound.org/people/Reitanna/sounds/232453/
+
+door_open door_close
+https://freesound.org/people/fresco/sounds/35617/

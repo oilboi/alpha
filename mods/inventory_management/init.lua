@@ -47,6 +47,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         for i = 1,inv:get_stack("craft", i):get_count() do
           local object = minetest.add_item(pos,item.." 1 "..wear)
           object:set_velocity({x=(look.x*math.random(1,2))+(math.random()*math.random(-1,1)), y=((look.y*math.random(3,5))*math.random())+math.random(1,2), z=(look.z*math.random(1,2))+(math.random()*math.random(-1,1))})
+          object:get_luaentity().age = 0 - math.random()
         end
         --remove the item from inventory
         inv:set_stack("craft", i, "")
