@@ -10,3 +10,10 @@ minetest.settings:set("dedicated_server_step", 0)
 
 --set the liquid update fast for nice flow
 minetest.settings:set("liquid_update", 0.3)
+
+
+--this only works for singleplayer
+
+--set the bobbing
+minetest.settings:set("view_bobbing_amount", 2.0)
+minetest.settings:set("fall_bobbing_amount", 2.0)

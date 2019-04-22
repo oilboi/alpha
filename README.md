@@ -24,6 +24,4 @@ doors and trap doors
 
 for version 0.01
 
-add the version to the top left
-
 increase bobbing
