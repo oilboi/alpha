@@ -153,3 +153,41 @@ minetest.register_craft({
 		{"group:wood","group:wood", "group:wood"}
 	}
 })
+
+--fuels
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:wood",
+	burntime = 30,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:tree",
+	burntime = 60,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:leaves",
+	burntime = 10,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:stick",
+	burntime = 10,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:paper",
+	burntime = 10,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:coal",
+	burntime = 240,
+})

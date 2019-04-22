@@ -68,7 +68,7 @@ minetest.register_node("nodes:sugarcane", {
   drawtype = "plantlike",
   paramtype = "light",
   sunlight_propagates = true,
-	groups = {flammable=1,attached_node=1,instant=1},
+	groups = {flammable=1,attached_node=1,instant=1,leaves=1},
 	sounds = sounds.leaves(),
   walkable = false,
   selection_box = {
@@ -277,7 +277,7 @@ minetest.register_node("nodes:tree", {
   after_destruct = function(pos, oldnode)
 		leafdecay_after_destruct(pos, oldnode)
 	end,
-	groups = {wood = 1,flammable=2},
+	groups = {wood = 1,flammable=2,tree=1},
 	sounds = sounds.wood(),
 })
 
