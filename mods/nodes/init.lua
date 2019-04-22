@@ -284,6 +284,8 @@ minetest.register_node("nodes:tree", {
 minetest.register_node("nodes:leaves", {
 	description = "Wood",
 	tiles = {"default_leaves.png"},
+  walkable = false,
+  climbable = true,
   drawtype = "allfaces_optional",
   paramtype = "light",
   sunlight_propagates = true,
