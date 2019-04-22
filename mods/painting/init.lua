@@ -24,19 +24,23 @@ minetest.register_craftitem("painting:painting_inv", {
 	inventory_image = "painting_inv.png",
 	on_place = function(itemstack, placer, pointed_thing)
     --don't let players place on wallmounted nodes
-    if minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].paramtype2 == "wallmounted" then
-      return
-    end
+    if minetest.registered_nodes[minetest.get_node(pointed_thing.under).name].paramtype2 == "wallmounted" then return end
     --get wallmounted direction
 		local wdir = minetest.dir_to_wallmounted(vector.subtract(pointed_thing.under,pointed_thing.above))
     --only let players place paintings on wall vertically
-    if wdir <= 1 then
-      return
-    end
+    if wdir <= 1 then return end
     --select a painting
     local painting = "painting:painting_"..math.random(1,number_of_paintings)
     --place the painting
-    minetest.item_place(ItemStack(painting), placer, pointed_thing, wdir)
+    local test,success = minetest.item_place(ItemStack(painting), placer, pointed_thing, wdir)
+    --if placing fails then don't do anything
+    if not success then return end
+    --play the wood sound
+    minetest.sound_play(sounds.wood().place.name, {
+      pos = pointed_thing.above,
+      gain = sounds.wood().place.gain,
+    })
+    --if success then take
 		itemstack:take_item()
 		return(itemstack)
 	end,

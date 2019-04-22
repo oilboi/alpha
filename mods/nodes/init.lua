@@ -70,6 +70,13 @@ minetest.register_node("nodes:sugarcane", {
   sunlight_propagates = true,
 	groups = {flammable=1,attached_node=1,instant=1},
 	sounds = sounds.leaves(),
+  walkable = false,
+  selection_box = {
+		type = "fixed",
+		fixed = {
+				{-0.35, -0.5, -0.35, 0.35, 0.5, 0.35},
+			},
+		},
 })
 
 local water_viscocity = 1
