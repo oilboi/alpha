@@ -30,7 +30,7 @@ for i = 1,table.getn(groups) do
                   -- For example:
                   wood = { times = timey,uses = i*5, maxlevel = i},
               },
-              damage_groups = {groupname = damage},
+              ----damage_groups = {groupname = damage},
             },
 
           after_use = function(itemstack, user, node, digparams)
@@ -57,7 +57,7 @@ for i = 1,table.getn(groups) do
                   stone = {times = timey,
                            uses = i*5, maxlevel = i},
               },
-              damage_groups = {groupname = damage},
+              --damage_groups = {groupname = damage},
           },
 
           after_use = function(itemstack, user, node, digparams)
@@ -82,7 +82,7 @@ for i = 1,table.getn(groups) do
                   dirt = {times = timey,
                            uses = i*5, maxlevel = i},
               },
-              damage_groups = {groupname = damage},
+              --damage_groups = {groupname = damage},
           },
 
           after_use = function(itemstack, user, node, digparams)
@@ -112,7 +112,7 @@ for i = 1,table.getn(groups) do
                   stone = {times = timey,
                          uses = i*15, maxlevel = i},
               },
-              damage_groups = {groupname = damage},
+              --damage_groups = {groupname = damage},
           },
 
           after_use = function(itemstack, user, node, digparams)
@@ -139,7 +139,7 @@ minetest.register_tool("tools:shears",
                 leaves = {times = {[1] = 0.1, [2] = 0.05},
                          uses = 40, maxlevel = 2},
             },
-            damage_groups = {groupname = damage},
+            --damage_groups = {groupname = damage},
         },
 
         after_use = function(itemstack, user, node, digparams)
