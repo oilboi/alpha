@@ -40,6 +40,8 @@ minetest.register_node("torch:torch", {
 		local under = pointed_thing.under
 		local node = minetest.get_node(under)
 		local def = minetest.registered_nodes[node.name]
+
+		-----FIX THIS TO DETECT SHIFT
 		if def and def.on_rightclick then
 			return def.on_rightclick(under, node, placer, itemstack,
 				pointed_thing) or itemstack, false
