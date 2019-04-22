@@ -1,5 +1,4 @@
 -- you can change collsion box height using player:set_properties({collsionbox[5]}) or 2
-
 sneak_table = {}
 minetest.register_on_joinplayer(function(player)
   sneak_table[player:get_player_name()] = false
