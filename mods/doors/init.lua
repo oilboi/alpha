@@ -487,11 +487,6 @@ end
 function doors.trapdoor_toggle(pos, node, clicker)
 	node = node or minetest.get_node(pos)
 
-	replace_old_owner_information(pos)
-
-	if clicker and not default.can_interact_with_node(clicker, pos) then
-		return false
-	end
 
 	local def = minetest.registered_nodes[node.name]
 
@@ -697,7 +692,7 @@ function doors.register_fencegate(name, def)
 	local fence_closed = table.copy(fence)
 	fence_closed.mesh = "doors_fencegate_closed.obj"
 	fence_closed.gate = name .. "_open"
-	fence_closed.sound = "door_close"
+	fence_closed.sound = "door_open"
 	fence_closed.collision_box = {
 		type = "fixed",
 		fixed = {-1/2, -1/2, -1/4, 1/2, 1/2, 1/4},
@@ -726,31 +721,31 @@ function doors.register_fencegate(name, def)
 	})
 end
 
-doors.register_fencegate("doors:gate_wood", {
-	description = "Apple Wood Fence Gate",
+doors.register_fencegate("doors:gate", {
+	description = "Fence Gate",
 	texture = "default_wood.png",
-	material = "default:wood",
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2}
+	material = "nodes:wood",
+	groups = {wood = 1, flammable = 1, door = 1},
 })
 
-doors.register_fencegate("doors:gate_acacia_wood", {
-	description = "Acacia Wood Fence Gate",
-	texture = "default_acacia_wood.png",
-	material = "default:acacia_wood",
-	groups = {choppy = 2, oddly_breakable_by_hand = 2, flammable = 2}
-})
 
 
 ----fuels----
 
 minetest.register_craft({
 	type = "fuel",
+	recipe = "doors:gate",
+	burntime = 15,
+})
+
+minetest.register_craft({
+	type = "fuel",
 	recipe = "doors:trapdoor",
-	burntime = 7,
+	burntime = 20,
 })
 
 minetest.register_craft({
 	type = "fuel",
 	recipe = "doors:door",
-	burntime = 14,
+	burntime = 25,
 })
