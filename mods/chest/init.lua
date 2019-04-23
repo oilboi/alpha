@@ -36,20 +36,6 @@ function chest.get_chest_formspec(pos)
 	return formspec
 end
 
-function chest.chest_lid_obstructed(pos)
-	local above = {x = pos.x, y = pos.y + 1, z = pos.z}
-	local def = minetest.registered_nodes[minetest.get_node(above).name]
-	-- allow ladders, signs, wallmounted things and torches to not obstruct
-	if def and
-			(def.drawtype == "airlike" or
-			def.drawtype == "signlike" or
-			def.drawtype == "torchlike" or
-			(def.drawtype == "nodebox" and def.paramtype2 == "wallmounted")) then
-		return false
-	end
-	return true
-end
-
 function chest.chest_lid_close(pn)
 	local chest_open_info = chest.open_chests[pn]
 	local pos = chest_open_info.pos
@@ -126,11 +112,9 @@ function chest.register_chest(name, d)
 			max_hear_distance = 30,
       pitch = math.random(80,110)/100
     })
-		if not chest.chest_lid_obstructed(pos) then
-			minetest.swap_node(pos, {
-					name = "chest:" .. name .. "_open",
-					param2 = node.param2 })
-		end
+		minetest.swap_node(pos, {
+				name = "chest:" .. name .. "_open",
+				param2 = node.param2 })
 		minetest.after(0.2, minetest.show_formspec,
 				clicker:get_player_name(),
 				"chest:chest", chest.get_chest_formspec(pos))
