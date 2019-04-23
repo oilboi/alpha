@@ -19,6 +19,8 @@ Player animation (moving head)
 
 ## for version 0.03
 
+make sugarcane grow near water
+
 make grass spread in sunlight - balance abm to make it happen slowly
 
 fire improvements - lava burns, fire, set a particle for flame and set node timer to 1 second before deletion, throw  item up
@@ -26,8 +28,6 @@ fire improvements - lava burns, fire, set a particle for flame and set node time
 make items float
 
 change collision box height on sneak
-
-chest
 
 desert biome
 
@@ -44,7 +44,7 @@ doors and trap doors
 
 biome
 
-papyrus
+sugarcane
 
 furnace
 
@@ -59,3 +59,5 @@ boats
 hurt sounds
 
 aesthetics
+
+chest
