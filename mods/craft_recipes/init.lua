@@ -92,14 +92,21 @@ for i = 1,table.getn(outputs) do
   })
 end
 
-
+minetest.register_craft({
+	output = "chest:chest",
+	recipe = {
+		{"nodes:wood", "nodes:wood", "nodes:wood"},
+		{"nodes:wood", "",           "nodes:wood"},
+		{"nodes:wood", "nodes:wood", "nodes:wood"}
+	}
+})
 
 --cooking
 minetest.register_craft({
 	output = "furnace:furnace",
 	recipe = {
 		{"nodes:cobble", "nodes:cobble", "nodes:cobble"},
-		{"nodes:cobble", "", "nodes:cobble"},
+		{"nodes:cobble", "",             "nodes:cobble"},
 		{"nodes:cobble", "nodes:cobble", "nodes:cobble"}
 	}
 })
