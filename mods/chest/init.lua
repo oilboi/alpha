@@ -1,4 +1,28 @@
-chest = {}
+--this is a hack of default minetest game chest.lua
+
+-- throw items everywhere when inventory is mined
+local function throw_inventory(pos, inventory)
+	local inv = minetest.get_meta(pos):get_inventory()
+  --go through lists
+  local list = inv:get_list(inventory)
+  --go through table within lists
+  for i,g in pairs(list) do
+    --remove from inventory and drop the item
+    local item = inv:get_stack(inventory, i):get_name()
+    local wear = inv:get_stack(inventory, i):get_wear()
+    --add as many items as in the stack
+    for i = 1,inv:get_stack(inventory, i):get_count() do
+      local object = minetest.add_item(pos,item.." 1 "..wear)
+			object:set_velocity({x=math.random(-7,7)*math.random(), y=math.random(5,7)*math.random(), z=math.random(-7,7)*math.random()})
+      object:get_luaentity().age = 0+math.random()
+    end
+    --remove the item from inventory
+    inv:set_stack(inventory, i, "")
+  end
+end
+
+
+local chest = {}
 
 function chest.get_chest_formspec(pos)
 	local spos = pos.x .. "," .. pos.y .. "," .. pos.z
@@ -42,7 +66,12 @@ function chest.chest_lid_close(pn)
 	local node = minetest.get_node(pos)
 	minetest.after(0.2, minetest.swap_node, pos, { name = "chest:" .. swap,
 			param2 = node.param2 })
-	minetest.sound_play(sound, {gain = 0.3, pos = pos, max_hear_distance = 10})
+	minetest.sound_play(sound,{
+    gain = 0.3,
+    pos = pos,
+    max_hear_distance = 30,
+    pitch = math.random(80,110)/100
+  })
 end
 
 chest.open_chests = {}
@@ -80,141 +109,33 @@ function chest.register_chest(name, d)
 	def.legacy_facedir_simple = true
 	def.is_ground_content = false
 
-	if def.protected then
-		def.on_construct = function(pos)
-			local meta = minetest.get_meta(pos)
-			meta:set_string("infotext", "Locked Chest")
-			meta:set_string("owner", "")
-			local inv = meta:get_inventory()
-			inv:set_size("main", 8*4)
-		end
-		def.after_place_node = function(pos, placer)
-			local meta = minetest.get_meta(pos)
-			meta:set_string("owner", placer:get_player_name() or "")
-			meta:set_string("infotext", "Locked Chest (owned by " ..
-					meta:get_string("owner") .. ")")
-		end
-		def.can_dig = function(pos,player)
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			return inv:is_empty("main") and
-					can_interact_with_node(player, pos)
-		end
-		def.allow_metadata_inventory_move = function(pos, from_list, from_index,
-				to_list, to_index, count, player)
-			if not can_interact_with_node(player, pos) then
-				return 0
-			end
-			return count
-		end
-		def.allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-			if not can_interact_with_node(player, pos) then
-				return 0
-			end
-			return stack:get_count()
-		end
-		def.allow_metadata_inventory_take = function(pos, listname, index, stack, player)
-			if not can_interact_with_node(player, pos) then
-				return 0
-			end
-			return stack:get_count()
-		end
-		def.on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-			if not can_interact_with_node(clicker, pos) then
-				return itemstack
-			end
 
-			minetest.sound_play(def.sound_open, {gain = 0.3,
-					pos = pos, max_hear_distance = 10})
-			if not chest.chest_lid_obstructed(pos) then
-				minetest.swap_node(pos,
-						{ name = "chest:" .. name .. "_open",
-						param2 = node.param2 })
-			end
-			minetest.after(0.2, minetest.show_formspec,
-					clicker:get_player_name(),
-					"chest:chest", chest.get_chest_formspec(pos))
-			chest.open_chests[clicker:get_player_name()] = { pos = pos,
-					sound = def.sound_close, swap = name }
-		end
-		def.on_blast = function() end
-		def.on_key_use = function(pos, player)
-			local secret = minetest.get_meta(pos):get_string("key_lock_secret")
-			local itemstack = player:get_wielded_item()
-			local key_meta = itemstack:get_meta()
+	def.on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		inv:set_size("main", 8*4)
+	end
+  def.on_destruct = function(pos)
+    throw_inventory(pos, "main")
+  end
 
-			if itemstack:get_metadata() == "" then
-				return
-			end
-
-			if key_meta:get_string("secret") == "" then
-				key_meta:set_string("secret", minetest.parse_json(itemstack:get_metadata()).secret)
-				itemstack:set_metadata("")
-			end
-
-			if secret ~= key_meta:get_string("secret") then
-				return
-			end
-
-			minetest.show_formspec(
-				player:get_player_name(),
-				"chest:chest_locked",
-				chest.get_chest_formspec(pos)
-			)
+	def.on_rightclick = function(pos, node, clicker)
+		minetest.sound_play(def.sound_open, {
+      gain = 0.3,
+      pos = pos,
+			max_hear_distance = 30,
+      pitch = math.random(80,110)/100
+    })
+		if not chest.chest_lid_obstructed(pos) then
+			minetest.swap_node(pos, {
+					name = "chest:" .. name .. "_open",
+					param2 = node.param2 })
 		end
-		def.on_skeleton_key_use = function(pos, player, newsecret)
-			local meta = minetest.get_meta(pos)
-			local owner = meta:get_string("owner")
-			local pn = player:get_player_name()
-
-			-- verify placer is owner of lockable chest
-			if owner ~= pn then
-				minetest.record_protection_violation(pos, pn)
-				minetest.chat_send_player(pn, "You do not own this chest.")
-				return nil
-			end
-
-			local secret = meta:get_string("key_lock_secret")
-			if secret == "" then
-				secret = newsecret
-				meta:set_string("key_lock_secret", secret)
-			end
-
-			return secret, "a locked chest", owner
-		end
-	else
-		def.on_construct = function(pos)
-			local meta = minetest.get_meta(pos)
-			meta:set_string("infotext", "Chest")
-			local inv = meta:get_inventory()
-			inv:set_size("main", 8*4)
-		end
-		def.can_dig = function(pos,player)
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			return inv:is_empty("main")
-		end
-		def.on_rightclick = function(pos, node, clicker)
-			minetest.sound_play(def.sound_open, {gain = 0.3, pos = pos,
-					max_hear_distance = 10})
-			if not chest.chest_lid_obstructed(pos) then
-				minetest.swap_node(pos, {
-						name = "chest:" .. name .. "_open",
-						param2 = node.param2 })
-			end
-			minetest.after(0.2, minetest.show_formspec,
-					clicker:get_player_name(),
-					"chest:chest", chest.get_chest_formspec(pos))
-			chest.open_chests[clicker:get_player_name()] = { pos = pos,
-					sound = def.sound_close, swap = name }
-		end
-		def.on_blast = function(pos)
-			local drops = {}
-			get_inventory_drops(pos, "main", drops)
-			drops[#drops+1] = "chest:" .. name
-			minetest.remove_node(pos)
-			return drops
-		end
+		minetest.after(0.2, minetest.show_formspec,
+				clicker:get_player_name(),
+				"chest:chest", chest.get_chest_formspec(pos))
+		chest.open_chests[clicker:get_player_name()] = { pos = pos,
+				sound = def.sound_close, swap = name }
 	end
 
 	def.on_metadata_inventory_move = function(pos, from_list, from_index,
@@ -264,23 +185,6 @@ function chest.register_chest(name, d)
 	minetest.register_node("chest:" .. name, def_closed)
 	minetest.register_node("chest:" .. name .. "_open", def_opened)
 
-	-- convert old chests to this new variant
-	minetest.register_lbm({
-		label = "update chests to opening chests",
-		name = "chest:upgrade_" .. name .. "_v2",
-		nodenames = {"chest:" .. name},
-		action = function(pos, node)
-			local meta = minetest.get_meta(pos)
-			meta:set_string("formspec", nil)
-			local inv = meta:get_inventory()
-			local list = inv:get_list("chest:chest")
-			if list then
-				inv:set_size("main", 8*4)
-				inv:set_list("main", list)
-				inv:set_list("chest:chest", nil)
-			end
-		end
-	})
 end
 
 chest.register_chest("chest", {

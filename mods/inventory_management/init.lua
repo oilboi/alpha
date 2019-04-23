@@ -2,6 +2,8 @@
 minetest.register_on_dieplayer(function(player)
   local inv = player:get_inventory()
   local list_table = inv:get_lists()
+  local pos = player:get_pos()
+  pos.y = pos.y + 1.5
   --go through lists
   for list_name in pairs(list_table) do
     if list_name == "main" or list_name == "craft" then
@@ -11,8 +13,6 @@ minetest.register_on_dieplayer(function(player)
         --remove from inventory and drop the item
         local item = inv:get_stack(list_name, i):get_name()
         local wear = inv:get_stack(list_name, i):get_wear()
-        local pos = player:get_pos()
-        pos.y = pos.y + 1.5
         --add as many items as in the stack
         for i = 1,inv:get_stack(list_name, i):get_count() do
           local object = minetest.add_item(pos,item.." 1 "..wear)
