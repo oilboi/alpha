@@ -6,11 +6,11 @@
 
 local function active_formspec(fuel_percent, item_percent)
 	return "size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_furnace.png]"..
+	--"background[-0.19,-0.25;9.41,9.49;crafting_inventory_furnace.png]"..
 	--mcl_vars.inventory_header..
 	--"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	"list[current_player;main;0,7.74;9,1;]"..
+	"list[current_player;main;0,4.85;9,1;]" ..
+  "list[current_player;main;0,6.08;9,3;9]" ..
 	--"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
@@ -29,11 +29,11 @@ local function active_formspec(fuel_percent, item_percent)
 end
 
 local inactive_formspec = "size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_furnace.png]"..
+	--"background[-0.19,-0.25;9.41,9.49;crafting_inventory_furnace.png]"..
 	--mcl_vars.inventory_header..
 	--"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	"list[current_player;main;0,7.74;9,1;]"..
+	"list[current_player;main;0,4.85;9,1;]" ..
+  "list[current_player;main;0,6.08;9,3;9]" ..
 	--"label[2.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Furnace"))).."]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
 	"list[current_name;fuel;2.75,2.5;1,1;]"..

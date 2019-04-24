@@ -293,7 +293,22 @@ minetest.register_node("nodes:leaves", {
   on_timer = function(pos, elapsed)
     leafdecay_on_timer(pos)
   end,
-  drop = "items:apple",
+  drop = {
+		max_items = 1,
+		items = {
+			{
+				-- player will get sapling with 1/20 chance
+				items = {'items:apple'},
+				rarity = 20,
+			},
+			{
+				-- player will get leaves only if he get no saplings,
+				-- this is because max_items is 1
+				items = {'nodes:leaves'},
+        rarity = 20,
+			}
+		}
+	},
 	sounds = sounds.leaves(),
 })
 

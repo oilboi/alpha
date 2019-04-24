@@ -13,10 +13,10 @@ minetest.register_on_joinplayer(function(player)
   --gui formspec
   local form = "size[9,8.75]"..
   --texture
-  "background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]"..
+  --"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]"..
   -- main gui
-  "list[current_player;main;0,4.5;9,3;9]"..
-  "list[current_player;main;0,7.74;9,1;]"..
+  "list[current_player;main;0,4.85;9,1;]" ..
+  "list[current_player;main;0,6.08;9,3;9]" ..
   --craft gui
   "list[current_player;craft;4,1;2,2]"..
   "list[current_player;craftpreview;7,1.5;1,1;]"
