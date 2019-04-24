@@ -345,7 +345,7 @@ minetest.register_node("furnace:furnace_active", {
 	paramtype = "light",
 	light_source = 13,
 	drop = "furnace:furnace",
-	groups = {pickaxey=1, container=4, deco_block=1, not_in_creative_inventory=1, material_stone=1},
+	groups = {stone=1, container=4},
 	is_ground_content = false,
 	sounds = sounds.stone(),
 	on_timer = furnace_node_timer,
@@ -374,11 +374,68 @@ minetest.register_node("furnace:furnace_active", {
 	on_rotate = on_rotate,
 })
 
-minetest.register_craft({
-	output = "furnace:furnace",
-	recipe = {
-		{ "nodes:cobble", "nodes:cobble", "nodes:cobble" },
-		{ "nodes:cobble", "", "nodes:cobble" },
-		{ "nodes:cobble", "nodes:cobble", "nodes:cobble" },
-	}
+minetest.register_abm({
+  label = "furnace effects",
+	nodenames = {"furnace:furnace_active"},
+	interval = 1,
+	chance = 1,
+	action = function(pos,node)
+		--get the facedir (param2)
+		local param2 = minetest.get_node(pos).param2
+		--modify it to usable vector in world
+		local dir = minetest.facedir_to_dir(param2)
+		--adjust it to right in front of chest
+		local worldpos = vector.subtract(pos,vector.divide(dir,1.7))
+		worldpos.y = worldpos.y - 0.05
+
+
+		minetest.add_particlespawner({
+	      amount = 10,
+	      time = 1,
+	      minpos = table.copy(worldpos),
+	      maxpos = table.copy(worldpos),
+	      minvel = {x=0, y=0.1, z=0},
+	      maxvel = {x=0, y=0.3, z=0},
+	      minacc = {x=-0.3, y=0.5, z=-0.3},
+	      maxacc = {x=0.3,  y=2.0, z=0.3},
+	      minexptime = 0.5,
+	      maxexptime = 1.5,
+	      minsize = 2,
+	      maxsize = 4,
+
+	      collisiondetection = true,
+	      collision_removal = false,
+
+	      object_collision = true,
+
+	      vertical = false,
+	      -- If true face player using y axis only
+	      texture = "puff.png",
+	  })
+
+		minetest.add_particlespawner({
+	      amount = 1,
+	      time = 0.001,
+	      minpos = table.copy(worldpos),
+	      maxpos = table.copy(worldpos),
+	      minvel = {x=0,y=0,z=0},
+	      maxvel = {x=0,y=0,z=0},
+	      minacc = {x=0,y=0,z=0},
+	      maxacc = {x=0,y=0,z=0},
+	      minexptime = 1,
+	      maxexptime = 1,
+	      minsize = 4,
+	      maxsize = 6,
+
+	      collisiondetection = true,
+	      collision_removal = false,
+
+	      object_collision = true,
+
+	      vertical = false,
+	      -- If true face player using y axis only
+	      texture = "flame.png",
+	  })
+
+	end,
 })
