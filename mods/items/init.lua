@@ -39,3 +39,9 @@ minetest.register_craftitem("items:apple", {
 	food = 1,
 	range = 0,
 })
+
+minetest.register_craftitem("items:wheat", {
+	description = "Wheat",
+	inventory_image = "wheat.png",
+	groups = {food = 1, flammable = 2},
+})
