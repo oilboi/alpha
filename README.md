@@ -44,8 +44,6 @@ desert biome
 
 weather
 
-farming
-
 
 
 
@@ -55,6 +53,8 @@ farming
 
 
 ## Added
+
+farming
 
 make sugarcane grow near water
 
