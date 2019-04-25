@@ -130,6 +130,11 @@ for i = 0,7 do
   		}
   	}
   end
+
+  --do this to correct stage 0 selection box!
+  local q = i
+  if q == 0 then q = 1 end
+
   minetest.register_node(":nodes:wheat_"..i, {
   	description = "Wheat Stage "..i,
   	tiles = {"mcl_farming_wheat_stage_"..i..".png"},
@@ -143,7 +148,7 @@ for i = 0,7 do
     selection_box = {
   		type = "fixed",
   		fixed = {
-  				{-0.35, -0.5, -0.35, 0.35, -0.5+(i*0.1429), 0.35}, --try to get pixel perfect selection box
+  				{-0.35, -0.5, -0.35, 0.35, -0.5+(q*0.1429), 0.35}, --try to get pixel perfect selection box
   			},
   		},
   })
