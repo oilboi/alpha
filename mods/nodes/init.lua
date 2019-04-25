@@ -291,10 +291,11 @@ minetest.register_node("nodes:leaves", {
   sunlight_propagates = true,
 	groups = {leaves = 1,flammable=1,leafdecay_drop = 1},
   on_timer = function(pos, elapsed)
-    leafdecay_on_timer(dump(pos))
+    leafdecay_on_timer(pos)
   end,
   --make leaves drop leaves when mined with shears
   after_dig_node = function(pos, oldnode, oldmetadata, digger)
+    print("test")
     if digger:get_wielded_item():to_string() ~= "" and digger:get_wielded_item():to_table().name == "tools:shears" then
       local obj = minetest.add_item(pos, "nodes:leaves")
       obj:get_luaentity().age = collection_age - 0.35 --make sure collected on dig - 0.5 for aesthetics
