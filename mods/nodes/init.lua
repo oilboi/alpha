@@ -16,6 +16,20 @@ minetest.register_node("nodes:dry_farmland",
       {-0.5, -0.5, -0.5, 0.5, 0.4, 0.5},
     },
   },
+  on_construct = function(pos)
+    local timer = minetest.get_node_timer(pos)
+    if not timer:is_started() then
+			timer:start(math.random(5,30))
+		end
+  end,
+  --when the sugarcane timer expires try to find water near, if not, reset timer
+  on_timer = function(pos, elapsed)
+    if not minetest.find_node_near(pos, 2, "group:water") then
+  		minetest.set_node(pos,{name="nodes:dirt"})
+    else
+      minetest.set_node(pos,{name="nodes:wet_farmland"})
+  	end
+  end,
 }
 )
 minetest.register_node("nodes:wet_farmland",
@@ -32,6 +46,20 @@ minetest.register_node("nodes:wet_farmland",
       {-0.5, -0.5, -0.5, 0.5, 0.4, 0.5},
     },
   },
+  on_construct = function(pos)
+    local timer = minetest.get_node_timer(pos)
+    if not timer:is_started() then
+			timer:start(math.random(5,30))
+		end
+  end,
+  --when the sugarcane timer expires try to find water near, if not, reset timer
+  on_timer = function(pos, elapsed)
+    if not minetest.find_node_near(pos, 2, "group:water") then
+  		minetest.set_node(pos,{name="nodes:dry_farmland"})
+    else
+      minetest.set_node(pos,{name="nodes:wet_farmland"})
+  	end
+  end,
 }
 )
 

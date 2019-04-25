@@ -18,6 +18,12 @@ fix bug with regular 4 square craft not working after opening craft table
 
 magic wand?
 
+make land biome above 0 and the underwater biome below 0
+
+coral? reefs? seaweed? underwater treasure+ships?
+
+houses that spawn with mobs
+
 
 
 ## for version 0.03
