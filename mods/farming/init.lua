@@ -26,6 +26,18 @@ minetest.register_node(":nodes:dry_farmland",
   on_timer = function(pos, elapsed)
     if not minetest.find_node_near(pos, 2, "group:water") then
   		minetest.set_node(pos,{name="nodes:dirt"})
+      --remove the crop above
+      local above_node = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name
+      local nodely = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
+      if minetest.get_item_group(above_node,"farming") > 0 then
+        minetest.node_dig({x=pos.x,y=pos.y+1,z=pos.z}, nodely, nil)
+        minetest.sound_play(sounds.leaves().place.name, {
+          pos = {x=pos.x,y=pos.y+1,z=pos.z},
+          max_hear_distance = 100,
+          gain = 1.0,
+          pitch = math.random(70,100)/100,
+        })
+      end
     else
       minetest.set_node(pos,{name="nodes:wet_farmland"})
   	end
@@ -54,6 +66,7 @@ minetest.register_node(":nodes:wet_farmland",
   end,
   --when the wet farmland timer expires try to find water near, if not, reset timer
   on_timer = function(pos, elapsed)
+    --remove the crop above
     local above_node = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name
     local nodely = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
     if not minetest.find_node_near(pos, 2, "group:water") then
