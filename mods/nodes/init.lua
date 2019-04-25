@@ -19,6 +19,32 @@ minetest.register_node("nodes:cobble",
   sounds = sounds.stone(),
 }
 )
+minetest.register_node("nodes:tall_grass", {
+	description = "Tall Grass",
+	tiles = {"tall_grass.png"},
+  drawtype = "plantlike",
+  paramtype = "light",
+  sunlight_propagates = true,
+	groups = {flammable=1,instant=1,leaves=1},
+	sounds = sounds.leaves(),
+  walkable = false,
+  selection_box = {
+		type = "fixed",
+		fixed = {
+				{-0.35, -0.5, -0.35, 0.35, 0.5, 0.35},
+			},
+		},
+  drop = {
+		max_items = 1,
+		items = {
+			{
+				items = {'items:wheat_seeds'},
+        rarity = 20,
+			}
+		}
+	},
+}
+)
 
 local groups = {"coal","iron","gold","diamond"}
 local drops = {"items:coal","nodes:iron","nodes:gold","items:diamond"}

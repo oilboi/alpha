@@ -80,6 +80,20 @@ minetest.register_decoration({
 	num_spawn_by = 1,
 })
 
+
+-- tall grass
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = "nodes:grass",
+	sidelen = 16,
+	fill_ratio = 0.9,
+	biomes = {"grass"},
+	decoration = "nodes:tall_grass",
+	height = 1,
+	y_min = 1,
+	y_max = 5000,
+})
+
 --ores
 
 --coal
