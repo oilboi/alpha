@@ -19,8 +19,6 @@ Player animation (moving head)
 
 ## for version 0.03
 
-make leaves randomly drop nothing, leaves, apples, and sticks randomly
-
 make items stack (bring back regular minetest functionality)
 
 make sugarcane grow near water
@@ -48,6 +46,10 @@ doors and trap doors
 
 
 ## Added
+
+better inventory gui
+
+make leaves randomly drop nothing, leaves, apples, and sticks randomly
 
 biome
 

@@ -291,20 +291,26 @@ minetest.register_node("nodes:leaves", {
   sunlight_propagates = true,
 	groups = {leaves = 1,flammable=1,leafdecay_drop = 1},
   on_timer = function(pos, elapsed)
-    leafdecay_on_timer(pos)
+    leafdecay_on_timer(dump(pos))
+  end,
+  --make leaves drop leaves when mined with shears
+  after_dig_node = function(pos, oldnode, oldmetadata, digger)
+    if digger:get_wielded_item():to_string() ~= "" and digger:get_wielded_item():to_table().name == "tools:shears" then
+      local obj = minetest.add_item(pos, "nodes:leaves")
+      obj:get_luaentity().age = collection_age - 0.35 --make sure collected on dig - 0.5 for aesthetics
+      obj:set_velocity({x=math.random(-2,2)*math.random(), y=obj:get_velocity().y, z=math.random(-2,2)*math.random()})
+    end
   end,
   drop = {
 		max_items = 1,
 		items = {
 			{
-				-- player will get sapling with 1/20 chance
+				-- player will get apple with 1/20 chance
 				items = {'items:apple'},
 				rarity = 20,
 			},
 			{
-				-- player will get leaves only if he get no saplings,
-				-- this is because max_items is 1
-				items = {'nodes:leaves'},
+				items = {'items:stick'},
         rarity = 20,
 			}
 		}
