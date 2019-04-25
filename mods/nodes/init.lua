@@ -2,6 +2,39 @@ print("initialized nodes")
 
 --this is all self explanitory
 
+minetest.register_node("nodes:dry_farmland",
+{
+  description = "Dry Farmland",
+  tiles = {"farmland_dry.png","default_dirt.png"},
+  groups = {farmland = 1,dry=1,dirt=1},
+  sounds = sounds.dirt(),
+  drop = "nodes:dirt",
+  drawtype = "nodebox",
+  node_box = {
+    type = "fixed",
+    fixed = {
+      {-0.5, -0.5, -0.5, 0.5, 0.4, 0.5},
+    },
+  },
+}
+)
+minetest.register_node("nodes:wet_farmland",
+{
+  description = "Wet Farmland",
+  tiles = {"farmland_wet.png","default_dirt.png"},
+  groups = {farmland = 1,wet=1,dirt=1},
+  sounds = sounds.dirt(),
+  drop = "nodes:dirt",
+  drawtype = "nodebox",
+  node_box = {
+    type = "fixed",
+    fixed = {
+      {-0.5, -0.5, -0.5, 0.5, 0.4, 0.5},
+    },
+  },
+}
+)
+
 minetest.register_node("nodes:stone",
 {
   description = "Stone",

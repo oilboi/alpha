@@ -16,13 +16,13 @@ Player animation (moving head)
 
 fix bug with regular 4 square craft not working after opening craft table
 
+magic wand? 
+
 
 
 ## for version 0.03
 
 make items stack (bring back regular minetest functionality)
-
-make sugarcane grow near water
 
 make grass spread in sunlight - balance abm to make it happen slowly
 
@@ -47,6 +47,8 @@ farming
 
 
 ## Added
+
+make sugarcane grow near water
 
 doors and trap doors
 
