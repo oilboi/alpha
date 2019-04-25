@@ -62,13 +62,24 @@ minetest.register_node("nodes:sand",
   sounds = sounds.stone(),
 }
 )
+
+--copy minetest game's dig function for crops
+local sugarcane_dig_up = function(pos)
+  local pos2 = table.copy(pos)
+  pos2.y = pos2.y + 1
+  local node = minetest.get_node(pos2)
+  if node.name == "nodes:sugarcane" then
+    minetest.node_dig(pos2, node, nil)
+  end
+end
+
 minetest.register_node("nodes:sugarcane", {
 	description = "Sugar Cane",
 	tiles = {"sugarcane.png"},
   drawtype = "plantlike",
   paramtype = "light",
   sunlight_propagates = true,
-	groups = {flammable=1,attached_node=1,instant=1,leaves=1},
+	groups = {flammable=1,instant=1,leaves=1},
 	sounds = sounds.leaves(),
   walkable = false,
   selection_box = {
@@ -77,6 +88,37 @@ minetest.register_node("nodes:sugarcane", {
 				{-0.35, -0.5, -0.35, 0.35, 0.5, 0.35},
 			},
 		},
+  --when placed make the sugarcane start a timer to grow
+  on_construct = function(pos)
+    local timer = minetest.get_node_timer(pos)
+    if not timer:is_started() then
+			timer:start(math.random(25,300))
+		end
+  end,
+  --when the sugarcane timer expires try to find water near, if not, reset timer
+  on_timer = function(pos, elapsed)
+    if not minetest.find_node_near(pos, 6, "group:water") then
+  		return false
+  	end
+    --if can grow (air above) then grow, else restart timer
+    pos.y = pos.y + 1
+    if minetest.get_node(pos).name == "air" then
+      minetest.add_node(pos,{name="nodes:sugarcane"})
+    else
+      pos.y = pos.y - 1
+      local timer = minetest.get_node_timer(pos)
+      timer:start(math.random(25,300))
+    end
+  end,
+  --when destroyed check if there's sugarcane below and then restart timer
+  after_destruct = function(pos, oldnode)
+    sugarcane_dig_up(pos)
+    pos.y = pos.y - 1
+    local timer = minetest.get_node_timer(pos)
+    if minetest.get_node(pos).name == "nodes:sugarcane" then
+      timer:start(math.random(25,300))
+    end
+  end,
 })
 
 local water_viscocity = 1

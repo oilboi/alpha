@@ -14,6 +14,7 @@ bows and arrows
 
 Player animation (moving head)
 
+fix bug with regular 4 square craft not working after opening craft table
 
 
 
@@ -37,7 +38,7 @@ weather
 
 farming
 
-doors and trap doors
+
 
 
 
@@ -46,6 +47,8 @@ doors and trap doors
 
 
 ## Added
+
+doors and trap doors
 
 better inventory gui
 
