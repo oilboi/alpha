@@ -155,10 +155,25 @@ minetest.register_craftitem(":items:wheat_seeds", {
 	groups = {food = 1, flammable = 2},
 
   on_place = function(itemstack, placer, pointed_thing)
-    local pos = {x=pointed_thing.above.x,y=pointed_thing.above.y-1,z=pointed_thing.above.z}
-    local group = minetest.get_item_group(minetest.get_node(pointed_thing.under).name,"farmland")
-    if group > 0 then
-      minetest.add_node(pointed_thing.above,{name="nodes:wheat_0"})
+    --only let farmers farm pointing directly on top of the farmland
+    --ie, planting seeds
+    local compare = vector.subtract(pointed_thing.above,pointed_thing.under)
+    if compare.y ~= 1 then return end
+
+    --copy the under table
+    local undernode = table.copy(pointed_thing.under)
+    --then get if pointing at farmland
+    local groupunder = minetest.get_item_group(minetest.get_node(undernode).name,"farmland")
+    --then make sure that there's air above before planting
+    undernode.y = undernode.y + 1
+    local nodeabove = minetest.get_node(undernode).name
+
+    --now compare and plant if successful
+    if groupunder > 0 and nodeabove == "air" then
+      --reuse undernode because it's above
+      minetest.add_node(undernode,{name="nodes:wheat_0"})
+
+      --then take the item and success!
       itemstack:take_item()
       return(itemstack)
     end
