@@ -130,7 +130,7 @@ for i = 0,7 do
     selection_box = {
   		type = "fixed",
   		fixed = {
-  				{-0.5, -0.5, -0.5, 0.5, -0.5+(i*0.1429), 0.5}, --try to get pixel perfect selection box
+  				{-0.35, -0.5, -0.35, 0.35, -0.5+(i*0.1429), 0.35}, --try to get pixel perfect selection box
   			},
   		},
   })

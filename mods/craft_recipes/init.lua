@@ -179,6 +179,13 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "items:bread",
+	recipe = {
+		{"items:wheat","items:wheat","items:wheat"},
+	}
+})
+
 --fuels
 
 minetest.register_craft({
