@@ -18,7 +18,23 @@ minetest.register_biome({
 		node_riverbed = "nodes:sand",
 		depth_riverbed = 2,
 		y_max = 31000,
-		y_min = -100,
+		y_min = 1,
+		--heat_point = 92,
+		--humidity_point = 16,
+	}
+)
+--the underwater biome
+minetest.register_biome({
+		name = "underwater",
+		node_top = "nodes:sand",
+		depth_top = 1,
+		node_filler = "nodes:sand",
+		depth_filler = 4,
+		node_stone = "nodes:stone",
+		node_riverbed = "nodes:dirt",
+		depth_riverbed = 2,
+		y_max = 1,
+		y_min = -300,
 		--heat_point = 92,
 		--humidity_point = 16,
 	}
