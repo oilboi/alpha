@@ -16,11 +16,13 @@ Player animation (moving head)
 
 fix bug with regular 4 square craft not working after opening craft table
 
-magic wand? 
+magic wand?
 
 
 
 ## for version 0.03
+
+fix stairs
 
 make items stack (bring back regular minetest functionality)
 

@@ -84,6 +84,24 @@ for i = 1,table.getn(outputs) do
       {"", "items:stick", ""}
     }
   })
+	--hoes
+  minetest.register_craft({
+    output = "tools:"..outputs[i].."_hoe",
+    recipe = {
+      {inputs[i], inputs[i], ""},
+      {"", "items:stick", ""},
+      {"", "items:stick", ""}
+    }
+  })
+	--hoes inverse
+	minetest.register_craft({
+    output = "tools:"..outputs[i].."_hoe",
+    recipe = {
+      {"", inputs[i], inputs[i]},
+      {"", "items:stick", ""},
+      {"", "items:stick", ""}
+    }
+  })
   --paxels
   minetest.register_craft({
     output = "tools:"..outputs[i].."_paxel",

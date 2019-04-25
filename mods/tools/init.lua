@@ -92,6 +92,53 @@ for i = 1,table.getn(groups) do
       }
   )
 
+  minetest.register_tool("tools:"..groups[i].."_hoe",
+      {
+          description = groups[i]:gsub("^%l", string.upper).." Hoe",
+          groups = {wood = 1},
+          inventory_image = "farming_tool_"..groups[i].."hoe.png",
+          --wield_image = "farming_tool_"..groups[i].."hoe.png^[transform4",
+          liquids_pointable = false,
+          -- See "Tools" section
+          tool_capabilities = {
+              full_punch_interval = 1,
+              max_drop_level = 0,
+              groupcaps = {
+                  --emulate a shovel
+                  dirt = {times = timey,
+                           uses = i, maxlevel = i},
+              },
+              --damage_groups = {groupname = damage},
+          },
+          --acts like on rightclick (farming action)
+          on_place = function(itemstack, placer, pointed_thing)
+            local node = minetest.get_node(pointed_thing.under).name
+            if minetest.get_item_group(node,"dirt") > 0 then
+              --cancel if the node is farmland
+              if minetest.get_item_group(node,"farmland") > 0 then return end
+              --cancel if no air above
+              if minetest.get_node({x=pointed_thing.under.x,y=pointed_thing.under.y+1,z=pointed_thing.under.z}).name ~= "air" then return end
+              minetest.set_node(pointed_thing.under,{name="nodes:dry_farmland"})
+              minetest.sound_play(sounds.dirt().place.name, {
+                pos = placer:get_pos(),
+                max_hear_distance = 100,
+                gain = 1.0,
+                pitch = math.random(70,100)/100,
+              })
+              --call the tool break function
+              tool_break(itemstack, placer, pointed_thing.under, {wear=(5-itemstack:get_tool_capabilities().groupcaps.dirt.uses)*500})
+              return(itemstack)
+            end
+          end,
+
+
+          after_use = function(itemstack, user, node, digparams)
+              tool_break(itemstack, user, node, digparams)
+          end,
+
+      }
+  )
+
   minetest.register_tool("tools:"..groups[i].."_paxel",
       {
           description = groups[i]:gsub("^%l", string.upper).." Paxel",

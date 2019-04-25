@@ -69,7 +69,7 @@ function tool_break(itemstack, user, node, digparams)
     --itemstack:replace("items:stick")
     local pos1 = user:get_pos()
     pos1.y = pos1.y + 1.5
-    local tile = {minetest.registered_items[oldstack].wield_image}
+    local tile = {minetest.registered_items[oldstack].inventory_image}
     tool_break_explosion(tile,pos1,25,1,2,10)
   end
   return(itemstack)
