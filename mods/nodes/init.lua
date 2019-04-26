@@ -19,6 +19,39 @@ minetest.register_node("nodes:cobble",
   sounds = sounds.stone(),
 }
 )
+
+minetest.register_node("nodes:cactus",{
+
+      drawtype = "normal",  -- See "Node drawtypes"
+      tiles = {"cactus_top.png", "cactus_bottom.png", "cactus_side.png"},
+      damage_per_second = 4,
+      selection_box = {
+    		type = "fixed",
+    		fixed = {
+    			{-7/16, -8/16, -7/16, 7/16, 8/16, 7/16},
+    		},
+    	},
+      collision_box = {
+          type = "fixed",
+          fixed = {
+              {-0.18, -0.5, -0.18, 0.18, 0.2, 0.18},
+          },
+      },
+      drawtype = "nodebox",
+      node_box = {
+        type = "fixed",
+        fixed = {
+          {-7/16, -8/16, -7/16,  7/16, 8/16,  7/16}, -- Main body
+          {-8/16, -8/16, -7/16,  8/16, 8/16, -7/16}, -- Spikes
+          {-8/16, -8/16,  7/16,  8/16, 8/16,  7/16}, -- Spikes
+          {-7/16, -8/16, -8/16, -7/16, 8/16,  8/16}, -- Spikes
+          {7/16,  -8/16,  8/16,  7/16, 8/16, -8/16}, -- Spikes
+        },
+      },
+      sounds = sounds.wood(),
+      groups = {wood=1,cactus=1}
+})
+
 minetest.register_node("nodes:tall_grass", {
 	description = "Tall Grass",
 	tiles = {"tall_grass.png"},

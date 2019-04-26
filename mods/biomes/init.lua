@@ -24,7 +24,7 @@ minetest.register_biome({
 	}
 )
 
---the main biome
+--the desert biome
 minetest.register_biome({
 		name = "desert",
 		node_top = "nodes:sand",
@@ -81,6 +81,21 @@ minetest.register_decoration({
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 })
+
+-- cactus in deserts
+minetest.register_decoration({
+	deco_type = "simple",
+	place_on = "nodes:sand",
+	sidelen = 16,
+	fill_ratio = 0.001,
+	biomes = {"desert"},
+	decoration = "nodes:cactus",
+	height = 3,
+	height_max = 6,
+	y_min = 1,
+	y_max = 31000,
+})
+
 
 -- sugar cane that spawns next to water
 minetest.register_decoration({
