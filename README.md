@@ -28,7 +28,7 @@ houses that spawn with mobs
 
 ## for version 0.03
 
-fix stairs
+shift click makes slabs build upside down
 
 make items stack (bring back regular minetest functionality)
 
@@ -52,7 +52,11 @@ weather
 
 
 
-## Added
+# Added: (for version)
+
+## version 0.03
+
+fixed stairs
 
 shears make leaves drop leaves and tall grass drop wheat seeds
 
@@ -66,11 +70,16 @@ better inventory gui
 
 make leaves randomly drop nothing, leaves, apples, and sticks randomly
 
+
+## version 0.02
+
 biome
 
 sugarcane
 
 furnace
+
+##version 0.01
 
 minecart
 
@@ -82,6 +91,12 @@ boats
 
 hurt sounds
 
+cool sounds
+
 aesthetics
 
 chest
+
+## version 0.00
+
+the world

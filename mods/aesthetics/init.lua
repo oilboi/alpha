@@ -226,7 +226,7 @@ minetest.register_on_joinplayer(function(player)
   local version_info = player:hud_add({
        hud_elem_type = "text",
        position      = {x = 0, y = 1},
-       offset        = {x = 60,   y = -10},
+       offset        = {x = 70,   y = -10},
        text          = "Alpha Version 0.02",
        alignment     = {x = 0, y = 0},  -- center aligned
        scale         = {x = 1000, y = 1000}, -- covered later

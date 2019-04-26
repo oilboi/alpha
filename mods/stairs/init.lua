@@ -155,7 +155,7 @@ for name,def in pairs(minetest.registered_nodes) do
 		drawtype = "nodebox",
 		tiles = slab_images,
 		paramtype = "light",
-		paramtype2 = "facedir",
+		paramtype2 = "wallmounted",
 		is_ground_content = false,
 		groups = new_groups,
 		sounds = sounds,
@@ -163,12 +163,28 @@ for name,def in pairs(minetest.registered_nodes) do
 			type = "fixed",
 			fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 		},
+    after_place_node = function(pos, placer, itemstack, pointed_thing)
+      print("test")
+      local sneak = placer:get_player_control().sneak
+      if sneak == true then
+        minetest.set_node(pointed_thing.above,{name="stairs:slab_" .. subname,param2=0})
+      else
+        local undernode = minetest.get_node(pointed_thing.under)
+        if undernode.name == "stairs:slab_" .. subname and undernode.param2 == 1 then
+          minetest.set_node(pointed_thing.under,{name=name})
+          minetest.remove_node(pointed_thing.above)
+        else
+          minetest.set_node(pointed_thing.above,{name="stairs:slab_" .. subname,param2=1})
+        end
+      end
+    end,
     --turn into full node - doesn't let you when node above :(
     on_construct = function(pos)
       local pos_under = {x=pos.x,y=pos.y-1,z=pos.z}
       if minetest.get_node(pos_under).name == "stairs:slab_" .. subname then
-        minetest.remove_node(pos)
-        minetest.set_node(pos_under,{name=name})
+        --minetest.set_node(pos_under,{name="stairs:slab_dirt",param2=0})
+        --minetest.remove_node(pos)
+        --minetest.set_node(pos_under,{name=name})
       end
     end,
 	})
