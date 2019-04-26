@@ -3,16 +3,42 @@ local rad = 10
 --the timer that counts when to make more paricle spawners
 local timer = 0
 
+--this controls if the weather is clear, rain, or snow
+local weather_change_timer = 0
+
+--make weather change goal random
+local weather_change_goal = math.random(200,400)
+
+--make weather state random
+weather = math.random(0,2) --0 clear 1 rain 2 snow
+
 --we start the globalstep (each server tick)
 minetest.register_globalstep(function(dtime)
-
-  --add the timer
+  --add the timers
   timer = timer + dtime
+  weather_change_timer = weather_change_timer + dtime
+
+
+  --when it's time to change weather state
+  --then reset everything
+  if weather_change_timer > weather_change_goal then
+    weather_change_goal = math.random(200,400)
+    weather = math.random(0,2)
+    print("weather changed to "..weather)
+    weather_change_timer = 0
+  end
+
+
 
   --when the timer hits 1 second we reset
   if timer >= 1 then
+  --make this reset regardless to avoid a giant int consuming memory
+  --on long term servers
   timer = 0
 
+  --if the weather int is above clear do weather effects
+  --or else pass to avoid cpu consumption
+  if weather > 0 then
   --run through each player, getting their position
 	for _,player in ipairs(minetest.get_connected_players()) do
     local pos = player:get_pos()
@@ -43,31 +69,60 @@ minetest.register_globalstep(function(dtime)
 
                 --we use a particle spawner here for the sake of extreme randomness to mimic weather
                 --only shown to the player's client to avoid confliction and mass lag
-                minetest.add_particlespawner({
-                    amount = 1,
-                    time = 1,
-                    minpos = {x=checkpos.x-0.5, y=checkpos.y-0.5, z=checkpos.z-0.5},
-                    maxpos = {x=checkpos.x+0.5, y=checkpos.y+0.5, z=checkpos.z+0.5},
-                    minvel = {x=0, y=0, z=0},
-                    maxvel = {x=0, y=0, z=0},
-                    minacc = {x=0, y=-25, z=0},
-                    maxacc = {x=0, y=-25, z=0},
-                    minexptime = 1,
-                    maxexptime = 1,
-                    minsize = 2,
-                    maxsize = 3,
+                if weather == 1 then
+                  minetest.add_particlespawner({
+                      amount = 1,
+                      time = 1,
+                      minpos = {x=checkpos.x-0.5, y=checkpos.y-0.5, z=checkpos.z-0.5},
+                      maxpos = {x=checkpos.x+0.5, y=checkpos.y+0.5, z=checkpos.z+0.5},
+                      minvel = {x=0, y=-25, z=0},
+                      maxvel = {x=0, y=-25, z=0},
+                      minacc = {x=0, y=0, z=0},
+                      maxacc = {x=0, y=0, z=0},
+                      minexptime = 1,
+                      maxexptime = 1,
+                      minsize = 2,
+                      maxsize = 3,
 
-                    collisiondetection = true,
-                    collision_removal = true,
+                      collisiondetection = true,
+                      collision_removal = true,
 
-                    object_collision = true,
+                      object_collision = true,
 
-                    vertical = true,
-                    
-                    texture = "rain.png",
+                      vertical = true,
 
-                    playername = player:get_player_name(),
-                })
+                      texture = "rain.png",
+
+                      playername = player:get_player_name(),
+                  })
+                elseif weather == 2 then
+                  minetest.add_particlespawner({
+                      amount = 1,
+                      time = 2,
+                      minpos = {x=checkpos.x-0.5, y=checkpos.y-0.5, z=checkpos.z-0.5},
+                      maxpos = {x=checkpos.x+0.5, y=checkpos.y+0.5, z=checkpos.z+0.5},
+                      minvel = {x=0, y=-1, z=0},
+                      maxvel = {x=0, y=-3, z=0},
+                      minacc = {x=0, y=0, z=0},
+                      maxacc = {x=0, y=0, z=0},
+                      minexptime = 1,
+                      maxexptime = 1,
+                      minsize = 2,
+                      maxsize = 3,
+
+                      collisiondetection = true,
+                      collision_removal = true,
+
+                      object_collision = true,
+
+                      vertical = true,
+
+                      texture = "snow.png",
+
+                      playername = player:get_player_name(),
+                  })
+                end
+                end
               end
             end
           end
