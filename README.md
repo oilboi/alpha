@@ -24,6 +24,12 @@ coral? reefs? seaweed? underwater treasure+ships?
 
 houses that spawn with mobs
 
+gokart
+
+gasoline
+
+make generator out of furnace
+
 
 
 ## todo for version 0.03
@@ -39,18 +45,12 @@ make items float
 
 change collision box height on sneak
 
-desert biome
-
-
-
-
-
-
-
 
 # Added: (for version)
 
 ## added version 0.03
+
+desert biome
 
 weather
 
