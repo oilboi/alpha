@@ -69,6 +69,7 @@ minetest.register_globalstep(function(dtime)
 
                 --we use a particle spawner here for the sake of extreme randomness to mimic weather
                 --only shown to the player's client to avoid confliction and mass lag
+                --rain
                 if weather == 1 then
                   minetest.add_particlespawner({
                       amount = 1,
@@ -95,6 +96,7 @@ minetest.register_globalstep(function(dtime)
 
                       playername = player:get_player_name(),
                   })
+                --snow
                 elseif weather == 2 then
                   minetest.add_particlespawner({
                       amount = 1,
