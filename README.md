@@ -4,7 +4,7 @@ Heavily borrows from Mineclone, along with other mods!
 
 # To do: (in order)
 
-## for version 0.04
+## todo for version 0.04
 
 mobs
 
@@ -26,9 +26,8 @@ houses that spawn with mobs
 
 
 
-## for version 0.03
+## todo for version 0.03
 
-shift click makes slabs build upside down
 
 make items stack (bring back regular minetest functionality)
 
@@ -54,7 +53,9 @@ weather
 
 # Added: (for version)
 
-## version 0.03
+## added version 0.03
+
+shift click makes slabs build upside down
 
 fixed stairs
 
@@ -71,7 +72,7 @@ better inventory gui
 make leaves randomly drop nothing, leaves, apples, and sticks randomly
 
 
-## version 0.02
+## added version 0.02
 
 biome
 
@@ -79,7 +80,7 @@ sugarcane
 
 furnace
 
-##version 0.01
+## added version 0.01
 
 minecart
 
@@ -97,6 +98,6 @@ aesthetics
 
 chest
 
-## version 0.00
+## added version 0.00
 
 the world
