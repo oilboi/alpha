@@ -41,9 +41,6 @@ change collision box height on sneak
 
 desert biome
 
-weather
-
-
 
 
 
@@ -54,6 +51,8 @@ weather
 # Added: (for version)
 
 ## added version 0.03
+
+weather
 
 shift click makes slabs build upside down
 

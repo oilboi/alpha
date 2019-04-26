@@ -48,7 +48,7 @@ minetest.register_globalstep(function(dtime)
         for z = -rad,rad do
 
           --sprinkle in some randomness to balance the load
-          if math.random() > 0.5 then
+          if math.random() > 0.9 then
 
             --we vectorize x,y,z
             local newvec = vector.new(x,y,z)
