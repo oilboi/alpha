@@ -7,6 +7,13 @@
 
 
 --function nodes.register_stair(subname, recipeitem, groups, images, description,sounds, worldaligntex)
+minetest.register_on_mods_loaded(function()
+
+
+
+
+
+
 for name,def in pairs(minetest.registered_nodes) do
   if string.gsub(name, "nodes:", "") ~= name then --simple check for if a nodes node
 
@@ -41,7 +48,9 @@ for name,def in pairs(minetest.registered_nodes) do
 	end
 	local new_groups = table.copy(groups)
 	new_groups.stair = 1
-	minetest.register_node("stairs:stair_" .. subname, {
+
+  print(subname)
+	minetest.register_node(":stairs:stair_" .. subname, {
 		description = description,
 		drawtype = "nodebox",
 		tiles = stair_images,
@@ -111,6 +120,7 @@ end
 
 
 for name,def in pairs(minetest.registered_nodes) do
+  print(name)
   if string.gsub(name, "nodes:", "") ~= name then --simple check for if a nodes node
 
   local subname = string.gsub(name, "nodes:", "") --make it the name of the node
@@ -140,7 +150,7 @@ for name,def in pairs(minetest.registered_nodes) do
 	end
 	local new_groups = table.copy(groups)
 	new_groups.slab = 1
-	minetest.register_node("stairs:slab_" .. subname, {
+	minetest.register_node(":stairs:slab_" .. subname, {
 		description = description,
 		drawtype = "nodebox",
 		tiles = slab_images,
@@ -196,3 +206,6 @@ for name,def in pairs(minetest.registered_nodes) do
 	end
   end
 end
+
+
+end)

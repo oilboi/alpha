@@ -24,10 +24,19 @@ minetest.register_node("nodes:tall_grass", {
 	tiles = {"tall_grass.png"},
   drawtype = "plantlike",
   paramtype = "light",
+  buildable_to = true,
   sunlight_propagates = true,
 	groups = {flammable=1,instant=1,leaves=1,attached_node=1},
 	sounds = sounds.leaves(),
   walkable = false,
+  --make grass drop seeds when mined with shears
+  after_dig_node = function(pos, oldnode, oldmetadata, digger)
+    if digger:get_wielded_item():to_string() ~= "" and digger:get_wielded_item():to_table().name == "tools:shears" then
+      local obj = minetest.add_item(pos, "items:wheat_seeds")
+      obj:get_luaentity().age = collection_age - 0.35 --make sure collected on dig - 0.5 for aesthetics
+      obj:set_velocity({x=math.random(-2,2)*math.random(), y=obj:get_velocity().y, z=math.random(-2,2)*math.random()})
+    end
+  end,
   selection_box = {
 		type = "fixed",
 		fixed = {
@@ -363,7 +372,6 @@ minetest.register_node("nodes:leaves", {
   end,
   --make leaves drop leaves when mined with shears
   after_dig_node = function(pos, oldnode, oldmetadata, digger)
-    print("test")
     if digger:get_wielded_item():to_string() ~= "" and digger:get_wielded_item():to_table().name == "tools:shears" then
       local obj = minetest.add_item(pos, "nodes:leaves")
       obj:get_luaentity().age = collection_age - 0.35 --make sure collected on dig - 0.5 for aesthetics

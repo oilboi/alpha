@@ -54,6 +54,8 @@ weather
 
 ## Added
 
+shears make leaves drop leaves and tall grass drop wheat seeds
+
 farming
 
 make sugarcane grow near water
