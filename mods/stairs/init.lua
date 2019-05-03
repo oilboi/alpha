@@ -15,7 +15,7 @@ minetest.register_on_mods_loaded(function()
 
 
 for name,def in pairs(minetest.registered_nodes) do
-  if string.gsub(name, "nodes:", "") ~= name then --simple check for if a nodes node
+  if string.gsub(name, "nodes:", "") ~= name and minetest.get_item_group(name, "notstairs") == 0 then --simple check for if a nodes node
 
   local subname = string.gsub(name, "nodes:", "") --make it the name of the node
   local recipeitem = name
@@ -120,8 +120,7 @@ end
 
 
 for name,def in pairs(minetest.registered_nodes) do
-  print(name)
-  if string.gsub(name, "nodes:", "") ~= name then --simple check for if a nodes node
+  if string.gsub(name, "nodes:", "") ~= name and minetest.get_item_group(name, "notstairs") == 0 then --simple check for if a nodes node
 
   local subname = string.gsub(name, "nodes:", "") --make it the name of the node
   local recipeitem = name
