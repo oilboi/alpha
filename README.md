@@ -6,6 +6,10 @@ Heavily borrows from Mineclone, along with other mods!
 
 ## todo for version 0.04
 
+make sky dark when snowing or raining
+
+fix gui size to match all (chest overclips)
+
 mobs
 
 animated chests

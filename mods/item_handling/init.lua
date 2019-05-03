@@ -87,19 +87,18 @@ function minetest.handle_node_drops(pos, drops, digger)
 	end
 end
 
---throw a single item at player's speed
---sneak throw, throws whole stack
+--throwing an item
 function minetest.item_drop(itemstack, dropper, pos)
 	local dropper_is_player = dropper and dropper:is_player()
 	local p = table.copy(pos)
+	local cnt = itemstack:get_count()
 	local vel = vector.new(0,0,0)
 
 	if dropper_is_player then
-		p.y = p.y + 1.5
+		p.y = p.y + 1.2
 		vel = dropper:get_player_velocity()
 	end
-
-	local item = itemstack:take_item(1)
+	local item = itemstack:take_item(cnt)
 	local obj = core.add_item(p, item)
 	if obj then
 		if dropper_is_player then
@@ -113,7 +112,10 @@ function minetest.item_drop(itemstack, dropper, pos)
 		end
 		return itemstack
 	end
+	-- If we reach this, adding the object to the
+	-- environment failed
 end
+
 
 
 --sound for craft success
