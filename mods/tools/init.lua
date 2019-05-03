@@ -195,3 +195,30 @@ minetest.register_tool("tools:shears",
 
     }
 )
+
+
+minetest.register_tool("tools:flint_and_steel",
+    {
+        description = "Flint and Steel",
+        groups = {fire_starter = 1},
+        inventory_image = "flint_and_steel.png",
+        wield_image = "flint_and_steel.png^[transform4",
+        liquids_pointable = false,
+        on_place = function(itemstack, placer, pointed_thing)
+          local node = minetest.get_node(pointed_thing.under).name
+          if minetest.get_item_group(node,"flammable") > 0 then
+            minetest.sound_play("lighter", {
+              pos = placer:get_pos(),
+              max_hear_distance = 100,
+              gain = 1.0,
+              pitch = math.random(80,110)/100,
+            })
+            minetest.add_node(pointed_thing.above,{name="fire:fire"})
+            --call the tool break function
+            tool_break(itemstack, placer, pointed_thing.under, {wear=(1000)})
+            return(itemstack)
+          end
+        end,
+
+    }
+)

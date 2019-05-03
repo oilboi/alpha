@@ -45,3 +45,6 @@ https://freesound.org/people/Reitanna/sounds/232453/
 
 door_open door_close
 https://freesound.org/people/fresco/sounds/35617/
+
+flint
+https://freesound.org/people/Benboncan/sounds/63257/
