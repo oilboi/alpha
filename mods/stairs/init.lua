@@ -9,11 +9,6 @@
 --function nodes.register_stair(subname, recipeitem, groups, images, description,sounds, worldaligntex)
 minetest.register_on_mods_loaded(function()
 
-
-
-
-
-
 for name,def in pairs(minetest.registered_nodes) do
   if string.gsub(name, "nodes:", "") ~= name and minetest.get_item_group(name, "notstairs") == 0 then --simple check for if a nodes node
 

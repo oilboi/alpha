@@ -110,6 +110,14 @@ minetest.register_node("nodes:dirt",
   tiles = {"default_dirt.png"},
   groups = {dirt = 1},
   sounds = sounds.dirt(),
+  drop = "nodes:dirt",
+  --try to make dirt turn into grass on place
+  on_construct = function(pos)
+    dirt_on_place(pos)
+  end,
+  on_timer = function(pos, elapsed)
+    dirt_on_timer(pos)
+  end,
 }
 )
 
@@ -119,6 +127,13 @@ minetest.register_node("nodes:grass",
   tiles = {"default_grass.png","default_dirt.png","default_grass.png"},
   groups = {dirt = 1},
   sounds = sounds.dirt(),
+  drop = "nodes:dirt",
+  after_dig_node = function(pos, oldnode, oldmetadata, digger)
+      grass_after_destruct(pos)
+  end,
+  on_construct = function(pos)
+    grass_after_destruct(pos)
+  end,
 }
 )
 
@@ -127,7 +142,7 @@ minetest.register_node("nodes:sand",
   description = "Sand",
   tiles = {"default_sand.png"},
   groups = {dirt = 1},
-  sounds = sounds.stone(),
+  sounds = sounds.dirt(),
 }
 )
 
