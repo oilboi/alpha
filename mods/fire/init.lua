@@ -15,7 +15,7 @@ minetest.register_node("fire:fire",
   groups = {fire = 1,instant=1},
   sounds = sounds.stone(),
   paramtype = "light",
-  --drop = "",
+  drop = "",
   drawtype = "nodebox",
   node_box = {
     type = "connected",
@@ -32,5 +32,39 @@ minetest.register_node("fire:fire",
     connect_bottom = {{-1/2,  -1/2, -1/2,1/2, -3/8,1/2}},
   },
   connects_to = {"group:flammable"},
+  on_construct = function(pos)
+    fire_on_create(pos)
+  end,
+  on_timer = function(pos, elapsed)
+    fire_on_timer(pos)
+  end,
 }
 )
+
+--gets called when leaf decay timer ends
+function fire_on_timer(pos)
+  local nodenear = minetest.find_node_near(pos, 1, "group:flammable")
+  --cancel out removing self
+  if nodenear then
+    --remove nodes near
+    minetest.set_node(nodenear,{name="fire:fire"})
+
+    local timer = minetest.get_node_timer(pos)
+    timer:start(math.random())
+
+    return false
+  end
+
+	minetest.remove_node(pos)
+end
+
+--starts fire timer when created
+function fire_on_create(pos)
+	if minetest.find_node_near(pos, 1, "group:flammable") then
+    local node = minetest.get_node(pos)
+		local timer = minetest.get_node_timer(pos)
+		if node.param2 == 0 and not timer:is_started() then
+			timer:start(math.random())--(math.random(20, 120) / 10)
+		end
+	end
+end
