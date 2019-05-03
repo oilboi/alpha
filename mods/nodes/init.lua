@@ -397,7 +397,7 @@ minetest.register_node("nodes:leaves", {
   walkable = false,
   climbable = true,
   drawtype = "allfaces_optional",
-  --paramtype = "light",
+  paramtype = "light",
   --sunlight_propagates = false,
 	groups = {leaves = 1,flammable=1,leafdecay_drop = 1},
   on_timer = function(pos, elapsed)
