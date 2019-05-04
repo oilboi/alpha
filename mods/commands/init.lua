@@ -1,6 +1,6 @@
 minetest.register_chatcommand("weather", {
 	params = "Weather type",
-	description = "Change the weather",
+	description = "0 clear, 1 rain, 2 snow.",
 	privs = {server = true},
 	func = function( name, param)
     local tab = {"clear","rain","snow"}
