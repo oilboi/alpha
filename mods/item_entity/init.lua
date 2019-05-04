@@ -138,6 +138,7 @@ core.register_entity(":__builtin:item", {
 			self.object:remove()
 			return
 		end
+		self.burn(self)
 
 		local pos = self.object:get_pos()
 		local node = core.get_node_or_nil({
@@ -223,6 +224,18 @@ core.register_entity(":__builtin:item", {
 
 
 
+	end,
+
+	burn = function(self)
+		if minetest.get_node(self.object:get_pos()).name == "fire:fire" then
+			minetest.sound_play("fire_extinguish_flame", {
+	      pos = pos,
+	      max_hear_distance = 16,
+	      gain = 1.0,
+	      pitch = math.random(60,120)/100,
+	    })
+			self.object:remove()
+		end
 	end,
 
 	on_punch = function(self, hitter)
