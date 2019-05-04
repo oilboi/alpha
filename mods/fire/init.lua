@@ -17,6 +17,7 @@ minetest.register_node("fire:fire",
   paramtype = "light",
   drop = "",
   drawtype = "nodebox",
+  walkable = false,
   node_box = {
     type = "connected",
     --fixed = {{-1/2, -1/2, -1/2, 1/2, -3/8, 1/2}},
@@ -50,7 +51,7 @@ function fire_on_timer(pos)
     minetest.set_node(nodenear,{name="fire:fire"})
 
     local timer = minetest.get_node_timer(pos)
-    timer:start(math.random())
+    timer:start(math.random(20,45) / 10)
 
     return false
   end
@@ -64,7 +65,7 @@ function fire_on_create(pos)
     local node = minetest.get_node(pos)
 		local timer = minetest.get_node_timer(pos)
 		if node.param2 == 0 and not timer:is_started() then
-			timer:start(math.random())--(math.random(20, 120) / 10)
+			timer:start(math.random(20,45) / 10)
 		end
 	end
 end
