@@ -227,7 +227,7 @@ minetest.register_on_joinplayer(function(player)
        hud_elem_type = "text",
        position      = {x = 0, y = 1},
        offset        = {x = 70,   y = -10},
-       text          = "Alpha Version 0.02",
+       text          = "Alpha Version 0.03",
        alignment     = {x = 0, y = 0},  -- center aligned
        scale         = {x = 1000, y = 1000}, -- covered later
         number    = 0xFFFFFF,

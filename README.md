@@ -38,16 +38,14 @@ lava burns, starts fires
 
 
 
-## todo for version 0.03
-
-
-
-change collision box height on sneak
-
 
 # Added: (for version)
 
 ## added version 0.03
+
+change version number
+
+change collision box height on sneak
 
 make items float, items only use block friction to slow down and collect when moving
 
