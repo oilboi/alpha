@@ -61,6 +61,19 @@ end
 
 --starts fire timer when created
 function fire_on_create(pos)
+  --make fire be put out by rain or snow
+  if weather > 0 then
+    minetest.sound_play("fire_extinguish_flame", {
+      pos = pos,
+      max_hear_distance = 16,
+      gain = 1.0,
+      pitch = math.random(60,120)/100,
+    })
+    minetest.remove_node(pos)
+    return
+  end
+
+  --otherwise create a fire node timer to spread
 	if minetest.find_node_near(pos, 1, "group:flammable") then
     local node = minetest.get_node(pos)
 		local timer = minetest.get_node_timer(pos)
