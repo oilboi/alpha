@@ -44,7 +44,6 @@ for name,def in pairs(minetest.registered_nodes) do
 	local new_groups = table.copy(groups)
 	new_groups.stair = 1
 
-  print(subname)
 	minetest.register_node(":stairs:stair_" .. subname, {
 		description = description,
 		drawtype = "nodebox",
@@ -158,7 +157,6 @@ for name,def in pairs(minetest.registered_nodes) do
 			fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 		},
     after_place_node = function(pos, placer, itemstack, pointed_thing)
-      print("test")
       local sneak = placer:get_player_control().sneak
       if sneak == true then
         minetest.set_node(pointed_thing.above,{name="stairs:slab_" .. subname,param2=0})

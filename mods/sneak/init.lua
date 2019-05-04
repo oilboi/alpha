@@ -9,7 +9,6 @@ minetest.register_globalstep(function(dtime)
    --get if player is sneaking
    local sneaking = player:get_player_control().sneak
 
-   print(dump(player:get_properties().collisionbox))
    --affect camera if sneaking changed
    if sneaking ~=  sneak_table[player:get_player_name()] then
      if sneaking == true then

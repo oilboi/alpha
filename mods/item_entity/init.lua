@@ -244,7 +244,6 @@ core.register_entity(":__builtin:item", {
 			modifier = 3
 		end
 
-		print(modifier)
 
 	  if in_water > 0 then
 	    self.object:add_velocity({x=0,y=(modifier-vel.y),z=0}) --math.abs(vel.y/5) for slow sinking objects -- 5-vel.y for jumping objects
