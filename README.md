@@ -34,13 +34,13 @@ gasoline
 
 make generator out of furnace
 
+lava burns, starts fires
+
 
 
 ## todo for version 0.03
 
-fire improvements - lava burns, fire, set a particle for flame and set node timer to 1 second before deletion, throw  item up
 
-make items float
 
 change collision box height on sneak
 
@@ -48,6 +48,10 @@ change collision box height on sneak
 # Added: (for version)
 
 ## added version 0.03
+
+make items float, items only use block friction to slow down and collect when moving
+
+fire improvements -  fire, set a particle for flame and set node timer to 1 second before deletion, throw  item up
 
 make items stack (bring back regular minetest functionality)
 

@@ -207,8 +207,9 @@ end
 --make splash noise and particles
 function splash(object,pos)
 	object:get_luaentity().in_water = testwater(pos)
+	local vel = object:get_velocity()
 	--create splashes
-	if object:get_luaentity().old_in_water == 0 and object:get_luaentity().in_water > 0 then
+	if object:get_luaentity().old_in_water == 0 and object:get_luaentity().in_water > 0 and vel.y < -1 then
 		splashy(object,pos)
 	end
 

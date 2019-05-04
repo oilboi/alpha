@@ -138,9 +138,16 @@ core.register_entity(":__builtin:item", {
 			self.object:remove()
 			return
 		end
-		self.burn(self)
 
+		--bolt on burning and floating
 		local pos = self.object:get_pos()
+		local vel = self.object:get_velocity()
+
+		local node_inside = minetest.get_node(pos).name
+
+		self.burn(node_inside,pos,self)
+
+
 		local node = core.get_node_or_nil({
 			x = pos.x,
 			y = pos.y + self.object:get_properties().collisionbox[2] - 0.05,
@@ -150,26 +157,32 @@ core.register_entity(":__builtin:item", {
 		--splash effect
 		splash(self.object,pos)
 
-		-- Delete in 'ignore' nodes
-		if node and node.name == "ignore" then
-			self.itemstring = ""
-			self.object:remove()
-			return
-		end
 
-		local vel = self.object:get_velocity()
 		local def = node and core.registered_nodes[node.name]
-		local is_moving = (def and not def.walkable) or
-			vel.x ~= 0 or vel.y ~= 0 or vel.z ~= 0
+
+		local is_moving = (def and not def.walkable) or vel.x ~= 0 or vel.y ~= 0 or vel.z ~= 0
 		local is_slippery = false
 
-		if def and def.walkable then
+
+		--stop the object from moving
+		if math.abs(vel.x) < 0.5 and math.abs(vel.z) < 0.5 then
+			self.object:set_velocity(vector.new(0,vel.y,0))
+		end
+
+		--use friction and velocity to do block friction with everything
+		if (math.abs(vel.y) < 0.3 or minetest.get_item_group(def.name, "water") > 0) and (math.abs(vel.x) > 0.5 or math.abs(vel.z) > 0.5) then
 			local slippery = core.get_item_group(node.name, "slippery")
-			is_slippery = slippery ~= 0
-			if is_slippery and (math.abs(vel.x) > 0.2 or math.abs(vel.z) > 0.2) then
+
+			--override if not slippery to just do block friction
+			if slippery == 0 then
+				slippery = 50
+			end
+
+			if (math.abs(vel.x) > 0.2 or math.abs(vel.z) > 0.2) then
+
 				-- Horizontal deceleration
 				local slip_factor = 4.0 / (slippery + 4)
-				self.object:set_acceleration({
+				self.object:add_velocity({
 					x = -vel.x * slip_factor,
 					y = 0,
 					z = -vel.z * slip_factor
@@ -179,31 +192,14 @@ core.register_entity(":__builtin:item", {
 			end
 		end
 
+		self.float(node_inside,pos,self,vel)
+
 		-- make items flow
 		set_flow(pos,self.object,20)
 
-
-
-		if self.moving_state == is_moving and
-				self.slippery_state == is_slippery then
-			-- Do not update anything until the moving state changes
-			return
-		end
-
-		self.moving_state = is_moving
 		self.slippery_state = is_slippery
 
-		if is_moving then
-			self.object:set_acceleration({x = 0, y = -gravity, z = 0})
-		else
-			self.object:set_acceleration({x = 0, y = 0, z = 0})
-			self.object:set_velocity({x = 0, y = 0, z = 0})
-		end
 
-		--Only collect items if not moving
-		if is_moving then
-			return
-		end
 		-- Collect the items around to merge with
 		local own_stack = ItemStack(self.itemstring)
 		if own_stack:get_free_space() == 0 then
@@ -221,13 +217,11 @@ core.register_entity(":__builtin:item", {
 				end
 			end
 		end
-
-
-
 	end,
 
-	burn = function(self)
-		if minetest.get_node(self.object:get_pos()).name == "fire:fire" then
+	--burn sound and remove if in fire
+	burn = function(node,pos,self)
+		if node == "fire:fire" then
 			minetest.sound_play("fire_extinguish_flame", {
 	      pos = pos,
 	      max_hear_distance = 16,
@@ -236,6 +230,30 @@ core.register_entity(":__builtin:item", {
 	    })
 			self.object:remove()
 		end
+	end,
+
+	--makes the item float
+	float = function(node,pos,self,vel)
+	  local in_water =  minetest.get_item_group(node, "water")
+
+		--this is how fast water will flow up
+		local modifier = 0.01
+
+		--check if water above
+		if minetest.get_item_group(minetest.get_node({x = pos.x,y = pos.y + 0.05,z = pos.z}).name, "water") > 0 then
+			modifier = 3
+		end
+
+		print(modifier)
+
+	  if in_water > 0 then
+	    self.object:add_velocity({x=0,y=(modifier-vel.y),z=0}) --math.abs(vel.y/5) for slow sinking objects -- 5-vel.y for jumping objects
+			self.object:set_acceleration({x=0,y=0,z=0})
+	  else
+	    --self.object:add_velocity({x=0,y=-0.05,z=0})
+			self.object:set_acceleration({x=0,y=-10,z=0})
+	  end
+
 	end,
 
 	on_punch = function(self, hitter)
