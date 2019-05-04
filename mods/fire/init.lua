@@ -44,6 +44,19 @@ minetest.register_node("fire:fire",
 
 --gets called when leaf decay timer ends
 function fire_on_timer(pos)
+  --make fire be put out by rain or snow
+  if weather > 0 then
+    minetest.sound_play("fire_extinguish_flame", {
+      pos = pos,
+      max_hear_distance = 16,
+      gain = 1.0,
+      pitch = math.random(60,120)/100,
+    })
+    minetest.remove_node(pos)
+    return
+  end
+
+
   local nodenear = minetest.find_node_near(pos, 1, "group:flammable")
   --cancel out removing self
   if nodenear then
