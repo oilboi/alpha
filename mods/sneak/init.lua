@@ -9,11 +9,32 @@ minetest.register_globalstep(function(dtime)
    --get if player is sneaking
    local sneaking = player:get_player_control().sneak
 
+   print(dump(player:get_properties().collisionbox))
    --affect camera if sneaking changed
    if sneaking ~=  sneak_table[player:get_player_name()] then
      if sneaking == true then
+       player:set_properties({
+         collisionbox = {
+        	-0.30000001192093,
+        	0,
+        	-0.30000001192093,
+        	0.30000001192093,
+        	1.7699999809265-0.9,
+        	0.30000001192093
+        }
+      })
        player:set_eye_offset({x=0,y=-2,z=0},{x=0,y=-2,z=0})
      else
+       player:set_properties({
+         collisionbox = {
+        	-0.30000001192093,
+        	0,
+        	-0.30000001192093,
+        	0.30000001192093,
+        	1.7699999809265,
+        	0.30000001192093
+        }
+      })
        player:set_eye_offset({x=0,y=0,z=0},{x=0,y=0,z=0})
      end
    end
