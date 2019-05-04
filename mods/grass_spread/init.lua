@@ -1,8 +1,6 @@
 --gets called when grass spread timer ends
 function dirt_on_timer(pos)
 
-  print("overflow test")
-
   --if can't find dirt cancel
 	if not minetest.find_node_near(pos, 1, "nodes:grass") then
 		return false
