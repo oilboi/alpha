@@ -1,0 +1,1 @@
+pointlib.show_itemstring (Show technical name of pointed node) bool true
