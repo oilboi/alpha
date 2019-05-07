@@ -17,3 +17,6 @@ minetest.settings:set("liquid_update", 0.3)
 --set the bobbing
 minetest.settings:set("view_bobbing_amount", 2.0)
 minetest.settings:set("fall_bobbing_amount", 0)
+
+
+pi = math.pi

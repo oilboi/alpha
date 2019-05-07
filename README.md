@@ -6,11 +6,15 @@ Heavily borrows from Mineclone, along with other mods!
 
 ## todo for version 0.04
 
+mobs - cow - sheep - etc
+
+make sand have different sounds and group
+
+limit weather types to biomes that fit them, with minetest.get_biome_data(pos)
+
 make sky dark when snowing or raining
 
 fix gui size to match all (chest overclips)
-
-mobs
 
 animated chests
 
@@ -36,10 +40,19 @@ make generator out of furnace
 
 lava burns, starts fires
 
+gems that act like enchanted items
+
+
+
 
 
 
 # Added: (for version)
+
+## added version 0.04
+
+pig
+
 
 ## added version 0.03
 

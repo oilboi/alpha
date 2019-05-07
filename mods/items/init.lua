@@ -31,12 +31,24 @@ minetest.register_craftitem("items:paper", {
 	inventory_image = "default_paper.png",
 	groups = {paper = 1},
 })
+minetest.register_craftitem("items:bone", {
+	description = "Bone",
+	inventory_image = "bone.png",
+	groups = {bone = 1},
+})
 
 minetest.register_craftitem("items:apple", {
 	description = "Apple",
 	inventory_image = "default_apple.png",
 	groups = {food = 1,leafdecay_drop=1},
 	food = 1,
+	range = 0,
+})
+minetest.register_craftitem("items:porkchop", {
+	description = "Porkchop",
+	inventory_image = "porkchop.png",
+	groups = {food = 1,leafdecay_drop=1},
+	food = 2,
 	range = 0,
 })
 
