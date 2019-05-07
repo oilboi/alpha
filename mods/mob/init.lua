@@ -13,6 +13,7 @@ local pig = {
     rider = "",
     hp_max = 5,
   },
+  mob = true,
   timer = 0,
   speed = 0,
   walk_start = 0,
@@ -395,7 +396,7 @@ minetest.register_craftitem("mob:pig", {
 
 --spawn mobs
 local mob_spawn_timer = 0
-local mob_spawn_goal = math.random(2,5) --set up small timer goal for initial mob spawning
+local mob_spawn_goal = math.random(100,400) --set up small timer goal for initial mob spawning
 minetest.register_globalstep(function(dtime)
   mob_spawn_timer = mob_spawn_timer + dtime
 	for _,player in ipairs(minetest.get_connected_players()) do
