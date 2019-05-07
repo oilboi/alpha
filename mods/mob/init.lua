@@ -149,7 +149,7 @@ function pig:jump(self,dtime)
   self.jump_timer = self.jump_timer + dtime
   local vel = self.object:getvelocity()
   --try a jump on timer, only if on ground
-  if self.jump_timer > 0.25 and vel.y == 0 then
+  if self.jump_timer > 0.25 and (vel.y == 0 or pig:testwater(self.object:get_pos()) > 0) then
     self.jump_timer = 0
     if vel.x == 0 or vel.z == 0 then
       self.object:set_velocity(vector.new(vel.x,7,vel.z))
@@ -324,6 +324,7 @@ function pig:on_punch(puncher, time_from_last_punch, tool_capabilities, directio
   if damage > 0 then
     --max out speed for longest time (freakout)
     self.speed_goal = 5
+    self.timer = 0
     self.move_goal = 4
     self.hurt_cooldown = 4
     self.particle_hurt = 0
