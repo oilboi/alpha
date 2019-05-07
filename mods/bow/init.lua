@@ -52,7 +52,7 @@ local arrow = {
   initial_properties = {
     physical = true, -- otherwise going uphill breaks
     visual = "mesh",
-    collide_with_objects = true,
+    collide_with_objects = false,
     collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
     mesh = "bow.obj",
 	  textures = {"arrow_ent.png"},
@@ -62,7 +62,7 @@ local arrow = {
     --automatic_face_movement_dir = 0.0,
     --automatic_face_movement_max_rotation_per_sec = 65536, --65536
     --rider = "",
-    --pointable = false,
+    pointable = false,
     hit = false,
   },
 }
