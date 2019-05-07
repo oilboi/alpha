@@ -65,3 +65,9 @@ minetest.register_craftitem("items:bread", {
 	food = 4,
 	range = 0,
 })
+
+minetest.register_craftitem("items:arrow", {
+	description = "Arrow",
+	inventory_image = "arrow_inv.png",
+	groups = {arrow = 1},
+})
