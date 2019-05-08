@@ -2,37 +2,43 @@
 bow_cycle = {} -- do this to hold player animation timer
 minetest.register_globalstep(function(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
+		local name = player:get_player_name() --get the players name
 		if player:get_player_control().RMB == true then
 			if player:get_wielded_item():get_definition().name == "bow:bow" then
-        local name = player:get_player_name() --get the players name
+				local inv = player:get_inventory()
+				if inv:contains_item("main", "items:arrow") then
+					--set up tables
+					if not bow_cycle[name] then
+						bow_cycle[name] = {}
+						bow_cycle[name].timer = 0.2
+					end
+	        bow_cycle[name].timer = bow_cycle[name].timer + dtime
 
-				--set up tables
-				if not bow_cycle[name] then
-					bow_cycle[name] = {}
-					bow_cycle[name].timer = 0
+	        if bow_cycle[name].timer >= 0.2 then
+	          bow_cycle[name].timer = 0
+	  				local name = player:get_player_name() --get the players name
+	          local pos = player:get_pos()
+	          pos.y = pos.y + 1.5
+	          local arrow = minetest.add_entity(pos,"bow:arrow")
+	          local vel = player:get_player_velocity()
+	          local dir = player:get_look_dir()
+	          dir.x = vel.x + (dir.x * 15)
+	    			dir.y = vel.y + (dir.y * 15 + 2)
+	    			dir.z = vel.z + (dir.z * 15)
+	          arrow:set_velocity(dir)
+	          minetest.sound_play("bow", {
+							pos = player:get_pos(),
+							max_hear_distance = 16,
+							gain = 1,
+							--pitch = math.random(70,100)/100,
+						})
+						inv:remove_item("main", "items:arrow")
+	        end
 				end
-        bow_cycle[name].timer = bow_cycle[name].timer + dtime
-
-        if bow_cycle[name].timer >= 0.2 then
-          bow_cycle[name].timer = 0
-  				local name = player:get_player_name() --get the players name
-          local pos = player:get_pos()
-          pos.y = pos.y + 1.5
-          local arrow = minetest.add_entity(pos,"bow:arrow")
-          local vel = player:get_player_velocity()
-          local dir = player:get_look_dir()
-          dir.x = vel.x + (dir.x * 15)
-    			dir.y = vel.y + (dir.y * 15 + 2)
-    			dir.z = vel.z + (dir.z * 15)
-          arrow:set_velocity(dir)
-          minetest.sound_play("bow", {
-						pos = player:get_pos(),
-						max_hear_distance = 16,
-						gain = 1,
-						--pitch = math.random(70,100)/100,
-					})
-        end
-      end
+			end
+		elseif bow_cycle[name] then
+			print(bow_cycle[name].timer)
+			bow_cycle[name] = nil
 		end
 	end
 end)
@@ -85,13 +91,13 @@ function arrow:on_step(dtime)
   arrow:set_rotation(self)
 end
 
---stop arrow on hit
+--stop arrow on hit and drop item
 function arrow:stop(self,dtime)
   local vel = self.object:get_velocity()
   if self.oldvel and ((self.oldvel.y < 0 and vel.y == 0) or (self.oldvel.x ~= 0 and vel.x == 0) or (self.oldvel.z ~= 0 and vel.z == 0)) then
-    self.hit = true
-    self.object:set_velocity(vector.new(0,0,0))
-    self.object:set_acceleration(vector.new(0,0,0))
+    --self.hit = true
+    --self.object:set_velocity(vector.new(0,0,0))
+    --self.object:set_acceleration(vector.new(0,0,0))
     local pos = self.object:get_pos()
     minetest.sound_play("boing", {
   		pos = pos,
@@ -99,6 +105,8 @@ function arrow:stop(self,dtime)
   		gain = 2,
   		pitch = math.random(70,110)/100,
   	})
+		minetest.add_item(pos,"items:arrow")
+		self.object:remove()
   end
 
   self.oldvel = vel
@@ -120,15 +128,8 @@ function arrow:testwater(pos)
 end
 
 
-function arrow:on_punch(hitter)
-  local item = minetest.add_item(self.object:get_pos(), "boat:boat")
-  item:get_luaentity().age = collection_age - 0.35
-  self.object:remove()
-end
-
 function arrow:get_staticdata()
     return minetest.write_json({
-      rider = self.rider,
     })
 end
 

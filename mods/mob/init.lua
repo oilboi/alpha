@@ -12,6 +12,7 @@ local pig = {
     automatic_face_movement_max_rotation_per_sec = 65536, --65536
     rider = "",
     hp_max = 5,
+    pointable = false,
   },
   mob = true,
   timer = 0,
