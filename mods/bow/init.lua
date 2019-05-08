@@ -131,7 +131,9 @@ function arrow:set_rotation(self)
   if self.hit == true then return end
   local pos = self.object:get_pos()
   if self.old_pos then
-    self.object:set_yaw(minetest.dir_to_yaw(vector.direction(pos, self.old_pos))+(pi*-0.5))
+		local vel = self.object:get_velocity()
+		local pitch = (vector.direction(pos, self.old_pos).y)*(pi/2)
+    self.object:set_rotation({x=0,y=minetest.dir_to_yaw(vector.direction(pos, self.old_pos))+(pi*-0.5),z=pitch})
   end
   self.old_pos = pos
 end
