@@ -89,6 +89,21 @@ function arrow:on_step(dtime)
   splash(self.object,self.object:get_pos())
   arrow:stop(self,dtime)
   arrow:set_rotation(self)
+	arrow:hurt_mobs(self)
+end
+
+--punches mobs
+function arrow:hurt_mobs(self)
+	local pos = self.object:get_pos()
+	for _,object in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+		if not object:is_player() and object:get_luaentity() and object:get_luaentity().mob == true then
+			object:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = 1},
+		   }, nil)
+			 self.object:remove()
+		end
+	end
 end
 
 --stop arrow on hit and drop item

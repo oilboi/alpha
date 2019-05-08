@@ -251,7 +251,6 @@ function pig:fall_damage(self)
   local vel = self.object:get_velocity()
   if self.oldvel and self.oldvel.y < -12 and vel.y == 0 then
     local damage = math.abs(self.oldvel.y)/4
-    print(damage)
     self.object:punch(self.object, 1.0, {
 		full_punch_interval = 1.0,
 		damage_groups = {fleshy = damage},

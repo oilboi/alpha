@@ -170,7 +170,7 @@ core.register_entity(":__builtin:item", {
 		end
 
 		--use friction and velocity to do block friction with everything
-		if (math.abs(vel.y) < 0.3 or minetest.get_item_group(def.name, "water") > 0) and (math.abs(vel.x) > 0.5 or math.abs(vel.z) > 0.5) then
+		if def and (math.abs(vel.y) < 0.3 or minetest.get_item_group(def.name, "water") > 0) and (math.abs(vel.x) > 0.5 or math.abs(vel.z) > 0.5) then
 			local slippery = core.get_item_group(node.name, "slippery")
 
 			--override if not slippery to just do block friction
