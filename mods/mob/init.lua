@@ -12,7 +12,7 @@ local pig = {
     automatic_face_movement_max_rotation_per_sec = 65536, --65536
     rider = "",
     hp_max = 5,
-    pointable = false,
+    --pointable = false,
   },
   mob = true,
   timer = 0,
@@ -395,6 +395,7 @@ minetest.register_craftitem("mob:pig", {
 
 
 --spawn mobs
+--[[
 local mob_spawn_timer = 0
 local mob_spawn_goal = math.random(100,400) --set up small timer goal for initial mob spawning
 minetest.register_globalstep(function(dtime)
@@ -415,6 +416,19 @@ minetest.register_globalstep(function(dtime)
           end
         end
       end
+    end
+  end
+end)
+]]--
+
+minetest.register_on_generated(function(minp, maxp, blockseed)
+  local node_group = minetest.find_nodes_in_area_under_air(minp, maxp, {"nodes:grass"})
+  if table.getn(node_group) > 0 then
+    for i = 0,math.random(1,2) do --only spawn 2,5 mobs
+      local new_pos = node_group[math.random(1,table.getn(node_group))]
+      new_pos.y = new_pos.y + 2
+      print("spawning pig at "..dump(new_pos))
+      minetest.add_entity(new_pos,"mob:pig")
     end
   end
 end)
