@@ -1,36 +1,46 @@
-local pig = {
+mob = {}
+mob_spawn_table = {}
+
+--make a register function because it's easier
+mob.register_mob = function(name,def)
+local mob = {
   initial_properties = {
     physical = true, -- otherwise going uphill breaks
-    makes_footstep_sound = true,
-    visual = "mesh",
+    makes_footstep_sound = def.makes_footstep_sound,
+    visual = def.visual,
     collide_with_objects = false,
-    collisionbox = {-0.45, -0.01, -0.45, 0.45, 0.865, 0.45},
-    mesh = "pig.b3d",
-    visual_size = {x=2.5,y=2.5},
-    automatic_face_movement_dir = -90.0,
+    collisionbox = def.collisionbox,
+    mesh = def.mesh,
+    visual_size = def.visual_size,
+    automatic_face_movement_dir = def.automatic_face_movement_dir,
     automatic_face_movement_max_rotation_per_sec = 65536, --65536
     rider = "",
-    hp_max = 5,
+    hp_max = def.hp_max,
+    textures = def.textures,
     --pointable = false,
   },
   mob = true,
   timer = 0,
   speed = 0,
-  walk_start = 0,
-  walk_end = 40,
-  pig_sound = "mobs_pig",
-  angry_pig_sound = "mobs_pig_angry",
+  walk_start = def.walk_start,
+  walk_end = def.walk_end,
+  mob_sound = def.mob_sound,
+  angry_mob_sound = def.angry_mob_sound,
+  animation_speed = def.animation_speed,
+  ridable = def.ridable,
+  drop_hurt = def.drop_hurt,
+  drop_die = def.drop_die,
 }
 
 --restore variables
-function pig:on_activate(staticdata, dtime_s)
+function mob:on_activate(staticdata, dtime_s)
     --self.object:set_acceleration({x=0,y=-10,z=0})
 
     if staticdata ~= "" and staticdata ~= nil then
         local data = minetest.parse_json(staticdata) or {}
         --restore old data
         if data then
-          print("restoring old data")
+          --print("restoring old data")
           self.rider = data.rider
           if minetest.get_player_by_name(self.rider) then
             minetest.get_player_by_name(self.rider):set_attach(self.object, "", {x=0,y=0,z=0}, {x=0,y=0,z=0})
@@ -47,8 +57,8 @@ function pig:on_activate(staticdata, dtime_s)
           self.turn_intensity = data.turn_intensity
           self.turn_direction = data.turn_direction
           self.jump_timer = data.jump_timer
-          self.oink_timer = data.oink_timer
-          self.oink_timer_goal = data.oink_timer_goal
+          self.noise_timer = data.noise_timer
+          self.noise_timer_goal = data.noise_timer_goal
           self.hurt_cooldown = data.hurt_cooldown
           self.particle_hurt = data.particle_hurt
           self.color = data.color
@@ -57,7 +67,7 @@ function pig:on_activate(staticdata, dtime_s)
           end
         end
     else --create new data
-      print("creating new data")
+      --print("creating new data")
 
       self.rider =  ""
 
@@ -70,30 +80,27 @@ function pig:on_activate(staticdata, dtime_s)
       self.turn_intensity = 1
       self.turn_direction = math.random(-1,1)
       self.jump_timer = 0
-      self.oink_timer = 0
-      self.oink_timer_goal = math.random(3,20)
+      self.noise_timer = 0
+      self.noise_timer_goal = math.random(3,20)
       self.hurt_cooldown = 0
       self.particle_hurt = 0
       self.color = math.random(1,6)
     end
-    self.object:set_properties({
-      textures = {"blank.png","pig"..self.color..".png","blank.png"}
-    })
 end
 
-function pig:on_step(dtime)
+function mob:on_step(dtime)
 
   self.timer = self.timer + dtime
 
-  pig:fall_damage(self)
+  mob:fall_damage(self)
 
-  pig:jump(self,dtime)
+  mob:jump(self,dtime)
 
-  pig:friction(self)
-  pig:float(self)
+  mob:friction(self)
+  mob:float(self)
 
-  pig:turn(self,dtime)
-  pig:move(self)
+  mob:turn(self,dtime)
+  mob:move(self)
 
   --make the object flow in water
   set_flow(self.object:get_pos(),self.object,7)
@@ -105,21 +112,21 @@ function pig:on_step(dtime)
   self.old_pos = self.object:get_pos()
 
 
-  pig:animation(self)
-  pig:oink(self,dtime)
+  mob:animation(self)
+  mob:noise(self,dtime)
 
-  pig:hurt(self,dtime)
+  mob:hurt(self,dtime)
 end
 
---oink!
-function pig:oink(self,dtime)
-  self.oink_timer = self.oink_timer + dtime
-  if self.oink_timer >= self.oink_timer_goal then
-    self.oink_timer = 0
-    self.oink_timer_goal = math.random(3,20)
+--noise
+function mob:noise(self,dtime)
+  self.noise_timer = self.noise_timer + dtime
+  if self.noise_timer >= self.noise_timer_goal then
+    self.noise_timer = 0
+    self.noise_timer_goal = math.random(3,20)
 
     local pos = self.object:get_pos()
-    minetest.sound_play(self.pig_sound, {
+    minetest.sound_play(self.mob_sound, {
   		pos = pos,
   		max_hear_distance = 40,
   		gain = 2,
@@ -129,10 +136,10 @@ function pig:oink(self,dtime)
 end
 
 --set animation based on speed
-function pig:animation(self)
+function mob:animation(self)
 
   local vel = self.object:get_velocity()
-  local speed = (math.abs(vel.x)+math.abs(vel.z))*30 --base it on average speed
+  local speed = (math.abs(vel.x)+math.abs(vel.z))*self.animation_speed --base it on average speed
 
   self.object:set_animation_frame_speed(speed)
 
@@ -150,11 +157,11 @@ function pig:animation(self)
 end
 
 --primitive jumping over nodes if stopped
-function pig:jump(self,dtime)
+function mob:jump(self,dtime)
   self.jump_timer = self.jump_timer + dtime
   local vel = self.object:getvelocity()
   --try a jump on timer, only if on ground
-  if self.jump_timer > 0.25 and (vel.y == 0 or pig:testwater(self.object:get_pos()) > 0) then
+  if self.jump_timer > 0.25 and (vel.y == 0 or mob:testwater(self.object:get_pos()) > 0) then
     self.jump_timer = 0
     if vel.x == 0 or vel.z == 0 then
       self.object:set_velocity(vector.new(vel.x,7,vel.z))
@@ -162,7 +169,7 @@ function pig:jump(self,dtime)
   end
 end
 
-function pig:turn(self,dtime)
+function mob:turn(self,dtime)
   self.turn_timer = self.turn_timer + dtime
 
   --make the mob randomly turn
@@ -190,9 +197,9 @@ function pig:turn(self,dtime)
   end
 end
 
---move with pig around
-function pig:move(self)
-  --pig has a rider
+--move mob around (movement logic)
+function mob:move(self)
+  --mob has a rider
   if self.rider ~= "" and self.rider ~= nil then
 
     local player = minetest.get_player_by_name(self.rider)
@@ -207,7 +214,7 @@ function pig:move(self)
       local dir = vector.divide(direction,10)
       self.object:add_velocity({x=dir.x,y=0,z=dir.z})
     end
-  --pig is wandering around
+  --mob is wandering around
   else
     --Searched Minetest mobs: https://notabug.org/TenPlus1/mobs_redo/src/master/api.lua#L232
     local vel = self.object:get_velocity()
@@ -226,12 +233,12 @@ function pig:move(self)
 end
 
 --makes the boat float
-function pig:float(self)
+function mob:float(self)
   local pos = self.object:get_pos()
 
   pos.y = pos.y + 0.3
 
-  local in_water =  pig:testwater(pos)
+  local in_water =  mob:testwater(pos)
 
   if in_water > 0 then
     self.object:add_velocity({x=0,y=0.15,z=0})
@@ -250,7 +257,7 @@ function pig:float(self)
 end
 
 --do fall damage
-function pig:fall_damage(self)
+function mob:fall_damage(self)
   local vel = self.object:get_velocity()
   if self.oldvel and self.oldvel.y < -12 and vel.y == 0 then
     local damage = math.abs(self.oldvel.y)/4
@@ -262,28 +269,30 @@ function pig:fall_damage(self)
   self.oldvel = vel
 end
 
---try to ride pig
-function pig:on_rightclick(clicker)
+--try to ride mob
+function mob:on_rightclick(clicker)
   local name = clicker:get_player_name()
-  if self.rider == nil or self.rider == "" then
-    self.rider = name
-    clicker:set_attach(self.object, "", {x=0,y=0,z=0}, {x=0,y=0,z=0})
-  elseif self.rider == name then
-    self.rider = ""
-    clicker:set_detach()
+  if self.ridable == true then
+    if self.rider == nil or self.rider == "" then
+      self.rider = name
+      clicker:set_attach(self.object, "", {x=0,y=0,z=0}, {x=0,y=0,z=0}) --make this programmable
+    elseif self.rider == name then
+      self.rider = ""
+      clicker:set_detach()
+    end
   end
 end
 
---rotate pig
-function pig:set_rotation(self)
+--rotate mob
+function mob:set_rotation(self)
   local pos = self.object:get_pos()
   if self.old_pos then
     self.object:set_yaw(minetest.dir_to_yaw(vector.direction(pos, self.old_pos)))
   end
 end
 
---slow down boat with friction
-function pig:friction(self)
+--slow down mob with friction
+function mob:friction(self)
   local vel = self.object:get_velocity()
   vel = vector.multiply(vel,-1)
   vel = vector.divide(vel,100)
@@ -296,12 +305,12 @@ end
 
 
 --test if a node is water
-function pig:testwater(pos)
+function mob:testwater(pos)
   return(minetest.get_item_group(minetest.get_node(pos).name, "water"))
 end
 
---show pig got hurt
-function pig:hurt(self,dtime)
+--show mob got hurt
+function mob:hurt(self,dtime)
   if self.hurt_cooldown > 0 then
     self.hurt_cooldown = self.hurt_cooldown - dtime
     self.particle_hurt = self.particle_hurt + dtime
@@ -309,9 +318,9 @@ function pig:hurt(self,dtime)
       self.particle_hurt = 0
       local pos = self.object:get_pos()
       heart_explosion(pos)
-      minetest.sound_play(self.pig_sound, {
+      minetest.sound_play(self.mob_sound, {
     		pos = pos,
-    		max_hear_distance = 40,
+    		max_hear_distance = 80,
     		gain = 2,
     		pitch = math.random(70,110)/100,
     	})
@@ -319,12 +328,12 @@ function pig:hurt(self,dtime)
   end
 end
 
---when pig is punched
-function pig:on_punch(puncher, time_from_last_punch, tool_capabilities, direction, damage)
+--when mob is punched
+function mob:on_punch(puncher, time_from_last_punch, tool_capabilities, direction, damage)
   local newhp = self.object:get_hp()-damage
   local pos = self.object:get_pos()
 
-  --if punch hurt pig
+  --if punch hurt mob
   if damage > 0 then
     --max out speed for longest time (freakout)
     self.speed_goal = 5
@@ -335,7 +344,7 @@ function pig:on_punch(puncher, time_from_last_punch, tool_capabilities, directio
 
     heart_explosion(pos)
 
-    minetest.sound_play(self.angry_pig_sound, {
+    minetest.sound_play(self.angry_mob_sound, {
   		pos = pos,
   		max_hear_distance = 40,
   		gain = 2,
@@ -343,13 +352,13 @@ function pig:on_punch(puncher, time_from_last_punch, tool_capabilities, directio
   	})
 
 
-    local item = minetest.add_item(pos, "items:bone")
+    local item = minetest.add_item(pos, self.drop_hurt)
     if item then
       item:get_luaentity().age = collection_age - 0.35
     end
   end
   if newhp == 0 then
-    local item = minetest.add_item(self.object:get_pos(), "items:porkchop "..math.random(1,3))
+    local item = minetest.add_item(self.object:get_pos(), self.drop_die.." "..math.random(1,3))
     if item then
       item:get_luaentity().age = collection_age - 0.35
     end
@@ -357,7 +366,7 @@ function pig:on_punch(puncher, time_from_last_punch, tool_capabilities, directio
 end
 
 --save variables
-function pig:get_staticdata()
+function mob:get_staticdata()
     return minetest.write_json({
       rider = self.rider,
       timer = self.timer,
@@ -369,8 +378,8 @@ function pig:get_staticdata()
       turn_intensity = self.turn_intensity,
       turn_direction = self.turn_direction,
       jump_timer = self.jump_timer,
-      oink_timer = self.oink_timer,
-      oink_timer_goal = self.oink_timer_goal,
+      noise_timer = self.noise_timer,
+      noise_timer_goal = self.noise_timer_goal,
       hurt_cooldown = self.hurt_cooldown,
       particle_hurt = self.particle_hurt,
       hp = self.object:get_hp(),
@@ -378,61 +387,58 @@ function pig:get_staticdata()
     })
 end
 
-minetest.register_entity("mob:pig", pig)
+minetest.register_entity("mob:"..name, mob)
 
+table.insert(mob_spawn_table, "mob:"..name) -- add the mob to the spawn table
 
 
 ---debug items - could be used for spawn eggs
 --debug item
-minetest.register_craftitem("mob:pig", {
-  description = "pig",
-  inventory_image = "pig.png",
+minetest.register_craftitem("mob:"..name, {
+  description = name,
+  inventory_image = def.inventory_image,
   liquids_pointable = true,
   on_place = function(itemstack, placer, pointed_thing)
     local pos = pointed_thing.above
     pos.y = pos.y + 0.5
-    local test = minetest.add_entity(pos, "mob:pig")
+    local test = minetest.add_entity(pos, "mob:"..name)
     itemstack:take_item(1)
     return(itemstack)
   end,
 })
 
+end
 
---spawn mobs
---[[
-local mob_spawn_timer = 0
-local mob_spawn_goal = math.random(100,400) --set up small timer goal for initial mob spawning
-minetest.register_globalstep(function(dtime)
-  mob_spawn_timer = mob_spawn_timer + dtime
-	for _,player in ipairs(minetest.get_connected_players()) do
-		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
-      if mob_spawn_timer >= mob_spawn_goal then
-        mob_spawn_timer = 0
-        mob_spawn_goal = math.random(100,400)
-        local pos = player:get_pos()
-        local node_group = minetest.find_nodes_in_area_under_air(vector.subtract(pos,20), vector.add(pos,20), {"nodes:grass"})
-        if table.getn(node_group) > 0 then
-          for i = 1,math.random(2,5) do --only spawn 2,5 mobs
-            local new_pos = node_group[math.random(1,table.getn(node_group))]
-            new_pos.y = new_pos.y + 1
-            print("spawning pig at "..dump(new_pos))
-            minetest.add_entity(new_pos,"mob:pig")
-          end
-        end
-      end
-    end
-  end
-end)
-]]--
+mob.register_mob("pig",{
+  makes_footstep_sound = true,
+  visual = "mesh",
+  visual_size = {x=2.5,y=2.5},
+  mesh = "pig.b3d",
+  automatic_face_movement_dir = -90.0,
+  hp_max = 5,
+  walk_start = 0,
+  walk_end = 40,
+  mob_sound = "mobs_pig",
+  angry_mob_sound = "mobs_pig_angry",
+  animation_speed = 30,
+  ridable = true,
+  drop_hurt = "items:bone",
+  drop_die = "items:porkchop",
+  textures = {"blank.png","pig1.png","blank.png"},
+  inventory_image = "pig_inv.png",
+})
+
+
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
   local node_group = minetest.find_nodes_in_area_under_air(minp, maxp, {"nodes:grass","nodes:tall_grass"})
   if table.getn(node_group) > 0 then
     for i = 1,math.random(3,8) do --only spawn 2,5 mobs
+      local name = mob_spawn_table[math.random(table.getn(mob_spawn_table))]
       local new_pos = node_group[math.random(1,table.getn(node_group))]
       new_pos.y = new_pos.y + 2
-      print("spawning pig at "..dump(new_pos))
-      minetest.add_entity(new_pos,"mob:pig")
+      print("spawning "..name.." at "..dump(new_pos))
+      minetest.add_entity(new_pos,name)
     end
   end
 end)
