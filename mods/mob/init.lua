@@ -25,10 +25,6 @@ local pig = {
 --restore variables
 function pig:on_activate(staticdata, dtime_s)
     --self.object:set_acceleration({x=0,y=-10,z=0})
-    self.object:set_properties({
-  		textures = {"blank.png","pig"..math.random(1,6)..".png","blank.png"}
-  	})
-
 
     if staticdata ~= "" and staticdata ~= nil then
         local data = minetest.parse_json(staticdata) or {}
@@ -55,6 +51,7 @@ function pig:on_activate(staticdata, dtime_s)
           self.oink_timer_goal = data.oink_timer_goal
           self.hurt_cooldown = data.hurt_cooldown
           self.particle_hurt = data.particle_hurt
+          self.color = data.color
           if data.hp then
             self.object:set_hp(data.hp)
           end
@@ -77,7 +74,11 @@ function pig:on_activate(staticdata, dtime_s)
       self.oink_timer_goal = math.random(3,20)
       self.hurt_cooldown = 0
       self.particle_hurt = 0
+      self.color = math.random(1,6)
     end
+    self.object:set_properties({
+      textures = {"blank.png","pig"..self.color..".png","blank.png"}
+    })
 end
 
 function pig:on_step(dtime)
@@ -372,7 +373,8 @@ function pig:get_staticdata()
       oink_timer_goal = self.oink_timer_goal,
       hurt_cooldown = self.hurt_cooldown,
       particle_hurt = self.particle_hurt,
-      hp = self.object:get_hp()
+      hp = self.object:get_hp(),
+      color = self.color,
     })
 end
 
