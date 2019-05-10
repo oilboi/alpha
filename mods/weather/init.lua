@@ -159,6 +159,20 @@ minetest.register_globalstep(function(dtime)
   end
 end)
 
+--a hook for other mods to use
+function delete_weather_particle_spawners()
+  --delete particle spawners
+  for _,player in ipairs(minetest.get_connected_players()) do
+    local name = player:get_player_name()
+
+    if weather_particle_table[name] and table.getn(weather_particle_table[name]) > 0  then
+      for _,id in ipairs(weather_particle_table[name]) do
+        minetest.delete_particlespawner(id)
+      end
+    end
+    weather_particle_table[name] = {}
+  end
+end
 
         --[[
         --go through the "roof" of the check
