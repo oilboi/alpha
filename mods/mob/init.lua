@@ -6,7 +6,6 @@ local pig = {
     collide_with_objects = false,
     collisionbox = {-0.45, -0.01, -0.45, 0.45, 0.865, 0.45},
     mesh = "pig.b3d",
-    textures = {"blank.png","pig.png","blank.png"},
     visual_size = {x=2.5,y=2.5},
     automatic_face_movement_dir = -90.0,
     automatic_face_movement_max_rotation_per_sec = 65536, --65536
@@ -26,6 +25,9 @@ local pig = {
 --restore variables
 function pig:on_activate(staticdata, dtime_s)
     --self.object:set_acceleration({x=0,y=-10,z=0})
+    self.object:set_properties({
+  		textures = {"blank.png","pig"..math.random(1,6)..".png","blank.png"}
+  	})
 
 
     if staticdata ~= "" and staticdata ~= nil then
@@ -422,9 +424,9 @@ end)
 ]]--
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
-  local node_group = minetest.find_nodes_in_area_under_air(minp, maxp, {"nodes:grass"})
+  local node_group = minetest.find_nodes_in_area_under_air(minp, maxp, {"nodes:grass","nodes:tall_grass"})
   if table.getn(node_group) > 0 then
-    for i = 0,math.random(1,2) do --only spawn 2,5 mobs
+    for i = 1,math.random(3,8) do --only spawn 2,5 mobs
       local new_pos = node_group[math.random(1,table.getn(node_group))]
       new_pos.y = new_pos.y + 2
       print("spawning pig at "..dump(new_pos))
