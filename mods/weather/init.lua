@@ -7,48 +7,40 @@ repeat
 when player goes out radius delete particlespawner
 
 
-if weather_change_timer > weather_change_goal then
-  weather_change_goal = math.random(200,400)
-  weather = math.random(0,2)
-  print("weather changed to "..weather)
-  weather_change_timer = 0
-end
+
 ]]
 
 --radius of rain
 local rad = 7
---the timer that counts when to make more paricle spawners
---local timer = 0
 
---this controls if the weather is clear, rain, or snow
---local weather_change_timer = 0
---make weather change goal random
---local weather_change_goal = 90000--math.random(200,400)
+weather = 2
 
---make weather state random
---weather = 2--math.random(0,2) --0 clear 1 rain 2 snow
-
-
---local weather_radius = 10
---local weather_height = 10
---we start the globalstep (each server tick)
-minetest.override_item("air",{
---on_construct = function(pos)
-  --local timer = minetest.get_node_timer(pos)
-  --if not timer:is_started() then
-    --timer:start(math.random(25,300))
-  --end
---end,
---when the sugarcane timer expires try to find water near, if not, reset timer
-on_timer = function(pos, elapsed)
-
-end,
-
-})
 
 local weather_table = {}
 local weather_particle_table = {}
+local weather_timer = 0
+local update_timer = 0.25
+local weather_change_timer = 0
+local weather_change_goal = math.random(200,400)
 minetest.register_globalstep(function(dtime)
+  print("make particlespawners delete on end")
+
+  if weather == 0 then return end
+
+  weather_timer = weather_timer + dtime
+  local update_weather = false
+  if weather_timer > update_timer then
+    weather_timer = 0
+    update_weather = true
+  end
+  weather_change_timer = weather_change_timer + dtime
+  if weather_change_timer > weather_change_goal then
+    weather_change_goal = math.random(200,400)
+    weather = math.random(0,2)
+    print("weather changed to "..weather)
+    weather_change_timer = 0
+  end
+
 	for _,player in ipairs(minetest.get_connected_players()) do
     --get center of node position
     local pos = vector.floor(vector.add(player:get_pos(),0.5))
@@ -56,7 +48,7 @@ minetest.register_globalstep(function(dtime)
 
     local test_table = {}
     --build an environment map upside down
-    if weather_table[name] and not vector.equals(pos,weather_table[name]) then
+    if update_weather == true then --or (weather_table[name] and not vector.equals(pos,weather_table[name])) then
       --clear particle spawners
       if weather_particle_table[name] and table.getn(weather_particle_table[name]) > 0  then
         for _,id in ipairs(weather_particle_table[name]) do
@@ -101,36 +93,61 @@ minetest.register_globalstep(function(dtime)
           if test_table and test_table[x] and test_table[x][z] and type(test_table[x][z]) == "number" then
             --create particle columns
             --print("THE LOW FOR X "..x.." Z "..z.." IS: "..test_table[x][z])
-            local id = minetest.add_particlespawner({
-                amount = 5,
-                time = 0,
-                --minpos = {x=checkpos.x-0.5, y=checkpos.y-0.5, z=checkpos.z-0.5},
-                minpos = {x=pos.x+x,y=test_table[x][z],z=pos.z+z},
-                maxpos = {x=pos.x+x,y=pos.y+rad,z=pos.z+z},
-                --maxpos = {x=checkpos.x+0.5, y=checkpos.y+0.5, z=checkpos.z+0.5},
-                --minvel = {x=0, y=-1, z=0},
-                --maxvel = {x=0, y=-3, z=0},
-                minvel=vector.new(0,0,0),
-                maxvel=vector.new(0,0,0),
+            local id
+            if weather == 1 then
+              id = minetest.add_particlespawner({
+                  amount = 1,
+                  time = 0,
+                  minpos = {x=pos.x+x-0.5,y=test_table[x][z],z=pos.z+z-0.5},
+                  maxpos = {x=pos.x+x+0.5,y=pos.y+rad,z=pos.z+z+0.5},
+                  minvel = {x=0, y=-25, z=0},
+                  maxvel = {x=0, y=-25, z=0},
+                  minacc = {x=0, y=0, z=0},
+                  maxacc = {x=0, y=0, z=0},
+                  minexptime = 1,
+                  maxexptime = 1,
+                  minsize = 4,
+                  maxsize = 6,
 
-                minacc = {x=0, y=0, z=0},
-                maxacc = {x=0, y=0, z=0},
-                minexptime = 0.25,
-                maxexptime = 0.25,
-                minsize = 3,
-                maxsize = 3,
+                  collisiondetection = true,
+                  collision_removal = true,
 
-                collisiondetection = true,
-                collision_removal = true,
+                  object_collision = true,
 
-                object_collision = true,
+                  vertical = true,
 
-                vertical = true,
+                  texture = "rain.png",
 
-                texture = "heart.png",
+                  playername = name,
+              })
+            elseif weather == 2 then
+              id = minetest.add_particlespawner({
+                  time = 0,
+                  amount = 1,
+                  minpos = {x=pos.x+x-0.5,y=test_table[x][z],z=pos.z+z-0.5},
+                  maxpos = {x=pos.x+x+0.5,y=pos.y+rad,z=pos.z+z+0.5},
+                  minvel = {x=0, y=-1, z=0},
+                  maxvel = {x=0, y=-3, z=0},
 
-                --playername = player:get_player_name(),
-            })
+                  minacc = {x=-1, y=0, z=-1},
+                  maxacc = {x=1, y=0, z=1},
+                  minexptime = 1,
+                  maxexptime = 2,
+                  minsize = 2,
+                  maxsize = 3,
+
+                  collisiondetection = true,
+                  collision_removal = true,
+
+                  object_collision = true,
+
+                  vertical = true,
+
+                  texture = "snow.png",
+
+                  playername = name,
+              })
+            end
             table.insert(weather_particle_table[name],id)
           end
         end
