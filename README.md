@@ -6,7 +6,13 @@ Heavily borrows from Mineclone, along with other mods!
 
 ## todo for version 0.04
 
-mobs - cow - sheep - etc
+optimize weather
+
+optimize item entity
+
+bows and arrows craft recipe
+
+mobs - cow - sheep - spider - zombie
 
 make sand have different sounds and group
 

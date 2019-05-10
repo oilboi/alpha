@@ -7,10 +7,10 @@ local timer = 0
 local weather_change_timer = 0
 
 --make weather change goal random
-local weather_change_goal = math.random(200,400)
+local weather_change_goal = 90000--math.random(200,400)
 
 --make weather state random
-weather = math.random(0,2) --0 clear 1 rain 2 snow
+weather = 1--math.random(0,2) --0 clear 1 rain 2 snow
 
 --we start the globalstep (each server tick)
 minetest.register_globalstep(function(dtime)

@@ -1,1 +1,0 @@
-This game uses a literal directory and naming convention. If you want to see where something is look at the folder! :D
