@@ -86,6 +86,10 @@ function mob:on_activate(staticdata, dtime_s)
       self.particle_hurt = 0
       self.color = math.random(1,6)
     end
+    --figure out how to do this
+    --self.object:set_properties({
+    --  textures = {"blank.png","pig"..self.color..".png","blank.png"}
+    --})
 end
 
 function mob:on_step(dtime)
@@ -410,9 +414,10 @@ minetest.register_craftitem("mob:"..name, {
 end
 
 mob.register_mob("pig",{
-  makes_footstep_sound = true,
+  makes_footstep_sound = false,
   visual = "mesh",
   visual_size = {x=2.5,y=2.5},
+  collisionbox = {-0.45, -0.01, -0.45, 0.45, 0.865, 0.45},
   mesh = "pig.b3d",
   automatic_face_movement_dir = -90.0,
   hp_max = 5,
