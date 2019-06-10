@@ -191,7 +191,7 @@ minetest.register_craft({
 	recipe = {
 		{"group:string", "group:stick", ""},
 		{"group:string","", "group:stick"},
-		{"group:string", "group:stick", """}
+		{"group:string", "group:stick", ""}
 	}
 })
 
