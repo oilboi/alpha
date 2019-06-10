@@ -186,6 +186,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "bow:bow",
+	recipe = {
+		{"group:string", "group:stick", ""},
+		{"group:string","", "group:stick"},
+		{"group:string", "group:stick", """}
+	}
+})
+
 --fuels
 
 minetest.register_craft({
