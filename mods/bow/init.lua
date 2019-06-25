@@ -60,15 +60,16 @@ local arrow = {
     visual = "mesh",
     collide_with_objects = false,
     collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
-    mesh = "bow.obj",
+    mesh = "arrow.obj",
 	  textures = {"arrow_ent.png"},
 	  visual_size = {x=0.5,y=0.5},
     timer = 0,
     speed = 0,
+		is_visible = true,
     --automatic_face_movement_dir = 0.0,
     --automatic_face_movement_max_rotation_per_sec = 65536, --65536
     --rider = "",
-    pointable = false,
+    pointable = true,
     hit = false,
   },
 }

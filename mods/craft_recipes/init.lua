@@ -195,6 +195,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "items:arrow 8",
+	recipe = {
+		{"items:spider_eye"},
+		{"items:stick"},
+		{"nodes:leaves"},
+	}
+})
+
 --fuels
 
 minetest.register_craft({

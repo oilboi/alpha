@@ -30,7 +30,7 @@ for i = 1,table.getn(groups) do
                   -- For example:
                   wood = { times = timey,uses = i*5, maxlevel = i},
               },
-              ----damage_groups = {groupname = damage},
+              damage_groups = {fleshy=i},
             },
 
           after_use = function(itemstack, user, node, digparams)
@@ -57,7 +57,7 @@ for i = 1,table.getn(groups) do
                   stone = {times = timey,
                            uses = i*5, maxlevel = i},
               },
-              --damage_groups = {groupname = damage},
+              damage_groups = {fleshy=i},
           },
 
           after_use = function(itemstack, user, node, digparams)
@@ -82,7 +82,7 @@ for i = 1,table.getn(groups) do
                   dirt = {times = timey,
                            uses = i*5, maxlevel = i},
               },
-              --damage_groups = {groupname = damage},
+              damage_groups = {fleshy=1},
           },
 
           after_use = function(itemstack, user, node, digparams)
@@ -108,7 +108,7 @@ for i = 1,table.getn(groups) do
                   dirt = {times = timey,
                            uses = i, maxlevel = i},
               },
-              --damage_groups = {groupname = damage},
+              damage_groups = {fleshy=1},
           },
           --acts like on rightclick (farming action)
           on_place = function(itemstack, placer, pointed_thing)
@@ -159,7 +159,7 @@ for i = 1,table.getn(groups) do
                   stone = {times = timey,
                          uses = i*15, maxlevel = i},
               },
-              --damage_groups = {groupname = damage},
+              damage_groups = {fleshy=i*2},
           },
 
           after_use = function(itemstack, user, node, digparams)
@@ -186,7 +186,7 @@ minetest.register_tool("tools:shears",
                 leaves = {times = {[1] = 0.1, [2] = 0.05},
                          uses = 40, maxlevel = 2},
             },
-            --damage_groups = {groupname = damage},
+            damage_groups = {fleshy=i},
         },
 
         after_use = function(itemstack, user, node, digparams)

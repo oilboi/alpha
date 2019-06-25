@@ -71,3 +71,17 @@ minetest.register_craftitem("items:arrow", {
 	inventory_image = "arrow_inv.png",
 	groups = {arrow = 1},
 })
+
+minetest.register_craftitem("items:string", {
+	description = "String",
+	inventory_image = "string.png",
+	groups = {string = 1},
+})
+
+minetest.register_craftitem("items:spider_eye", {
+	description = "Spider Eye",
+	inventory_image = "spider_eye.png",
+	groups = {food = 1},
+	food = -2,
+	range = 0,
+})
