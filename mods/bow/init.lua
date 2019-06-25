@@ -57,12 +57,12 @@ minetest.register_tool("bow:bow",
 local arrow = {
   initial_properties = {
     physical = true, -- otherwise going uphill breaks
-    visual = "mesh",
+    visual = "upright_sprite",
     collide_with_objects = false,
     collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
-    mesh = "arrow.obj",
-	  textures = {"arrow_ent.png"},
-	  visual_size = {x=0.5,y=0.5},
+    --mesh = "arrow.obj",
+	  textures = {"arrow.png"},
+	  visual_size = {x=1,y=1},
     timer = 0,
     speed = 0,
 		is_visible = true,
