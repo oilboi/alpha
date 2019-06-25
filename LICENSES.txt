@@ -52,7 +52,8 @@ bow
 https://freesound.org/people/Erdie/sounds/65734/
 boing
 https://freesound.org/people/kklab5050/sounds/120045/
-
+spider
+https://freesound.org/people/columbia23/sounds/395395/
 
 -------------------------------------------------------------------------------
 Code is licensed under GPL 2.1

@@ -421,16 +421,36 @@ mob.register_mob("pig",{
   mesh = "pig.b3d",
   automatic_face_movement_dir = -90.0,
   hp_max = 5,
+  animation_speed = 30,
   walk_start = 0,
   walk_end = 40,
   mob_sound = "mobs_pig",
   angry_mob_sound = "mobs_pig_angry",
-  animation_speed = 30,
   ridable = true,
   drop_hurt = "items:bone",
   drop_die = "items:porkchop",
   textures = {"blank.png","pig1.png","blank.png"},
   inventory_image = "pig_inv.png",
+})
+
+mob.register_mob("spider",{
+  makes_footstep_sound = false,
+  visual = "mesh",
+  visual_size = {x=3, y=3},
+  collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
+  mesh = "spider.b3d",
+  automatic_face_movement_dir = -90.0,
+  hp_max = 20,
+  animation_speed = 15,
+  walk_start = 0,
+  walk_end = 20,
+  mob_sound = "spider",
+  angry_mob_sound = "spider_angry",
+  ridable = true,
+  drop_hurt = "items:spider_eye",
+  drop_die = "items:string 3",
+  textures = {"spider.png","spider_eyes.png"},
+  inventory_image = "spider_inv.png",
 })
 
 
