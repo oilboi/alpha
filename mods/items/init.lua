@@ -71,6 +71,11 @@ minetest.register_craftitem("items:arrow", {
 	inventory_image = "arrow_inv.png",
 	groups = {arrow = 1},
 })
+minetest.register_craftitem("items:arrow_entity_placeholder", {
+	description = "arrow_entity_placeholder",
+	inventory_image = "arrow.png",
+	groups = {debugging = 1},
+})
 
 minetest.register_craftitem("items:string", {
 	description = "String",

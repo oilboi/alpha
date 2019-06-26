@@ -22,9 +22,9 @@ minetest.register_globalstep(function(dtime)
 	          local arrow = minetest.add_entity(pos,"bow:arrow")
 	          local vel = player:get_player_velocity()
 	          local dir = player:get_look_dir()
-	          dir.x = vel.x + (dir.x * 15)
+	          dir.x = vel.x + (dir.x * 30)
 	    			dir.y = vel.y + (dir.y * 15 + 2)
-	    			dir.z = vel.z + (dir.z * 15)
+	    			dir.z = vel.z + (dir.z * 30)
 	          arrow:set_velocity(dir)
 	          minetest.sound_play("bow", {
 							object = player,
@@ -37,7 +37,7 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 		elseif bow_cycle[name] then
-			print(bow_cycle[name].timer)
+			--print(bow_cycle[name].timer)
 			bow_cycle[name] = nil
 		end
 	end
@@ -61,8 +61,8 @@ local arrow = {
     collide_with_objects = false,
     collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
     --mesh = "arrow.obj",
-	  textures = {"items:arrow"},
-	  visual_size = {x=1,y=1},
+	  textures = {"items:arrow_entity_placeholder"},
+	  visual_size = {x=1,y=0.5},
     timer = 0,
     speed = 0,
 		is_visible = true,
