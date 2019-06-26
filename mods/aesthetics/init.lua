@@ -60,8 +60,8 @@ function tool_break(itemstack, user, node, digparams)
   --if itemstack:get_wear() == 0 then --testing
   if itemstack:get_wear() == 0 and digparams.wear > 0 then
     minetest.sound_play("tool_break", {
-      pos = user:get_pos(),
-      max_hear_distance = 100,
+      object = user,
+      max_hear_distance = 30,
       gain = 1.0,
       pitch = math.random(70,100)/100,
     })
@@ -116,8 +116,8 @@ end
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
   if hp_change < 0 then
     minetest.sound_play("hurt", {
-      pos = player:get_pos(),
-      max_hear_distance = 100,
+      object = player,
+      max_hear_distance = 30,
       gain = 1.0,
       pitch = math.random(80,100)/100,
     })

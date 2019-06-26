@@ -131,9 +131,9 @@ function mob:noise(self,dtime)
 
     local pos = self.object:get_pos()
     minetest.sound_play(self.mob_sound, {
-  		pos = pos,
-  		max_hear_distance = 40,
-  		gain = 2,
+  		object = self.object,
+  		max_hear_distance = 20,
+  		gain = 0.5,
   		pitch = math.random(70,110)/100,
   	})
   end
@@ -323,9 +323,9 @@ function mob:hurt(self,dtime)
       local pos = self.object:get_pos()
       heart_explosion(pos)
       minetest.sound_play(self.mob_sound, {
-    		pos = pos,
-    		max_hear_distance = 80,
-    		gain = 2,
+    		object = self.object,
+    		max_hear_distance = 20,
+    		gain = 0.5,
     		pitch = math.random(70,110)/100,
     	})
     end
@@ -349,9 +349,9 @@ function mob:on_punch(puncher, time_from_last_punch, tool_capabilities, directio
     heart_explosion(pos)
 
     minetest.sound_play(self.angry_mob_sound, {
-  		pos = pos,
-  		max_hear_distance = 40,
-  		gain = 2,
+  		object = self.object,
+  		max_hear_distance = 20,
+  		gain = 0.5,
   		pitch = math.random(70,110)/100,
   	})
 

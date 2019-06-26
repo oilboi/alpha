@@ -197,8 +197,8 @@ local function splashy(object,pos)
 			texture = "bubble_2.png",
 	})
 	minetest.sound_play("sploosh", {
-		pos = pos,
-		max_hear_distance = 100,
+		object = object,
+		max_hear_distance = 30,
 		gain = 0.5,
 		pitch = math.random(70,110)/100,
 	})
@@ -247,8 +247,8 @@ local function player_splashy(player,pos)
 			texture = "bubble_2.png",
 	})
 	minetest.sound_play("sploosh", {
-		pos = pos,
-		max_hear_distance = 100,
+		object = player,
+		max_hear_distance = 30,
 		gain = 0.5,
 		pitch = math.random(70,110)/100,
 	})

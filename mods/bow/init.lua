@@ -27,7 +27,7 @@ minetest.register_globalstep(function(dtime)
 	    			dir.z = vel.z + (dir.z * 15)
 	          arrow:set_velocity(dir)
 	          minetest.sound_play("bow", {
-							pos = player:get_pos(),
+							object = player,
 							max_hear_distance = 16,
 							gain = 1,
 							--pitch = math.random(70,100)/100,
@@ -57,11 +57,11 @@ minetest.register_tool("bow:bow",
 local arrow = {
   initial_properties = {
     physical = true, -- otherwise going uphill breaks
-    visual = "upright_sprite",
+    visual = "wielditem",
     collide_with_objects = false,
     collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
     --mesh = "arrow.obj",
-	  textures = {"arrow.png"},
+	  textures = {"items:arrow"},
 	  visual_size = {x=1,y=1},
     timer = 0,
     speed = 0,
@@ -116,7 +116,7 @@ function arrow:stop(self,dtime)
     --self.object:set_acceleration(vector.new(0,0,0))
     local pos = self.object:get_pos()
     minetest.sound_play("boing", {
-  		pos = pos,
+  		object = self.object,
   		max_hear_distance = 40,
   		gain = 2,
   		pitch = math.random(70,110)/100,
